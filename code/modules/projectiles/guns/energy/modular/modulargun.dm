@@ -10,7 +10,7 @@
 	projectile_type = /obj/item/projectile/beam
 	var/cores = 1//How many lasing cores can we support?
 	var/assembled = 1 //Are we open?
-	var/obj/item/modularlaser/lasermedium/primarycore //Lasing medium core.
+	var/obj/item/modularlaser/lasermedium/primarycore //Lasing medium core. dictates how much heat is generated and what beam we fire.
 	var/obj/item/modularlaser/lasermedium/secondarycore //Lasing medium core.
 	var/obj/item/modularlaser/lasermedium/tertiarycore //Lasing medium core.
 	var/obj/item/modularlaser/lens/laserlens //Lens. Dictates accuracy. Certain lenses change the projectiles to ENERGY SHOTGUN.
@@ -19,6 +19,12 @@
 	var/obj/item/modularlaser/controller/circuit
 	firemodes = list()
 	var/emp_vuln = TRUE
+	var/heatmax = 100 //increased by cooling modules, gun frame affects base value. The threshold at which the gun will shut down completely until it cools off, doing damage to the user and potentially forcing the user to drop the gun.
+	var/heat //how hot are we?
+	var/heat_gen = 10 //how much heat do we generate on firing?
+	var/heat_dissipation = 2 //how much heat do we dissipate per decisecond
+
+//
 
 /obj/item/gun/energy/modular/Initialize()
 	..()
@@ -40,6 +46,8 @@
 		. += "The modular weapon has a [lasercooler.name] installed in the cooling system slot."
 	if(circuit)
 		. += "The modular weapon has a [circuit.name] installed in the fire control slot."
+	if(heat)
+		. += "<span class = 'danger'>The [src]'s heat capacity display reads [round((heat/heatmax)*100)]%.</span>"
 
 /obj/item/gun/energy/modular/proc/generatefiremodes() //Accepts no args. Checks the gun's current components and generates projectile types, firemode costs and max burst. Should be called after changing parts or part values.
 	if(!circuit)
@@ -53,6 +61,7 @@
 	if(!lasercap)
 		return FALSE
 	firemodes = list()
+	heatmax = initial(heatmax)
 	var/burstmode = circuit.maxburst //Max burst controlled by the laser control circuit.
 	//to_chat(world, "The modular weapon at [src.loc] has begun generating a firemode.")
 	var/obj/item/projectile/beammode = primarycore.beamtype //Primary mode fire type.
@@ -60,8 +69,9 @@
 	chargecost += lasercooler.costadd //Cooler adds a flat amount post capacitor based on firedelay mod. Can be negative.
 	var/scatter = laserlens.scatter //Does it scatter the beams?
 	fire_delay = lasercap.firedelay * lasercooler.delaymod //Firedelay caculated by the capacitor and the laser cooler.
-	burst_delay = circuit.burst_delay * lasercooler.delaymod //Ditto but with burst delay.
+	burst_delay = circuit.burst_delay_mult * fire_delay //Ditto, but take the circuit's burst delay mult into account.
 	accuracy = laserlens.accuracy
+	heatmax =
 	var/chargecost_lethal = 120
 	var/chargecost_special = 120
 	var/obj/item/projectile/beammode_lethal
@@ -85,13 +95,13 @@
 			chargecost *= 2
 		if(burstmode > 1)
 			firemodes = list(
-				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst))
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, heat_gen = primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst, primarycore.heatgen * lasercooler.heatmod))
 				)
 			return TRUE
 		else
 			firemodes = list(
-				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1))
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, primarycore.heatgen * lasercooler.heatmod))
 				)
 			return TRUE
 	if(primarycore && secondarycore && !tertiarycore)
@@ -106,16 +116,16 @@
 			chargecost_lethal *= 2
 		if(burstmode > 1)
 			firemodes = list(
-				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1)),
-				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [secondarycore.firename]", projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = maxburst))
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst, secondarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [secondarycore.firename]", projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = maxburst, secondarycore.heatgen * lasercooler.heatmod))
 				)
 			return TRUE
 		else
 			firemodes = list(
-				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1)),
-				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1))
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1, secondarycore.heatgen * lasercooler.heatmod))
 			)
 			return TRUE
 	if(primarycore && secondarycore && tertiarycore)
@@ -134,16 +144,22 @@
 			chargecost_special *= 2
 		if(burstmode > 1)
 			firemodes = list(
-				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1)),
-				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1)),
-				new /datum/firemode(src, list(mode_name=tertiarycore.firename, projectile_type=beammode_special, charge_cost = chargecost_special, burst = 1)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [secondarycore.firename]", projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = maxburst)),
-				new /datum/firemode(src, list(mode_name="[maxburst] shot [tertiarycore.firename]", projectile_type=beammode_special, charge_cost = chargecost_special, burst = maxburst))
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1, secondarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=tertiarycore.firename, projectile_type=beammode_special, charge_cost = chargecost_special, burst = 1, tertiarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [primarycore.firename]", projectile_type=beammode, charge_cost = chargecost, burst = maxburst, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [secondarycore.firename]", projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = maxburst, secondarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name="[maxburst] shot [tertiarycore.firename]", projectile_type=beammode_special, charge_cost = chargecost_special, burst = maxburst, tertiarycore.heatgen * lasercooler.heatmod))
 				)
 			return TRUE
 		else
-			return FALSE
+			firemodes = list(
+				new /datum/firemode(src, list(mode_name=primarycore.firename, projectile_type=beammode, charge_cost = chargecost, burst = 1, primarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=secondarycore.firename, projectile_type=beammode_lethal, charge_cost = chargecost_lethal, burst = 1, secondarycore.heatgen * lasercooler.heatmod)),
+				new /datum/firemode(src, list(mode_name=tertiarycore.firename, projectile_type=beammode_special, charge_cost = chargecost_special, burst = 1, tertiarycore.heatgen * lasercooler.heatmod))
+			)
+	else
+		return FALSE
 
 /obj/item/gun/energy/modular/emp_act(severity)
 	if(!emp_vuln)
@@ -182,6 +198,7 @@
 		var/datum/firemode/new_mode = firemodes[1]
 		new_mode.apply_to(src)
 		return FALSE
+	if
 
 /obj/item/gun/energy/modular/attackby(obj/item/O, mob/user)
 	if(O.is_screwdriver())

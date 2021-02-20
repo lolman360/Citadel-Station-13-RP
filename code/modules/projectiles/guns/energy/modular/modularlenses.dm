@@ -24,24 +24,24 @@
 /obj/item/modularlaser/lens/advanced
 	name = "advanced modular lens"
 	desc = "An advanced metamaterial lens that focuses beams more accurately."
-	accuracy = 15 //1 tile closer
+	accuracy = 45 //3 tiles closer
 	scatter = FALSE
 
 /obj/item/modularlaser/lens/super
 	name = "metamaterial modular lens"
 	desc = "An advanced metamaterial lens that focuses beams extremely accurately."
-	accuracy = 30 //2 tiles closer
+	accuracy = 75 //5 tiles closer
 
 /obj/item/modularlaser/lens/admin //badmin only
 	name = "nanomachined modular lens"
 	desc = "A swarm of transparent nanites that causes your beams to hit always, 100% of time time or your money back."
-	accuracy = 225 //you shouldn't miss
+	accuracy = 1500 //you shouldn't miss
 
 /obj/item/modularlaser/lens/scatter
 	name = "refracting modular lens"
 	desc = "A simple glass lens that splits beams on contact. Very hard to aim with."
 	scatter = TRUE
-	accuracy = -60 //4 tiles further
+	accuracy = -30 //2 tiles further
 
 /obj/item/modularlaser/lens/scatter/adv
 	name = "advanced refracting modular lens"
@@ -64,4 +64,4 @@
 /obj/item/modularlaser/lens/scatter/admin
 	name = "nanomachined refracting modular lens"
 	desc = "An advanced nanomachined lens that splits beams."
-	accuracy = 225 //100% of shots should land.
+	accuracy = 1500 //100% of shots should land.

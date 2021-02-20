@@ -7,7 +7,7 @@
 	name = "modular laser part"
 	desc = "I shouldn't exist."
 	var/maxburst = 1
-	var/burst_delay = 3
+	var/burst_delay_mult = 0.3
 	var/robust = FALSE
 
 /obj/item/modularlaser/controller/basic
@@ -23,7 +23,7 @@
 	name = "AN-94 burst controller"
 	desc = "A modular energy weapon firing controller that allows single-shot and two-shot bursts."
 	maxburst = 2
-	burst_delay = 0.5
+	burst_delay_mult = 0.01
 
 /obj/item/modularlaser/controller/threeburst
 	name = "burst weapon fire control unit"
@@ -34,13 +34,13 @@
 	name = "quintuple-burst fire control unit"
 	desc = "Can fire a burst of five shots, or in single-shot mode."
 	maxburst = 5
-	burst_delay = 4
+	burst_delay_mult = 0.25
 
 /obj/item/modularlaser/controller/supressive
 	name = "supressive fire control unit"
-	desc = "A weapon firing controller that adds a supressive fire burst mode, unleashing a large amount of inaccurate, supressive beams at a moderate delay."
+	desc = "A weapon firing controller that adds a supressive fire burst mode, unleashing a large amount of inaccurate, supressive beams at a low delay."
 	maxburst = 8
-	burst_delay = 7
+	burst_delay_mult = 0.15
 
 /obj/item/modularlaser/controller/robust
 	name = "simple weapon fire control unit"

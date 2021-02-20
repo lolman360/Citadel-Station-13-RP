@@ -25,37 +25,36 @@
 /obj/item/modularlaser/capacitor/eco
 	name = "efficient weapon power handler"
 	desc = "An energy handler for a modular energy weapon that recoups some of the energy used, at the cost of longer delay between shots."
-	costmod = 0.9
-	firedelay = 12 //twice as long
+	costmod = 0.8
+	firedelay = 8 //50% longer for a 20% cost discount
 
 /obj/item/modularlaser/capacitor/eco/super
 	name = "advanced energy-recovery weapon power handler"
 	desc = "A power handler for a modular energy weapon that recoups a significant amount of the energy used, at the cost of a significant delay between shots."
-	costmod = 0.75
-	firedelay = 20
+	costmod = 0.5
+	firedelay = 12 //100% longer for a 50% discount
 
 /obj/item/modularlaser/capacitor/eco/hyper
 	name = "bleeding-edge energy-recovery weapon power handler"
 	desc = "A power handler for a modular energy weapon that recoups half of the energy used, at the cost of a crippling delay between shots."
-	costmod = 0.5
-	firedelay = 40
+	costmod = 0.25
+	firedelay = 15//150% longer for 75% discount
 
 /obj/item/modularlaser/capacitor/eco/admin //admin only.
 	name = "zero-point energy-recovery weapon power handler"
 	desc = "A power handler for a modular energy weapon that recoups almost all of the energy used, at the cost of a delay between shots."
 	costmod = 0.01
-	firedelay = 10
 
 /obj/item/modularlaser/capacitor/speed
 	name = "throughput-calibrated weapon power handler"
-	desc = "A power handler for a modular energy weapon that is less efficient, but has half the delay between shots."
-	costmod = 1.2
-	firedelay = 3
+	desc = "A power handler for a modular energy weapon that is less efficient, but has less delay between shots."
+	costmod = 1.1
+	firedelay = 4
 
 /obj/item/modularlaser/capacitor/speed/advanced
 	name = "throughput-focused weapon power handler"
-	desc = "A power handler for a modular energy weapon that is inefficient, but has less than half the delay between shots."
-	costmod = 1.5
+	desc = "A power handler for a modular energy weapon that is inefficient, but has almost zero delay between shots."
+	costmod = 1.25
 	firedelay = 1
 
 /obj/item/modularlaser/capacitor/speed/admin

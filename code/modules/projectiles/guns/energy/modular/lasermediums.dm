@@ -9,6 +9,7 @@
 	var/obj/item/projectile/scatterbeam = /obj/item/projectile/scatter/laser
 	var/beamcost = 120
 	var/firename = "pew"
+	var/heatgen = 10
 
 /obj/item/modularlaser/lasermedium/stun
 	name = "stun beam medium"
@@ -25,6 +26,7 @@
 	scatterbeam = /obj/item/projectile/scatter/stun/weak
 	beamcost = 120
 	firename = "weak stun"
+	heatgen = 5
 
 /obj/item/modularlaser/lasermedium/net
 	name = "entangling beam medium"
@@ -33,6 +35,7 @@
 	scatterbeam = /obj/item/projectile/scatter/energy_net
 	beamcost = 1200 //hefty cost.
 	firename = "energy net"
+	heatgen = 5
 
 /obj/item/modularlaser/lasermedium/electrode
 	name = "electrode projector tube"
@@ -57,14 +60,16 @@
 	scatterbeam = /obj/item/projectile/scatter/laser/weak
 	beamcost = 60
 	firename = "weak laser"
+	heatgen = 5
 
 /obj/item/modularlaser/lasermedium/laser/sniper
 	name = "focused laser beam medium"
 	desc = "Allows a modular energy gun to fire extremely focused laser beams."
 	beamtype = /obj/item/projectile/beam/sniper
-	scatterbeam = /obj/item/projectile/beam/sniper //no shotgun snipers. you can have shotgun cannons though!
+	scatterbeam = /obj/item/projectile/beam/sniper
 	beamcost = 300
 	firename = "focused laser"
+	heatgen = 15
 
 /obj/item/modularlaser/lasermedium/laser/heavy
 	name = "robust beam medium"
@@ -73,6 +78,7 @@
 	scatterbeam = /obj/item/projectile/scatter/laser/heavylaser
 	beamcost = 600
 	firename = "heavy laser"
+	heatgen = 20
 
 /obj/item/modularlaser/lasermedium/laser/cannon
 	name = "uranium-235 excited medium"
@@ -81,6 +87,7 @@
 	scatterbeam = /obj/item/projectile/scatter/laser/heavylaser/cannon
 	beamcost = 800
 	firename = "cannon beam"
+	heatgen = 30
 
 /obj/item/modularlaser/lasermedium/laser/xray
 	name = "xraser beam medium"
@@ -88,6 +95,7 @@
 	beamtype = /obj/item/projectile/beam/gamma
 	scatterbeam = /obj/item/projectile/scatter/gamma
 	firename = "xraser"
+	heatgen = 20
 
 /obj/item/modularlaser/lasermedium/laser/pulse //Badmin only.
 	name = "pulse beam medium"
@@ -104,6 +112,7 @@
 	scatterbeam = /obj/item/projectile/scatter/excavation
 	beamcost = 12
 	firename = "excavate"
+	heatgen = 1
 
 /obj/item/modularlaser/lasermedium/lightning
 	name = "electric beam medium"
@@ -128,3 +137,4 @@
 	scatterbeam = /obj/item/projectile/scatter/phase
 	beamcost = 80
 	firename = "phase"
+	heatgen = 2.5
