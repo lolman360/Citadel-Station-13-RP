@@ -30,8 +30,8 @@
 /obj/item/projectile/scatter/laser
 	damage = 40
 
-	submunition_spread_max = 60
-	submunition_spread_min = 30
+	submunition_spread_max = 75
+	submunition_spread_min = 45
 
 	submunitions = list(
 		/obj/item/projectile/beam = 4
@@ -53,8 +53,8 @@
 
 /obj/item/projectile/scatter/gamma
 	damage = 10
-	submunition_spread_max = 60
-	submunition_spread_min = 30
+	submunition_spread_max = 75
+	submunition_spread_min = 45
 	submunitions = list(
 		/obj/item/projectile/beam/gamma = 3
 		)
@@ -76,8 +76,8 @@
 
 
 /obj/item/projectile/scatter/stun
-	submunition_spread_max = 70
-	submunition_spread_min = 30
+	submunition_spread_max = 90
+	submunition_spread_min = 45
 	submunitions = list(
 		/obj/item/projectile/beam/stun = 4
 		)
@@ -100,32 +100,32 @@
 /obj/item/projectile/scatter/ion
 	damage = 20
 
-	submunition_spread_max = 60
-	submunition_spread_min = 20
+	submunition_spread_max = 75
+	submunition_spread_min = 45
 
 	submunitions = list(
 		/obj/item/projectile/bullet/shotgun/ion = 3
 		)
 
 /obj/item/projectile/scatter/excavation
-	damage = 10
-	submunition_spread_max = 80
-	submunition_spread_min = 40
+	damage = 5
+	submunition_spread_max = 60
+	submunition_spread_min = 30
 	submunitions = list(
-		/obj/item/projectile/beam/excavation = 2
+		/obj/item/projectile/beam/excavation = 5
 		)
 
 /obj/item/projectile/scatter/shock
 	damage = 25
-	submunition_spread_max = 80
-	submunition_spread_min = 20
+	submunition_spread_max = 90
+	submunition_spread_min = 45
 	submunitions = list(
 		/obj/item/projectile/beam/shock = 6
 		)
 
 /obj/item/projectile/scatter/energy_net
-	submunition_spread_max = 80
-	submunition_spread_min = 30
+	submunition_spread_max = 90
+	submunition_spread_min = 45
 	submunitions = list(
 		/obj/item/projectile/beam/energy_net = 2
 		)
@@ -134,8 +134,8 @@
 
 /obj/item/projectile/scatter/phase
 	damage = 5
-	submunition_spread_max = 70
-	submunition_spread_min = 30
+	submunition_spread_max = 90
+	submunition_spread_min = 45
 	submunitions = list(
 		/obj/item/projectile/energy/phase/heavy = 4
 		)

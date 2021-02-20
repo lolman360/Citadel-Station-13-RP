@@ -81,6 +81,7 @@
 		return // If it's not actually in our hands anymore, we were probably gentle with it
 
 	active_hand = (src == user.l_hand) ? BP_L_HAND : BP_R_HAND // May not actually be faster than an if-else block, but a little bit cleaner -Ater
+	//ater why is there code twice for this
 
 	if(prob(75))
 		will_break = TRUE

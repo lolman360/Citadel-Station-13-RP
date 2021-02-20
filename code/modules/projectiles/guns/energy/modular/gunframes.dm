@@ -27,17 +27,20 @@
 	cores = 2
 	icon_state = "mod_rifle"
 	w_class = ITEMSIZE_LARGE
+	heatmax = 150
 
 /obj/item/gun/energy/modular/rifle/tribeam
 	name = "tribeam modular energy rifle"
 	desc = "An advanced modular energy weapon. This rifle has the capability to mount three cores."
 	cores = 3
+	heatmax = 150
 
 /obj/item/gun/energy/modular/compact
 	name = "compact modular energy pistol"
 	desc = "A compact energy pistol that can fit into a pocket. However, only the laser core can be replaced. All the other components are purpose-built for their size and are integrated into the frame."
 	icon_state = "taserblue"
 	w_class = ITEMSIZE_SMALL
+	heatmax = 25
 
 /obj/item/gun/energy/modular/compact/Initialize()
 	..()
@@ -49,6 +52,7 @@
 /obj/item/gun/energy/modular/rifle/scatter
 	name = "modular energy scattergun"
 	desc = "A sophisticated modular energy weapon. This scattergun has the capability to mount two cores, and mounts a complex refracting lens to scatter most shots."
+	heatmax = 150
 
 /obj/item/gun/energy/modular/rifle/scatter/Initialize()
 	..()
@@ -56,17 +60,17 @@
 
 /obj/item/gun/energy/modular/cannon
 	name = "modular energy cannon"
-	desc = "A huge, semi-modular energy cannon. Can mount three cores, and utilizes a robust power handler and circuitry combined with an integral large cell."
+	desc = "A huge, semi-modular energy cannon. Can mount three cores, and utilizes a robust power handler combined with an integral cell twice the size of other frames."
 	cores = 3
 	battery_lock = TRUE
 	cell_type = /obj/item/cell/device/weapon/modcannon
 	icon_state = "mod_cannon"
 	w_class = ITEMSIZE_HUGE
+	heatmax = 250
 
 /obj/item/gun/energy/modular/cannon/Initialize()
 	..()
 	lasercap = new /obj/item/modularlaser/capacitor/cannon(src)
-	circuit = new /obj/item/modularlaser/controller/basic/integral(src)
 
 /obj/item/cell/device/weapon/modcannon
 	charge = 4800
