@@ -163,6 +163,11 @@
 	SA_vulnerability = MOB_CLASS_DEMONIC | MOB_CLASS_ABERRATION
 	holy = TRUE
 
+/obj/item/projectile/bullet/pistol/derringer // maybe useful for the  derringer (and the singleshot disposable pistol). no range (because no barrel) but high damage
+	fire_sound = 'sound/weapons/weaponsounds_heavypistolshot.ogg'
+	damage = 60
+	range = 2
+
 /* shotgun projectiles */
 
 /obj/item/projectile/bullet/shotgun

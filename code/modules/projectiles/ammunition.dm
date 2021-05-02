@@ -85,6 +85,7 @@
 	var/initial_ammo = null
 
 	var/can_remove_ammo = TRUE	// Can this thing have bullets removed one-by-one? As of first implementation, only affects smart magazines
+	var/can_insert_ammo = TRUE //can you put the bullet in the thing
 
 	var/multiple_sprites = 0
 	//because BYOND doesn't support numbers as keys in associative lists
@@ -107,6 +108,9 @@
 	update_icon()
 
 /obj/item/ammo_magazine/attackby(obj/item/W as obj, mob/user as mob)
+	if(!can_insert_ammo)
+		to_chat(user, "<span class='warning'>You can't reload the [src]!</span>")
+		return FALSE
 	if(istype(W, /obj/item/ammo_casing))
 		var/obj/item/ammo_casing/C = W
 		if(C.caliber != caliber)

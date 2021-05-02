@@ -343,7 +343,7 @@
 
 /obj/item/gun/projectile/r9
 	name = "C96-Red 9"
-	desc = "A variation on the Mauser C-96 the first semi firearm ever to be widely adopted by a human military. This version is chambered for 9mm and reloads using Stipper Clips."
+	desc = "A variation on the Mauser C-96, the first semi firearm ever to be widely adopted by a human military. This version is chambered for 9mm and reloads using Stipper Clips."
 	icon_state = "r9"
 	origin_tech = list(TECH_COMBAT = 1, TECH_MATERIAL =1) //VERY OLD
 	caliber = "9mm"
@@ -356,3 +356,72 @@
 	desc = "Ah, the choice of an avid gun collector! It's a nice gun, stranger."
 	ammo_type = /obj/item/ammo_casing/a9mm/silver
 	holy = TRUE
+
+/obj/item/gun/projectile/disposable
+	name = "single-shot pistol"
+	desc = "A pistol that fires from disposable single-shot barrel-cartridge assemblies."
+	icon_state = "dispistol"
+	item_state = "concealed"
+	w_class = ITEMSIZE_SMALL
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+	caliber = "12mm"
+	load_method = MAGAZINE
+	magazine_type = /obj/item/ammo_magazine/m12mm/disposable
+	allowed_magazines = list(/obj/item/ammo_magazine/m12mm/disposable)
+	projectile_type = /obj/item/projectile/bullet/pistol/derringer
+
+/obj/item/gun/projectile/disposable/update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "[initial(icon_state)]"
+	else
+		icon_state = "[initial(icon_state)]-e"
+
+/obj/item/gun/projectile/disposablemag
+	name = "folding pistol"
+	desc = "A pistol that fires from disposable magazines. Folds up for compactness."
+	icon_state = "dispistol"
+	item_state = "concealed"
+	w_class = ITEMSIZE_NORMAL
+	caliber = "12mm"
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+	load_method = MAGAZINE
+	magazine_type = /obj/item/ammo_magazine/m12mm/pistol
+	allowed_magazines = list(/obj/item/ammo_magazine/m12mm/pistol)
+	projectile_type = /obj/item/projectile/bullet/pistol/medium
+	var/folded = FALSE
+
+/obj/item/gun/projectile/disposablemag/examine(mob/user)
+	. = ..()
+	. += "<span class = notice> Alt-click to (un)fold the weapon.</span>"
+
+
+/obj/item/gun/projectile/disposablemag/AltClick(mob/user)
+	if(folded)
+		w_class = ITEMSIZE_NORMAL
+		to_chat(user,"<span class = notice>You unfold the [src].</span>")
+		folded = FALSE
+	else
+		w_class = ITEMSIZE_SMALL
+		to_chat(user,"<span class = notice>You fold the [src].</span>")
+		folded = TRUE
+
+
+/obj/item/gun/projectile/disposablemag/update_icon()
+	..()
+	if(ammo_magazine)
+		if(folded)
+			icon_state = "[initial(icon_state)]-f"
+		else
+			icon_state = "[initial(icon_state)]"
+	else
+		if(folded)
+			icon_state = "[initial(icon_state)]-f-e"
+		else
+			icon_state = "[initial(icon_state)]-e"
+
+/obj/item/gun/projectile/disposablemag/special_check(var/mob/user)
+	if(folded)
+		return FALSE
+	else
+		..()

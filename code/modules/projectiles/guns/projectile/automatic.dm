@@ -510,3 +510,29 @@ obj/item/gun/projectile/automatic/automat/holy
 	else
 		icon_state = "holyshotgun_empty"
 	return
+
+
+
+/obj/item/gun/projectile/automatic/disposablesmg
+	name = "disposable-magazine SMG"
+	desc = "A SMG that fires from disposable magazines. Do not reload."
+	icon_state = "dispistol"
+	item_state = "concealed"
+	w_class = ITEMSIZE_SMALL
+	origin_tech = list(TECH_COMBAT = 2, TECH_MATERIAL = 2, TECH_ILLEGAL = 3)
+	load_method = MAGAZINE
+	caliber = "4.2mm"
+	magazine_type = /obj/item/ammo_magazine/m42mm
+	allowed_magazines = list(/obj/item/ammo_magazine/m42mm)
+	projectile_type = /obj/item/projectile/bullet/pistol/derringer
+
+	firemodes = list(
+		list(mode_name="semiauto",       burst=1, fire_delay=0,    move_delay=null, burst_accuracy=null, dispersion=null),
+		list(mode_name="3-round bursts", burst=3, fire_delay=null, move_delay=6,    burst_accuracy=list(60,50,45), dispersion=list(0.0, 0.6, 0.6)))
+
+/obj/item/gun/projectile/automatic/disposablesmg/update_icon()
+	..()
+	if(ammo_magazine)
+		icon_state = "[initial(icon_state)]"
+	else
+		icon_state = "[initial(icon_state)]-e"

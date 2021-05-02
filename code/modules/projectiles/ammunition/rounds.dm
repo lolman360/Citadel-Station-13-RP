@@ -465,3 +465,18 @@
 	icon_state = "s-casing-spent"
 	BB = null
 	projectile_type = null
+
+//12mm
+/obj/item/ammo_casing/a12mmcaseless
+	desc = "A caseless 12mm cartridge."
+	caliber = "12mm"
+	projectile_type = /obj/item/projectile/bullet/pistol/strong
+	matter = list(DEFAULT_WALL_MATERIAL = 210)
+	caseless = TRUE
+
+/obj/item/ammo_casing/a42mmcaseless
+	desc = "A caseless 4.2mm cartridge."
+	caliber = "4.2mm"
+	projectile_type = /obj/item/projectile/bullet/pistol/medium
+	matter = list(DEFAULT_WALL_MATERIAL = 210)
+	caseless = TRUE

@@ -874,3 +874,37 @@
 	matter = list(DEFAULT_WALL_MATERIAL = 600)
 	max_ammo = 7
 	multiple_sprites = 1
+
+/////// propietary shit bullets//////
+/obj/item/ammo_magazine/m12mm/disposable
+	name = "disposable cartridge-barrel"
+	desc = "A disposable barrel with a caseless 12mm cartridge inside."
+	icon_state = "12"
+	mag_type = MAGAZINE
+	caliber = "12mm"
+	ammo_type = /obj/item/ammo_casing/a12mmcaseless
+	multiple_sprites = 1
+	max_ammo = 1
+	can_insert_ammo = FALSE
+
+/obj/item/ammo_magazine/m42mm
+	name = "disposable 4.2mm magazine"
+	desc = "A disposable SMG magazine loaded with 4.2mm rounds."
+	icon_state = "12"
+	mag_type = MAGAZINE
+	caliber = "4.2mm"
+	ammo_type = /obj/item/ammo_casing/a42mmcaseless
+	multiple_sprites = 1
+	max_ammo = 30
+	can_insert_ammo = FALSE
+
+/obj/item/ammo_magazine/m12mm/pistol
+	name = "disposable 12mm magazine"
+	desc = "A disposable pistol magazine loaded with 12mm rounds."
+	icon_state = "12"
+	mag_type = MAGAZINE
+	caliber = "12mm"
+	ammo_type = /obj/item/ammo_casing/a42mmcaseless
+	multiple_sprites = 1
+	max_ammo = 8
+	can_insert_ammo = FALSE
