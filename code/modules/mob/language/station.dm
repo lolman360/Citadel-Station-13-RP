@@ -282,7 +282,7 @@
 /datum/language/slavic
 	name = LANGUAGE_SLAVIC
 	desc = "Was established in 2122 by the short-lived United Slavic Confederation on Earth."
-	colour = "solcom"
+	colour = "slav"
 	key = "g"
 	syllables = list(
 		"rus", "zem", "ave", "groz", "ski", "ska", "ven", "konst", "pol", "lin", "svy",
