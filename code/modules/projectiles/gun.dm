@@ -38,14 +38,16 @@
 		)
 	icon_state = "detective"
 	item_state = "gun"
+	item_flags = ITEM_ENCUMBERS_WHILE_HELD | ITEM_ENCUMBERS_ONLY_HELD
 	slot_flags = SLOT_BELT|SLOT_HOLSTER
-	matter = list(MAT_STEEL = 2000)
+	materials_base = list(MAT_STEEL = 2000)
 	rad_flags = RAD_BLOCK_CONTENTS
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	throw_force = 5
 	throw_speed = 4
 	throw_range = 5
 	damage_force = 5
+	damage_tier = MELEE_TIER_MEDIUM
 	preserve_item = 1
 	origin_tech = list(TECH_COMBAT = 1)
 	attack_verb = list("struck", "hit", "bashed")
@@ -59,7 +61,9 @@
 	var/fire_sound_text = "gunshot"
 	var/fire_anim = null
 	var/recoil = 0		//screen shake
-	var/silenced = 0
+	var/suppressible = FALSE
+	var/silenced = FALSE
+	var/silenced_icon = null
 	var/muzzle_flash = 3
 	var/accuracy = 65   //Accuracy is measured in percents. +15 accuracy means that everything is effectively one tile closer for the purpose of miss chance, -15 means the opposite. launchers are not supported, at the moment.
 	var/scoped_accuracy = null
@@ -111,6 +115,10 @@
 	var/obj/item/firing_pin/pin = /obj/item/firing_pin
 	var/no_pin_required = 0
 	var/scrambled = 0
+
+	//Gun Malfunction variables
+	var/unstable = 0
+	var/destroyed = 0
 
 /obj/item/gun/CtrlClick(mob/user)
 	if(can_flashlight && ishuman(user) && src.loc == usr && !user.incapacitated(INCAPACITATION_ALL))
@@ -237,17 +245,21 @@
 	. = ..()
 	update_appearance()
 
-/obj/item/gun/afterattack(atom/A, mob/living/user, adjacent, params)
-	if(adjacent) return //A is adjacent, is the user, or is on the user's person
+/obj/item/gun/afterattack(atom/target, mob/living/user, clickchain_flags, list/params)
+	if(clickchain_flags & CLICKCHAIN_HAS_PROXIMITY)
+		return
+	if(!istype(user))
+		return
 
+	var/shitty_legacy_params = list2params(params)
 	if(!user.aiming)
 		user.aiming = new(user)
 
-	if(user && user.client && user.aiming && user.aiming.active && user.aiming.aiming_at != A)
-		PreFire(A,user,params) //They're using the new gun system, locate what they're aiming at.
+	if(user && user.client && user.aiming && user.aiming.active && user.aiming.aiming_at != target)
+		PreFire(target,user,shitty_legacy_params) //They're using the new gun system, locate what they're aiming at.
 		return
 	else
-		Fire(A, user, params) //Otherwise, fire normally.
+		Fire(target, user, shitty_legacy_params) //Otherwise, fire normally.
 		return
 
 /obj/item/gun/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
@@ -377,7 +389,7 @@
 			handle_click_safety(user)
 			return
 
-	if(!user?.client?.is_preference_enabled(/datum/client_preference/help_intent_firing) && user.a_intent == INTENT_HELP)
+	if(!user?.client?.get_preference_toggle(/datum/game_preference_toggle/game/help_intent_firing) && user.a_intent == INTENT_HELP)
 		to_chat(user, SPAN_WARNING("You refrain from firing [src] because your intent is set to help!"))
 		return
 
@@ -554,7 +566,7 @@
 		for(var/mob/living/L in oview(2,user))
 			if(L.stat)
 				continue
-			if(L.blinded)
+			if(L.has_status_effect(/datum/status_effect/sight/blindness))
 				to_chat(L, "You hear a [fire_sound_text]!")
 				continue
 			to_chat(L, 	"<span class='danger'>\The [user] fires \the [src][pointblank ? " point blank at \the [target]":""][reflex ? " by reflex":""]!</span>")
@@ -746,7 +758,7 @@
 		accuracy = initial(accuracy)
 		recoil = initial(recoil)
 
-/obj/item/gun/examine(mob/user)
+/obj/item/gun/examine(mob/user, dist)
 	. = ..()
 	if(!no_pin_required)
 		if(pin)
@@ -823,7 +835,7 @@
 
 /obj/item/gun/verb/toggle_safety_verb()
 	set src in usr
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set name = "Toggle Gun Safety"
 
 	if(usr == loc)

@@ -57,7 +57,6 @@
 	qdel(src)
 
 /mob/proc/death(gibbed, deathmessage = "seizes up and falls limp...")
-
 	if(stat == DEAD)
 		return 0
 	if(istype(loc, /obj/belly) || istype(loc, /obj/item/dogborg/sleeper))
@@ -67,8 +66,10 @@
 	if(!gibbed && deathmessage != "no message") // This is gross, but reliable. Only brains use it.
 		visible_message("<b>[src]</b> [deathmessage]")
 
+	SSplaytime.queue_playtimes(client)
 	set_stat(DEAD)
 
+	update_ssd_overlay()
 	update_mobility()
 
 	dizziness = 0

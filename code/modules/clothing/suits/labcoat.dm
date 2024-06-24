@@ -7,8 +7,9 @@
 	blood_overlay_type = "coat"
 	body_cover_flags = UPPER_TORSO|ARMS
 	inv_hide_flags = HIDEHOLSTER
-	allowed = list(/obj/item/analyzer,/obj/item/stack/medical,/obj/item/dnainjector,/obj/item/reagent_containers/dropper,/obj/item/reagent_containers/syringe,/obj/item/reagent_containers/hypospray,/obj/item/healthanalyzer,/obj/item/flashlight/pen,/obj/item/reagent_containers/glass/bottle,/obj/item/reagent_containers/glass/beaker,/obj/item/reagent_containers/pill,/obj/item/storage/pill_bottle,/obj/item/paper)
+	allowed = list(/obj/item/atmos_analyzer,/obj/item/stack/medical,/obj/item/dnainjector,/obj/item/reagent_containers/dropper,/obj/item/reagent_containers/syringe,/obj/item/reagent_containers/hypospray,/obj/item/healthanalyzer,/obj/item/flashlight/pen,/obj/item/reagent_containers/glass/bottle,/obj/item/reagent_containers/glass/beaker,/obj/item/reagent_containers/pill,/obj/item/storage/pill_bottle,/obj/item/paper)
 	armor_type = /datum/armor/suit/labcoat
+	worn_render_flags = WORN_RENDER_SLOT_ONE_FOR_ALL
 
 /obj/item/clothing/suit/storage/toggle/labcoat/green
 	name = "green labcoat"
@@ -98,7 +99,6 @@
 /obj/item/clothing/suit/storage/toggle/labcoat/rd
 	name = "Research Director's labcoat"
 	desc = "A flashy labcoat with purple markings. It belongs to the Research Director."
-	icon = 'icons/obj/clothing/suits.dmi'
 	icon_state = "labcoat_rd"
 	item_state_slots = list(SLOT_ID_RIGHT_HAND = "science_labcoat", SLOT_ID_LEFT_HAND = "science_labcoat")
 
@@ -115,4 +115,9 @@
 /obj/item/clothing/suit/storage/toggle/labcoat/blue
 	name = "blue-edged labcoat"
 	desc = "A suit that protects against minor chemical spills. This one has blue trim."
-	icon_state = "blue_edge_labcoat"
+	icon_state = "labcoat_gen"
+
+/obj/item/clothing/suit/storage/toggle/labcoat/ossnecro
+	name = "OSS&NECRO Labcoat"
+	desc = "A flashy labcoat with cyan markings. This one is often provided to OSS&NECRO employees as standard equipement. Isn't it similar to the one that the Research Director has?"
+	icon_state = "labcoat_ossnecro"

@@ -22,7 +22,7 @@ GLOBAL_LIST_EMPTY(all_cataloguers)
 	scanned again."
 	icon = 'icons/obj/device.dmi'
 	icon_state = "cataloguer"
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	origin_tech = list(TECH_MATERIAL = 2, TECH_DATA = 3, TECH_MAGNET = 3)
 	damage_force = 0
 	var/points_stored = 0 // Amount of 'exploration points' this device holds.
@@ -69,7 +69,7 @@ GLOBAL_LIST_EMPTY(all_cataloguers)
 	else
 		icon_state = initial(icon_state)
 
-/obj/item/cataloguer/afterattack(atom/target, mob/user, proximity_flag)
+/obj/item/cataloguer/afterattack(atom/target, mob/user, clickchain_flags, list/params)
 	// Things that invalidate the scan immediately.
 	if(busy)
 		to_chat(user, SPAN_WARNING( "\The [src] is already scanning something."))

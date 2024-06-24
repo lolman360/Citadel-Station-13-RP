@@ -1,7 +1,7 @@
 /datum/supply_pack/chemical_dispenser
 	name = "Reagent dispenser (Empty)"
 	contains = list(
-			/obj/machinery/chemical_dispenser/unanchored
+			/obj/item/circuitboard/machine/chemical_dispenser
 		)
 	cost = 10
 	container_type = /obj/structure/largecrate
@@ -26,6 +26,16 @@
 	cost = 20
 	container_type = /obj/structure/largecrate
 	container_name = "soda dispenser crate"
+	group = "Reagents"
+
+/datum/supply_pack/coffee_dispenser
+	name = "Coffee dispenser"
+	contains = list(
+			/obj/machinery/chemical_dispenser/catering/bar_coffee/unanchored
+		)
+	cost = 20
+	container_type = /obj/structure/largecrate
+	container_name = "coffee dispenser crate"
 	group = "Reagents"
 
 /datum/supply_pack/reagent_synth_chemistry

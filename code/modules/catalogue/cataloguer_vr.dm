@@ -18,7 +18,7 @@
 
 /obj/item/cataloguer/compact/verb/toggle()
 	set name = "Toggle Cataloguer"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set src in usr
 
 	if(busy)
@@ -26,11 +26,11 @@
 		return
 	deployed = !(deployed)
 	if(deployed)
-		w_class = ITEMSIZE_NORMAL
+		set_weight_class(WEIGHT_CLASS_NORMAL)
 		icon_state = "[initial(icon_state)]"
 		to_chat(usr, SPAN_NOTICE("You flip open \the [src]."))
 	else
-		w_class = ITEMSIZE_SMALL
+		set_weight_class(WEIGHT_CLASS_SMALL)
 		icon_state = "[initial(icon_state)]_closed"
 		to_chat(usr, SPAN_NOTICE("You close \the [src]."))
 
@@ -38,7 +38,7 @@
 		var/mob/M = usr
 		M.update_action_buttons()
 
-/obj/item/cataloguer/compact/afterattack(atom/target, mob/user, proximity_flag)
+/obj/item/cataloguer/compact/afterattack(atom/target, mob/user, clickchain_flags, list/params)
 	if(!deployed)
 		to_chat(user, SPAN_WARNING( "\The [src] is closed."))
 		return

@@ -18,7 +18,7 @@
 	complexity = number_of_pins
 	. = ..()
 
-/obj/item/integrated_circuit/memory/examine(mob/user)
+/obj/item/integrated_circuit/memory/examine(mob/user, dist)
 	. = ..()
 	var/i
 	for(i = 1, i <= outputs.len, i++)
@@ -66,7 +66,7 @@
 	name = "large memory stick"
 	desc = "This stick of memory can hold up up to sixteen pieces of data."
 	icon_state = "memory16"
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	spawn_flags = IC_SPAWN_RESEARCH
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_DATA = 4)
 	power_draw_per_use = 8
@@ -117,8 +117,8 @@
 			O.data = null
 			to_chat(user, "<span class='notice'>You set \the [src]'s memory to absolutely nothing.</span>")
 
-/obj/item/integrated_circuit/memory/constant/afterattack(atom/target, mob/living/user, proximity)
-	if(accepting_refs && proximity)
+/obj/item/integrated_circuit/memory/constant/afterattack(atom/target, mob/user, clickchain_flags, list/params)
+	if(accepting_refs && (clickchain_flags & CLICKCHAIN_HAS_PROXIMITY))
 		var/datum/integrated_io/O = outputs[1]
 		O.data = WEAKREF(target)
 		visible_message("<span class='notice'>[user] slides \a [src]'s over \the [target].</span>")

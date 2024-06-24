@@ -3,7 +3,7 @@
 	desc = "A cube of shining metal, four inches to a side and covered in shallow grooves."
 	icon = 'icons/obj/assemblies.dmi'
 	icon_state = "posibrain"
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	origin_tech = list(TECH_ENGINEERING = 4, TECH_MATERIAL = 4, TECH_BLUESPACE = 2, TECH_DATA = 4)
 	req_access = list(ACCESS_SCIENCE_ROBOTICS)
 
@@ -121,7 +121,7 @@
 		M.show_message("<font color=#4F49AF>The positronic brain buzzes and beeps, and the golden lights fade away. Perhaps you could try again?</font>")
 	playsound(src, 'sound/misc/buzzbeep.ogg', 50, 1)
 
-/obj/item/mmi/digital/posibrain/examine(mob/user)
+/obj/item/mmi/digital/posibrain/examine(mob/user, dist)
 	. = ..()
 	if(brainmob?.key)
 		switch(brainmob.stat)

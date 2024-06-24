@@ -148,7 +148,7 @@
 	if(istype(W, /obj/item/tank) && !machine_stat)
 		to_chat(user, SPAN_WARNING("Please open the maintenance hatch first."))
 
-/obj/machinery/oxygen_pump/examine(mob/user)
+/obj/machinery/oxygen_pump/examine(mob/user, dist)
 	. = ..()
 	if(tank)
 		. += SPAN_NOTICE("The meter shows [round(tank.air_contents.return_pressure())] kPa.")
@@ -173,7 +173,7 @@
 //Create rightclick to view tank settings
 /obj/machinery/oxygen_pump/verb/settings()
 	set src in oview(1)
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set name = "Show Tank Settings"
 	nano_ui_interact(usr)
 

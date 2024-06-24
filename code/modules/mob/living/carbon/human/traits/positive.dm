@@ -3,19 +3,6 @@
 	desc = "Allows you to move faster on average than baseline."
 	cost = 2
 	var_changes = list("slowdown" = -0.2)
-	excludes = list(/datum/trait/positive/hardy, /datum/trait/positive/hardy_plus)
-
-/datum/trait/positive/hardy
-	name = "Hardy"
-	desc = "Allows you to carry heavy equipment with less slowdown."
-	cost = 1
-	var_changes = list("item_slowdown_mod" = 0.5)
-
-/datum/trait/positive/hardy_plus
-	name = "Major Hardy"
-	desc = "Allows you to carry heavy equipment with almost no slowdown."
-	cost = 2
-	var_changes = list("item_slowdown_mod" = 0.25)
 
 /datum/trait/positive/endurance_plus
 	name = "Better Endurance"
@@ -45,29 +32,25 @@
 	cost = 3 //Let us not forget this effects tasers!
 	var_changes = list("siemens_coefficient" = 0.5)
 
-/datum/trait/positive/darksight
-	name = "Darksight"
-	desc = "Allows you to see a short distance in the dark, also makes you more vulnerable to flashes."
-	cost = 1
-	var_changes = list("darksight" = 3, "flash_mod" = 2.0)
-
-/datum/trait/positive/darksight_plus
-	name = "Major Darksight"
-	desc = "Allows you to see great distances in the dark, also makes you extremely vulnerable to flashes."
-	cost = 2
-	var_changes = list("darksight" = 7, "flash_mod" = 3.0)
-
 /datum/trait/positive/melee_attack
 	name = "Sharp Melee"
-	desc = "Provides sharp melee attacks that do slightly more damage."
+	desc = "Provides sharp melee attacks that do more damage."
 	cost = 1
-	var_changes = list("unarmed_types" = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp))
+	var_changes = list("unarmed_types" = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws/good, /datum/unarmed_attack/bite/sharp/good))
+
+/datum/trait/positive/melee_attack/apply(var/datum/species/S,var/mob/living/carbon/human/H)
+	..(S,H)
+	S.update_attack_types()
 
 /datum/trait/positive/melee_attack_fangs
-	name = "Sharp Melee & Numbing Fangs"
-	desc = "Provides sharp melee attacks that do slightly more damage, along with fangs that makes the person bit unable to feel their body or pain."
+	name = "Sharp Melee & Venomous Fangs"
+	desc = "Provides sharp melee attacks that do more damage, along with venomous fangs."
 	cost = 2
-	var_changes = list("unarmed_types" = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws, /datum/unarmed_attack/bite/sharp, /datum/unarmed_attack/bite/sharp/numbing))
+	var_changes = list("unarmed_types" = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/claws/good/venom, /datum/unarmed_attack/bite/sharp/good/venom))
+
+/datum/trait/positive/melee_attack_fangs/apply(var/datum/species/S,var/mob/living/carbon/human/H)
+	..(S,H)
+	S.update_attack_types()
 
 /datum/trait/positive/minor_brute_resist
 	name = "Minor Brute Resist"
@@ -159,7 +142,6 @@
 /datum/trait/positive/winged_flight/apply(var/datum/species/S,var/mob/living/carbon/human/H)
 	..(S,H)
 	add_verb(H, /mob/living/proc/flying_toggle)
-	add_verb(H, /mob/living/proc/start_wings_hovering)
 
 /datum/trait/positive/hardfeet
 	name = "Hard Feet"

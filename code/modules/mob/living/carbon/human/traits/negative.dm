@@ -10,18 +10,6 @@
 	cost = -3
 	var_changes = list("slowdown" = 1.0)
 
-/datum/trait/negative/weakling
-	name = "Weakling"
-	desc = "Causes heavy equipment to slow you down more when carried."
-	cost = -1
-	var_changes = list("item_slowdown_mod" = 1.5)
-
-/datum/trait/negative/weakling_plus
-	name = "Major Weakling"
-	desc = "Allows you to carry heavy equipment with much more slowdown."
-	cost = -2
-	var_changes = list("item_slowdown_mod" = 2.0)
-
 /datum/trait/negative/endurance_low
 	name = "Low Endurance"
 	desc = "Reduces your maximum total hitpoints to 75."
@@ -152,6 +140,7 @@
 	name = "Colorblindness (Monochromancy)"
 	desc = "You simply can't see colors at all, period. You are 100% colorblind."
 	cost = -1
+	custom_only = FALSE
 
 /datum/trait/negative/colorblind/mono/apply(var/datum/species/S,var/mob/living/carbon/human/H)
 	..(S,H)
@@ -193,18 +182,21 @@
 	name = "Blind"
 	desc = "You're blind. Permanently."
 	cost = -3
-	traits = list(
-		TRAIT_BLIND
-	)
+	custom_only = FALSE
 	excludes = list(
 		/datum/trait/negative/deaf
 	)
+
+/datum/trait/negative/blind/apply(var/datum/species/S,var/mob/living/carbon/human/H)
+	.=..()
+	H.add_blindness_source(TRAIT_BLINDNESS_NEGATIV)
 
 // todo: use it as a disability to vocal ears? organs? same as above? please?
 /datum/trait/negative/deaf
 	name = "Deaf"
 	desc = "You're deaf. Permanently."
 	cost = -2
+	custom_only = FALSE
 	traits = list(
 		TRAIT_DEAF
 	)
@@ -221,6 +213,7 @@
 	name = "Mute"
 	desc = "You're mute. Permanently."
 	cost = 0			// TTS bypasses this instantly, no powergaming mute ass explo characters
+	custom_only = FALSE
 	traits = list(
 		TRAIT_MUTE
 	)

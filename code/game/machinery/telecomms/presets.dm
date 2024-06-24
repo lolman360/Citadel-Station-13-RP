@@ -199,7 +199,7 @@
 	freq_listening = list(SEC_FREQ)
 	autolinkers = list("security")
 
-/obj/machinery/telecomms/server/presets/centcomm
+/obj/machinery/telecomms/server/presets/centcom
 	id = "CentCom Server"
 	freq_listening = list(ERT_FREQ, DTH_FREQ, SYND_FREQ)
 	produces_heat = 0
@@ -220,3 +220,12 @@
 	network = "tcommsat"
 	produces_heat = 0
 	autolinkers = list("broadcasterCent")
+
+
+/obj/item/multitool/nt_buffered
+	name = "pre-linked multitool (hub)"
+	desc = "This multitool has already been linked to the NT telecomms hub aboard your vessel and can be used to configure one (1) relay."
+
+/obj/item/multitool/nt_buffered/Initialize(mapload)
+	. = ..()
+	buffer = locate(/obj/machinery/telecomms/hub/preset)

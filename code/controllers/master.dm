@@ -30,9 +30,6 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	/// Are we initialized?
 	var/initialized = FALSE
 
-	/// Are we loading in a new map?
-	var/map_loading = FALSE
-
 	/// world.time of last fire, for tracking lag outside of the mc.
 	var/last_run
 
@@ -107,7 +104,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 			qdel(Master)
 		else
 			var/list/subsytem_types = subtypesof(/datum/controller/subsystem)
-			tim_sort(subsytem_types, /proc/cmp_subsystem_init)
+			tim_sort(subsytem_types, GLOBAL_PROC_REF(cmp_subsystem_init))
 			for(var/I in subsytem_types)
 				var/datum/controller/subsystem/S = new I
 				_subsystems += S
@@ -142,7 +139,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 /datum/controller/master/Shutdown()
 	processing = FALSE
-	tim_sort(subsystems, /proc/cmp_subsystem_init)
+	tim_sort(subsystems, GLOBAL_PROC_REF(cmp_subsystem_init))
 	reverseRange(subsystems)
 	for(var/datum/controller/subsystem/ss in subsystems)
 		log_world("Shutting down [ss.name] subsystem...")
@@ -245,7 +242,7 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	to_chat(world, SPAN_BOLDANNOUNCE("Initializing subsystems..."))
 
 	// Sort subsystems by init_order, so they initialize in the correct order.
-	tim_sort(subsystems, /proc/cmp_subsystem_init)
+	tim_sort(subsystems, GLOBAL_PROC_REF(cmp_subsystem_init))
 
 	var/start_timeofday = REALTIMEOFDAY
 	// Initialize subsystems.
@@ -268,14 +265,14 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 		SetRunLevel(RUNLEVEL_LOBBY)
 
 	// Sort subsystems by display setting for easy access.
-	tim_sort(subsystems, /proc/cmp_subsystem_display)
+	tim_sort(subsystems, GLOBAL_PROC_REF(cmp_subsystem_display))
 
 	if(world.system_type == MS_WINDOWS && CONFIG_GET(flag/toast_notification_on_init) && !length(GLOB.clients))
 		world.shelleo("start /min powershell -ExecutionPolicy Bypass -File tools/initToast/initToast.ps1 -name \"[world.name]\" -icon %CD%\\icons\\CS13_16.png -port [world.port]")
 
 	// Set world options.
 
-	world.fps = config_legacy.fps
+	world.set_fps(config_legacy.fps)
 
 	var/initialized_tod = REALTIMEOFDAY
 	if(sleep_offline_after_initializations)
@@ -378,9 +375,9 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 	 * These sort by lower priorities first to reduce the number of loops needed to add subsequent SS's to the queue.
 	 * (higher subsystems will be sooner in the queue, adding them later in the loop means we don't have to loop thru them next queue add)
 	 */
-	tim_sort(SStickersubsystems, /proc/cmp_subsystem_priority)
+	tim_sort(SStickersubsystems, GLOBAL_PROC_REF(cmp_subsystem_priority))
 	for(var/I in runlevel_sorted_subsystems)
-		tim_sort(I, /proc/cmp_subsystem_priority)
+		tim_sort(I, GLOBAL_PROC_REF(cmp_subsystem_priority))
 		I += SStickersubsystems
 
 	var/cached_runlevel = current_runlevel
@@ -732,23 +729,18 @@ GLOBAL_REAL(Master, /datum/controller/master) = new
 
 
 /datum/controller/master/StartLoadingMap()
-	// Disallow more than one map to load at once, multithreading it will just cause race conditions.
-	while(map_loading)
-		stoplag()
-
+	// todo: this is kind of awful because this procs every subsystem unnecessarily
+	//       you might say this is microoptimizations but this is called a seriously high number of times during a load.
 	for(var/S in subsystems)
 		var/datum/controller/subsystem/SS = S
 		SS.StartLoadingMap()
 
-	map_loading = TRUE
-
-
 /datum/controller/master/StopLoadingMap(bounds)
-	map_loading = FALSE
+	// todo: this is kind of awful because this procs every subsystem unnecessarily
+	//       you might say this is microoptimizations but this is called a seriously high number of times during a load.
 	for(var/S in subsystems)
 		var/datum/controller/subsystem/SS = S
 		SS.StopLoadingMap()
-
 
 /*
 /datum/controller/master/proc/UpdateTickRate()

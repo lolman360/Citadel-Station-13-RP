@@ -24,7 +24,7 @@
 	icon_state = "paper"
 	item_state = "paper"
 	throw_force = 0
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	throw_range = 1
 	throw_speed = 1
 	plane = MOB_PLANE
@@ -73,7 +73,7 @@
 	if(info != initial(info))
 		info = html_encode(info)
 		info = replacetext(info, "\n", "<BR>")
-		INVOKE_ASYNC(src, .proc/init_parsepencode, info)
+		INVOKE_ASYNC(src, PROC_REF(init_parsepencode), info)
 	else
 		// TODO: REFACTOR PAPER
 		spawn(0)
@@ -95,7 +95,7 @@
 
 	free_space -= length(strip_html_properly(new_text))
 
-/obj/item/paper/examine(mob/user)
+/obj/item/paper/examine(mob/user, dist)
 	. = ..()
 	if(in_range(user, src) || istype(user, /mob/observer/dead))
 		show_content(usr)
@@ -113,7 +113,7 @@
 
 /obj/item/paper/verb/rename()
 	set name = "Rename paper"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set src in usr
 
 	if((MUTATION_CLUMSY in usr.mutations) && prob(50))
@@ -299,7 +299,7 @@
 		t = replacetext(t, "\[logo\]", "<img src = ntlogo.png>")
 		t = replacetext(t, "\[sglogo\]", "<img src = sglogo.png>")
 
-		t = "<font face=\"[deffont]\" color=[P ? P.colour : "black"]>[t]</font>"
+		t = "<font face=\"[deffont]\" color=[P ? P.pen_color : "black"]>[t]</font>"
 	else // If it is a crayon, and he still tries to use these, make them empty!
 		t = replacetext(t, "\[*\]", "")
 		t = replacetext(t, "\[hr\]", "")
@@ -314,7 +314,7 @@
 		t = replacetext(t, "\[logo\]", "")
 		t = replacetext(t, "\[sglogo\]", "")
 
-		t = "<font face=\"[crayonfont]\" color=[P ? P.colour : "black"]><b>[t]</b></font>"
+		t = "<font face=\"[crayonfont]\" color=[P ? P.pen_color : "black"]><b>[t]</b></font>"
 
 
 //	t = replacetext(t, "#", "") // Junk converted to nothing!
@@ -375,9 +375,9 @@
 		var/iscrayon = 0
 		if(!istype(i, /obj/item/pen))
 			var/mob/living/M = usr
-			if(istype(M) && M.back && istype(M.back,/obj/item/rig))
-				var/obj/item/rig/r = M.back
-				var/obj/item/rig_module/device/pen/m = locate(/obj/item/rig_module/device/pen) in r.installed_modules
+			if(istype(M) && M.back && istype(M.back,/obj/item/hardsuit))
+				var/obj/item/hardsuit/r = M.back
+				var/obj/item/hardsuit_module/device/pen/m = locate(/obj/item/hardsuit_module/device/pen) in r.installed_modules
 				if(r.is_online() && m)
 					i = m.device
 				else
@@ -487,7 +487,7 @@
 		var/image/stampoverlay = image('icons/obj/bureaucracy.dmi')
 		var/x
 		var/y
-		if(istype(P, /obj/item/stamp/captain) || istype(P, /obj/item/stamp/centcomm))
+		if(istype(P, /obj/item/stamp/captain) || istype(P, /obj/item/stamp/centcom))
 			x = rand(-2, 0)
 			y = rand(-1, 2)
 		else
@@ -586,6 +586,10 @@
 /obj/item/paper/particle_info
 	name = "Particle Control Panel - A Troubleshooter's Guide"
 	info = "If the Particle Control panel is not responding to inputs, simply toggle power to equipment and/or flip the breaker on your local Area Power Controller (APC). Turn the power off, and then back on again. This will resolve the issue."
+
+/obj/item/paper/armory_info
+	name = "IMPORTANT: Armory SOP Update"
+	info = "Please review armory policies on your terminal at: https://citadel-station.net/wikiRP/index.php?title=SoP:_Security#Armory -Note that security officers now require a permit form as well as an equipment request form for longarm (two handed) weapons, stated here: https://citadel-station.net/wikiRP/index.php?title=SoP:_Security#Security Armory paperwork forms 4705 through 4708 can be found here: https://citadel-station.net/wikiRP/index.php?title=Guide:_Paperwork#Armory_Inventory"
 
 //Lava Land Colony Notes
 /obj/item/paper/lavaland

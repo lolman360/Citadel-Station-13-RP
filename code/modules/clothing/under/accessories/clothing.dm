@@ -55,7 +55,7 @@
 	slot_flags = SLOT_OCLOTHING | SLOT_TIE
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO|ARMS|LEGS
 	siemens_coefficient = 0.9
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot = ACCESSORY_SLOT_OVER
 
 /obj/item/clothing/accessory/poncho/equipped(mob/user, slot, flags) //Solution for race-specific sprites for an accessory which is also a suit. Suit icons break if you don't use icon override which then also overrides race-specific sprites.
@@ -96,7 +96,7 @@
 
 /obj/item/clothing/accessory/poncho/roles/security
 	name = "security poncho"
-	desc = "A simple, comfortable cloak without sleeves. This one is black and red, standard NanoTrasen Security colors."
+	desc = "A simple, comfortable cloak without sleeves. This one is black and red, standard Nanotrasen Security colors."
 	icon_state = "secponcho"
 	item_state = "secponcho"
 
@@ -114,7 +114,7 @@
 
 /obj/item/clothing/accessory/poncho/roles/science
 	name = "science poncho"
-	desc = "A simple, comfortable cloak without sleeves. This one is white with purple trim, standard NanoTrasen Science colors."
+	desc = "A simple, comfortable cloak without sleeves. This one is white with purple trim, standard Nanotrasen Science colors."
 	icon_state = "sciponcho"
 	item_state = "sciponcho"
 
@@ -164,6 +164,40 @@
 /obj/item/clothing/accessory/poncho/rough_cloak_torn/tan
 	icon_state = "rough_torn_cloak_brown"
 	item_state = "rough_torn_cloak_brown"
+
+/obj/item/clothing/accessory/replika
+	name = "generic"
+	desc = "generic"
+	icon = 'icons/obj/clothing/suits.dmi'
+	icon_state = "klbr"
+	icon_override = 'icons/mob/clothing/suits.dmi'
+	item_state_slots = list(SLOT_ID_RIGHT_HAND = "armor", SLOT_ID_LEFT_HAND = "armor")
+	allowed = list(/obj/item/gun/ballistic/sec/flash, /obj/item/gun/energy,/obj/item/reagent_containers/spray/pepper,/obj/item/gun/ballistic,/obj/item/ammo_magazine,/obj/item/ammo_casing,/obj/item/melee/baton,/obj/item/handcuffs,/obj/item/flashlight/maglight,/obj/item/clothing/head/helmet)
+	slot_flags = SLOT_OCLOTHING | SLOT_TIE
+	body_cover_flags = UPPER_TORSO|ARMS
+	siemens_coefficient = 0.9
+	w_class = WEIGHT_CLASS_NORMAL
+	slot = ACCESSORY_SLOT_OVER
+
+/obj/item/clothing/accessory/replika/klbr
+	name = "controller replikant chestplate"
+	desc = "A sloped titanium-composite chest plate fitted for use by 2nd generation biosynthetics. The right shoulder has been painted an imposing shade of red."
+	icon_state = "klbr"
+
+/obj/item/clothing/accessory/replika/lstr
+	name = "combat-engineer replikant chestplate"
+	desc = "A sloped titanium-composite chest plate fitted for use by 2nd generation biosynthetics. This plain-white version is a staple of SbRD's combat-engineer replikants."
+	icon_state = "lstr"
+
+/obj/item/clothing/accessory/replika/stcr
+	name = "security-controller replikant chestplate"
+	desc = "A sloped titanium-composite chest plate fitted for use by 2nd generation biosynthetics. This version sports multiple red adjustable straps and a lack of shoulder pads."
+	icon_state = "stcr"
+
+/obj/item/clothing/accessory/replika/star
+	name = "security-technician replikant chestplate"
+	desc = "A sloped titanium-composite chest plate with a matte black finish, fitted for use by 2nd generation biosynthetics. Comes with red adjustable straps."
+	icon_state = "star"
 
 //Just a little extra aesthetic for Goliath armor.
 /obj/item/clothing/accessory/poncho/rough_cloak/ashlander
@@ -303,7 +337,7 @@
 	slot_flags = SLOT_OCLOTHING | SLOT_TIE
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO
 	siemens_coefficient = 0.9
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot = ACCESSORY_SLOT_OVER
 
 /obj/item/clothing/accessory/hawaii/red
@@ -330,7 +364,7 @@
 	slot_flags = SLOT_OCLOTHING | SLOT_TIE
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO
 	siemens_coefficient = 0.9
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot = ACCESSORY_SLOT_OVER
 
 /obj/item/clothing/accessory/wcoat/red
@@ -382,7 +416,7 @@
 	slot_flags = SLOT_OCLOTHING | SLOT_TIE
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO
 	siemens_coefficient = 0.9
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot = ACCESSORY_SLOT_DECOR
 
 /obj/item/clothing/accessory/buttonup/untucked
@@ -400,7 +434,7 @@
 	slot_flags = SLOT_OCLOTHING | SLOT_TIE
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO|ARMS
 	siemens_coefficient = 0.9
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot = ACCESSORY_SLOT_OVER
 
 	sprite_sheets = list(
@@ -499,6 +533,16 @@
 	desc = "A plush sweater that doesn't cover the shoulders."
 	icon_state = "sweater_shoulderless"
 
+/obj/item/clothing/accessory/sweater/cropped
+	name = "Cropped Sweater Male"
+	desc = "A comfy, warm sweater that has been slashed at the midriff, making it hardly warm or comfy, but quite rousing."
+	icon_state = "sweater_cropped_f"
+
+/obj/item/clothing/accessory/sweater/cropped/female
+	name = "Cropped Sweater Female"
+	desc = "A comfy, warm sweater that has been slashed at the midriff, making it hardly warm or comfy, but quite rousing. Comes with extra chest space."
+	icon_state = "sweater_cropped_m"
+
 /obj/item/clothing/accessory/sweater/star
 	name = "Star Sweater"
 	desc = "A white long sweater with a big yellow star at the chest. It seems like it's made of a soft material."
@@ -508,6 +552,16 @@
 	name = "Virgin Killer Sweater"
 	desc = "A white long sweater with a modest string to keep the otherwise immodest front piece from falling off. Compatible with a variety of chest sizes. It seems like it's made of a soft material."
 	icon_state = "virgin_sweater"
+
+/obj/item/clothing/accessory/sweater/milk
+	name = "Mega Milk sweater (f)"
+	desc = "A white shirt with blue sleeves. The words 'Mega Milk' have been written in black around the chest area. The shirt itself is quite well-fitting, accentuating the curves, with additional material to fit the wearer's chest."
+	icon_state = "milk_sweater_f"
+
+/obj/item/clothing/accessory/sweater/milk/male
+	name = "Mega Milk sweater (m)"
+	desc = "A white shirt with blue sleeves. The words 'Mega Milk' have been written in black around the chest area. The shirt itself is quite well-fitting, accentuating the curves."
+	icon_state = "milk_sweater_m"
 
 //***
 // End of sweaters
@@ -553,6 +607,36 @@
 	icon_state = "antediluvian"
 	//body_cover_flags = HANDS|ARMS
 
+/obj/item/clothing/accessory/antediluvian_gloves/alt
+	name = "Antediluvian bracers alternative"
+	desc = "Short metallic bracers worked out of a dark metal and inlaid with gold. They appear to have been ceremonial, as all surviving models offer negligible protection. These have a single finger covered in fabric. It isn't fluid proof."
+	icon_state = "ante_hands"
+
+/obj/item/clothing/accessory/antediluvian_socks
+	name = "Antediluvian Legguards"
+	desc = "Thigh-length leg-sleeves with a metalic sheen and a golden pattern. Despite the apparent stiffness, they're quite flexible, and have freed toes for maneuverability."
+	icon_state = "ante_socks"
+
+/obj/item/clothing/accessory/antediluvian_stirrups
+	name = "Antediluvian Stirrups"
+	desc = "Thigh-length socks with a metalic sheen and a golden pattern. Despite the apparent stiffness, they're quite flexible, and have freed toes for nefarious purposes. Or flexibility."
+	icon_state = "ante_stirrup"
+
+/obj/item/clothing/accessory/antediluvian_sideskirt
+	name = "Antediluvian Sideskirt"
+	desc = "A simple patch of cloth with golden clasps, meant to cover the thigh of one leg."
+	icon_state = "ante_sideskirt"
+
+/obj/item/clothing/accessory/antediluvian_necklace
+	name = "Antediluvian Necklace"
+	desc = "A golden cross-necklace. Looks old, and had since lost its meaning."
+	icon_state = "ante_neck"
+
+/obj/item/clothing/accessory/antediluvian_flaps
+	name = "Antediluvian Flaps"
+	desc = "A pair of long extensions attachable around the hips. Made out of stiff, yet flappy enough material to make the wearer appear to make elegant patterns. Or to flop around like the end of a fish-tail. Not for the bottom-endowed."
+	icon_state = "ante_flaps"
+
 /obj/item/clothing/accessory/mekkyaku
 	name = "Mekkyaku turtleneck"
 	desc = "A sleek black turtleneck sweater with a bright red stripe knit into the fabric."
@@ -591,3 +675,71 @@
 	desc = "A dark, angled coat meant to protect you from dust, sands and other grime. This one is white."
 	icon_state = "terrandress_comm"
 	item_state = "terrandress_comm"
+
+/obj/item/clothing/accessory/legwarmers
+	name = "thigh-length legwarmers"
+	desc = "A comfy pair of legwarmers. These are excessively long."
+	icon_state = "legwarmers_thigh"
+
+/obj/item/clothing/accessory/legwarmersmedium
+	name = "medium-length legwarmers"
+	desc = "A comfy pair of legwarmers. For those unfortunate enough to wear shorts in the cold."
+	icon_state = "legwarmers_medium"
+
+/obj/item/clothing/accessory/legwarmersshort
+	name = "short legwarmers"
+	desc = "A comfy pair of legwarmers. For those better in the cold than others."
+	icon_state = "legwarmers_short"
+
+/obj/item/clothing/accessory/ante_armband
+	name = "antediluvian armband"
+	desc = "A small, fake blue gem placed neatly into an otherwise cloth armband with thin metal outlines."
+	icon_state = "ante_armband"
+
+// ranger ponchos
+
+/obj/item/clothing/accessory/poncho/roles/ranger
+	name = "red ranger poncho"
+	desc = "A rugged all-weather poncho, perfectly coloured to match a popular line of neck gaiters. You could probably use it as a tent in a pinch!"
+	icon_state = "rangerponcho_red"
+	item_state = "rangerponcho_red"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/tan
+	name = "tan ranger poncho"
+	icon_state = "rangerponcho_tan"
+	item_state = "rangerponcho_tan"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/gray
+	name = "gray ranger poncho"
+	icon_state = "rangerponcho_gray"
+	item_state = "rangerponcho_gray"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/green
+	name = "green ranger poncho"
+	icon_state = "rangerponcho_green"
+	item_state = "rangerponcho_green"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/blue
+	name = "blue ranger poncho"
+	icon_state = "rangerponcho_blue"
+	item_state = "rangerponcho_blue"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/purple
+	name = "purple ranger poncho"
+	icon_state = "rangerponcho_purple"
+	item_state = "rangerponcho_purple"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/orange
+	name = "orange ranger poncho"
+	icon_state = "rangerponcho_orange"
+	item_state = "rangerponcho_orange"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/charcoal
+	name = "charcoal ranger poncho"
+	icon_state = "rangerponcho_charcoal"
+	item_state = "rangerponcho_charcoal"
+
+/obj/item/clothing/accessory/poncho/roles/ranger/snow
+	name = "white ranger poncho"
+	icon_state = "rangerponcho_snow"
+	item_state = "rangerponcho_snow"

@@ -5,7 +5,7 @@
 	icon_state = "flash"
 	item_state = "flashtool"
 	throw_force = 5
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	throw_speed = 4
 	throw_range = 10
 	origin_tech = list(TECH_MAGNET = 2, TECH_COMBAT = 1)
@@ -32,6 +32,10 @@
 	var/use_external_power = FALSE // Do we use charge from an external source?
 
 	var/cell_type = /obj/item/cell/device
+
+	//? damage
+	var/stagger_strength = 1.5
+	var/stagger_duration = 3 SECONDS
 
 /obj/item/flash/Initialize(mapload)
 	. = ..()
@@ -68,19 +72,19 @@
 		icon_state = "[base_icon]"
 	return
 
-/obj/item/flash/get_cell()
+/obj/item/flash/get_cell(inducer)
 	return power_supply
 
 /obj/item/flash/proc/get_external_power_supply()
 	if(isrobot(src.loc))
 		var/mob/living/silicon/robot/R = src.loc
 		return R.cell
-	if(istype(src.loc, /obj/item/rig_module))
-		var/obj/item/rig_module/module = src.loc
+	if(istype(src.loc, /obj/item/hardsuit_module))
+		var/obj/item/hardsuit_module/module = src.loc
 		if(module.holder && module.holder.wearer)
 			var/mob/living/carbon/human/H = module.holder.wearer
 			if(istype(H) && H.back)
-				var/obj/item/rig/suit = H.back
+				var/obj/item/hardsuit/suit = H.back
 				if(istype(suit))
 					return suit.cell
 	return null
@@ -193,8 +197,8 @@
 
 					if(flash_strength > 0)
 						H.Confuse(flash_strength + 5)
-						H.afflict_stagger(5)
-						H.Blind(flash_strength)
+						H.afflict_stagger(FLASH_TRAIT, stagger_strength, stagger_duration)
+						H.apply_status_effect(/datum/status_effect/sight/blindness, flash_strength SECONDS)
 						H.eye_blurry = max(H.eye_blurry, flash_strength + 5)
 						H.flash_eyes()
 						H.adjustHalLoss(halloss_per_flash * (flash_strength / 5)) // Should take four flashes to stun.
@@ -269,7 +273,7 @@
 	for(var/mob/living/carbon/C in oviewers(3, null))
 		var/safety = C.eyecheck()
 		if(!safety)
-			if(!C.blinded)
+			if(!C.has_status_effect(/datum/status_effect/sight/blindness))
 				C.flash_eyes()
 
 	return

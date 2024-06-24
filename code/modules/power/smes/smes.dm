@@ -15,6 +15,7 @@ GLOBAL_LIST_EMPTY(smeses)
 	name = "power storage unit"
 	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit."
 	icon_state = "smes"
+	icon = 'icons/obj/power_vr.dmi'
 	density = 1
 	anchored = 1
 	use_power = USE_POWER_OFF
@@ -111,19 +112,19 @@ GLOBAL_LIST_EMPTY(smeses)
 
 	var/list/overlays_to_add = list()
 
-	overlays_to_add += image('icons/obj/power.dmi', "smes-op[outputting]")
+	overlays_to_add += image(icon, "smes-op[outputting]")
 
 	if(inputting == 2)
-		overlays_to_add += image('icons/obj/power.dmi', "smes-oc2")
+		overlays_to_add += image(icon, "smes-oc2")
 	else if (inputting == 1)
-		overlays_to_add += image('icons/obj/power.dmi', "smes-oc1")
+		overlays_to_add += image(icon, "smes-oc1")
 	else
 		if(input_attempt)
-			overlays_to_add += image('icons/obj/power.dmi', "smes-oc0")
+			overlays_to_add += image(icon, "smes-oc0")
 
 	var/clevel = chargedisplay()
 	if(clevel>0)
-		overlays_to_add += image('icons/obj/power.dmi', "smes-og[clevel]")
+		overlays_to_add += image(icon, "smes-og[clevel]")
 
 	add_overlay(overlays_to_add)
 
@@ -311,7 +312,7 @@ GLOBAL_LIST_EMPTY(smeses)
 		ui = new(user, src, "Smes", name)
 		ui.open()
 
-/obj/machinery/power/smes/ui_data()
+/obj/machinery/power/smes/ui_data(mob/user, datum/tgui/ui)
 	var/list/data = list(
 		"capacity" = capacity,
 		"capacityPercent" = round(100.0*charge/capacity, 0.1),
@@ -329,7 +330,7 @@ GLOBAL_LIST_EMPTY(smeses)
 	)
 	return data
 
-/obj/machinery/power/smes/ui_act(action, params)
+/obj/machinery/power/smes/ui_act(action, list/params, datum/tgui/ui)
 	if(..())
 		return TRUE
 	switch(action)
@@ -479,7 +480,7 @@ GLOBAL_LIST_EMPTY(smeses)
 
 
 /obj/machinery/power/smes/proc/ion_act()
-	if(src.z in GLOB.using_map.station_levels)
+	if(src.z in (LEGACY_MAP_DATUM).station_levels)
 		if(prob(1)) //explosion
 			for(var/mob/M in viewers(src))
 				M.show_message("<font color='red'>The [src.name] is making strange noises!</font>", 3, "<font color='red'>You hear sizzling electronics.</font>", 2)
@@ -554,6 +555,15 @@ GLOBAL_LIST_EMPTY(smeses)
 	charge = KWH_TO_KWM(SMES_COIL_STORAGE_BASIC * 1 * 0.8)
 	input_level = 100
 	output_level = 200
+
+/obj/machinery/power/smes/buildable/tcomms
+	name = "telecomms smes"
+	desc = "A high-capacity superconducting magnetic energy storage (SMES) unit. This is the one dedicated to telecommunications."
+	charge = KWH_TO_KWM(SMES_COIL_STORAGE_BASIC * 1 * 0.25)
+	input_attempt = 1
+	input_level = 100
+	output_level = 200
+	RCon_tag = "Telecomms"
 
 #define SMES_UI_INPUT 1
 #define SMES_UI_OUTPUT 2

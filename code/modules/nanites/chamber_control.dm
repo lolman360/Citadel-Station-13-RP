@@ -27,6 +27,7 @@
 	if(!isnull(linked))
 		unlink_chamber()
 	linked = chamber
+	LAZYADD(chamber.linked, src)
 
 /obj/machinery/computer/nanite_chamber/proc/unlink_chamber()
 	if(isnull(linked))
@@ -45,7 +46,7 @@
 	if(linked)
 		return
 	var/obj/machinery/nanite_chamber/chamber = nearby_chamber()
-	if(!chamber || chamber.linked)
+	if(isnull(chamber))
 		return
 	link_chamber(chamber)
 
@@ -66,16 +67,13 @@
 			linked?.toggle_locked()
 			return TRUE
 		if("protean_reconstruct")
-			if(!linked.protean_core || !linked.check_reconstruction_costs())
-				return TRUE
-			linked.consume_reconstruction_costs()
-			linked.try_rebuild_protean()
+			linked.try_rebuild_protean(usr)
 			return TRUE
 		if("protean_refresh")
 			linked.try_refresh_protean(usr)
 			return TRUE
 
-/obj/machinery/computer/nanite_chamber/ui_data(mob/user, datum/tgui/ui, datum/ui_state/state)
+/obj/machinery/computer/nanite_chamber/ui_data(mob/user, datum/tgui/ui)
 	. = ..()
 	if(isnull(linked))
 		return
@@ -83,7 +81,7 @@
 	.["locked"] = linked.locked
 	.["operating"] = linked.operating
 
-/obj/machinery/computer/nanite_chamber/ui_static_data(mob/user, datum/tgui/ui, datum/ui_state/state)
+/obj/machinery/computer/nanite_chamber/ui_static_data(mob/user, datum/tgui/ui)
 	. = ..()
 	if(isnull(linked))
 		.["hasChamber"] = FALSE

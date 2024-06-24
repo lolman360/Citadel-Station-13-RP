@@ -54,11 +54,13 @@
 	var/combat_flags = 0
 	var/other_flags = 0
 
-	var/vision_flags_mob = 0
-	var/darkness_view = 0
+	var/vision_flags_mob = NONE
+	var/vision_flags_mob_remove = NONE
 
 	/// List of vision planes this nifsoft enables when active
 	var/list/planes_enabled = null
+	/// vision holder to push
+	var/datum/vision/vision_holder
 	/// Whether or not this NIFSoft provides exclusive vision modifier
 	var/vision_exclusive = FALSE
 	/// List of NIFSofts that are disabled when this one is enabled
@@ -112,6 +114,9 @@
 			nif.add_plane(planes_enabled)
 			nif.vis_update()
 
+		if(!isnull(vision_holder))
+			nif.human.add_vision_modifier(vision_holder)
+
 		//If we have other NIFsoft we need to turn off
 		if(incompatible_with)
 			nif.deactivate_these(incompatible_with)
@@ -143,6 +148,9 @@
 		if(planes_enabled)
 			nif.del_plane(planes_enabled)
 			nif.vis_update()
+
+		if(!isnull(vision_holder))
+			nif.human.remove_vision_modifier(vision_holder)
 
 		//Clear all our activation flags
 		nif.clear_flag(vision_flags,NIF_FLAGS_VISION)
@@ -208,7 +216,7 @@
 		SLOT_ID_LEFT_HAND = 'icons/mob/items/lefthand.dmi',
 		SLOT_ID_RIGHT_HAND = 'icons/mob/items/righthand.dmi',
 		)
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	var/datum/nifsoft/stored = null
 
 /obj/item/disk/nifsoft/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
@@ -267,6 +275,7 @@
 	if(!laws)
 		to_chat(user,"<span class='warning'>You haven't set any laws yet. Use the disk in-hand first.</span>")
 		return
+	return ..()
 
 /obj/item/disk/nifsoft/compliance/attack_self(mob/user)
 	. = ..()
@@ -300,7 +309,7 @@
 	desc = "A box of free nifsofts for security employees."
 	icon_state = "disk_kit"
 
-/obj/item/storage/box/nifsofts_security/PopulateContents()
+/obj/item/storage/box/nifsofts_security/legacy_spawn_contents()
 	for(var/i = 0 to 7)
 		new /obj/item/disk/nifsoft/security(src)
 
@@ -323,9 +332,22 @@
 	desc = "A box of free nifsofts for engineering employees."
 	icon_state = "disk_kit"
 
-/obj/item/storage/box/nifsofts_engineering/PopulateContents()
+/obj/item/storage/box/nifsofts_engineering/legacy_spawn_contents()
 	for(var/i = 0 to 7)
 		new /obj/item/disk/nifsoft/engineering(src)
+
+// Blueshield Disk //
+/obj/item/disk/nifsoft/blueshield
+	name = "NIFSoft Uploader - Blueshield"
+	desc = "Contains free NIFSofts useful for Blueshields.\n\
+	It has a small label: \n\
+	\"Portable NIFSoft Installation Media. \n\
+	Align ocular port with eye socket and depress red plunger.\""
+
+	stored = /datum/nifsoft/package/blueshield
+
+/datum/nifsoft/package/blueshield
+	software = list(/datum/nifsoft/hud/ar_med,/datum/nifsoft/hud/ar_sec)
 
 // Medical Disk //
 /obj/item/disk/nifsoft/medical
@@ -345,7 +367,7 @@
 	desc = "A box of free nifsofts for medical employees."
 	icon_state = "disk_kit"
 
-/obj/item/storage/box/nifsofts_medical/PopulateContents()
+/obj/item/storage/box/nifsofts_medical/legacy_spawn_contents()
 	for(var/i = 0 to 7)
 		new /obj/item/disk/nifsoft/medical(src)
 
@@ -368,6 +390,6 @@
 	desc = "A box of free nifsofts for mining employees."
 	icon_state = "disk_kit"
 
-/obj/item/storage/box/nifsofts_mining/PopulateContents()
+/obj/item/storage/box/nifsofts_mining/legacy_spawn_contents()
 	for(var/i = 0 to 7)
 		new /obj/item/disk/nifsoft/mining(src)

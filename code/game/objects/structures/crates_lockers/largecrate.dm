@@ -13,8 +13,8 @@
 /obj/structure/largecrate/Initialize(mapload)	//Shamelessly copied from closets.dm since the old Initializer didnt seem to function properly - Bloop
 	. = ..()
 	if(mapload)
-		addtimer(CALLBACK(src, .proc/take_contents), 0)
-	PopulateContents()
+		addtimer(CALLBACK(src, PROC_REF(take_contents)), 0)
+	legacy_spawn_contents()
 	// Closets need to come later because of spawners potentially creating objects during init.
 	return INITIALIZE_HINT_LATELOAD
 
@@ -44,7 +44,7 @@
 /**
  * The proc that fills the closet with its initial contents.
  */
-/obj/structure/largecrate/proc/PopulateContents()
+/obj/structure/largecrate/proc/legacy_spawn_contents()
 	return
 
 /*	/// Doesnt work but im gonna leave this here commented out in case I broke something with the shameless copy pasta from above -Bloop
@@ -146,6 +146,10 @@
 	name = "goat crate"
 	starts_with = list(/mob/living/simple_mob/animal/goat)
 
+/obj/structure/largecrate/animal/horse
+	name = "horse crate"
+	starts_with = list(/mob/living/simple_mob/horse)
+
 /obj/structure/largecrate/animal/cat
 	name = "cat carrier"
 	starts_with = list(/mob/living/simple_mob/animal/passive/cat)
@@ -213,7 +217,6 @@
 /obj/structure/largecrate/animal/pred/Initialize(mapload) //This is nessesary to get a random one each time.
 	starts_with = list(pick(/mob/living/simple_mob/vore/bee,
 						/mob/living/simple_mob/vore/aggressive/frog,
-						/mob/living/simple_mob/vore/horse,
 						/mob/living/simple_mob/vore/aggressive/panther,
 						/mob/living/simple_mob/vore/aggressive/giant_snake,
 						/mob/living/simple_mob/animal/wolf,
@@ -256,37 +259,39 @@
 						/mob/living/simple_mob/vore/fennix;0.5))
 	return ..()
 
-/obj/structure/closet/crate/large/aether
+//Corporate Largecrates
+
+/obj/structure/closet/crate/large/corporate/aether
 	desc = "A hefty metal crate, painted in Aether Atmospherics and Recycling colours."
 	icon_state = "aetherlarge"
 	icon_opened = "aetherlargeopen"
 	icon_closed = "aetherlarge"
 
-/obj/structure/closet/crate/large/einstein
+/obj/structure/closet/crate/large/corporate/einstein
 	desc = "A hefty metal crate, with an Einstien Engines sticker, the company has since been bought out by Hephaestus Industries."
 	icon_state = "eelarge"
 	icon_opened = "eelargeopen"
 	icon_closed = "eelarge"
 
-/obj/structure/closet/crate/large/nanotrasen
-	desc = "A hefty metal crate, painted in standard NanoTrasen livery."
+/obj/structure/closet/crate/large/corporate/nanotrasen
+	desc = "A hefty metal crate, painted in standard Nanotrasen livery."
 	icon_state = "ntlarge"
 	icon_opened = "ntlargeopen"
 	icon_closed = "ntlarge"
 
-/obj/structure/closet/crate/large/xion
+/obj/structure/closet/crate/large/corporate/xion
 	desc = "A hefty metal crate, painted in the orange of the former Xion Manufacturing Group, now a subsidiary of Aether Atmospherics and Recycling."
 	icon_state = "xionlarge"
 	icon_opened = "xionlargeopen"
 	icon_closed = "xionlarge"
 
-/obj/structure/closet/crate/large/secure/heph
+/obj/structure/closet/crate/large/secure/corporate/heph
 	desc = "A hefty metal crate with an electronic locking system, marked with Hephaestus Industries colours."
 	icon_state = "hephlarge"
 	icon_opened = "hephlargeopen"
 	icon_closed = "hephlarge"
 
-/obj/structure/closet/crate/large/secure/xion
+/obj/structure/closet/crate/large/secure/corporate/xion
 	desc = "A hefty metal crate with an electronic locking system, painted in the orange of the former Xion Manufacturing Group, now a subsidiary of Aether Atmospherics and Recycling."
 	icon_state = "xionlargesecure"
 	icon_opened = "xionlargesecureopen"

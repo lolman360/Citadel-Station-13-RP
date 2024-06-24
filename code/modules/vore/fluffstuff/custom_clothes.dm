@@ -90,7 +90,7 @@
 	permeability_coefficient = 0.01
 	armor_type = /datum/armor/none
 	inv_hide_flags = HIDEMASK|HIDEEARS
-	cold_protection = HEAD
+	cold_protection_cover = HEAD
 	siemens_coefficient = 0.9
 
 //Bonnie Head
@@ -128,7 +128,7 @@
 	allowed = list(/obj/item/flashlight,/obj/item/tank)
 	armor_type = /datum/armor/none
 	inv_hide_flags = HIDEGLOVES|HIDESHOES|HIDEJUMPSUIT
-	cold_protection = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
+	cold_protection_cover = UPPER_TORSO | LOWER_TORSO | LEGS | FEET | ARMS | HANDS
 	siemens_coefficient = 0.9
 
 //Bonnie Suit
@@ -186,9 +186,9 @@
 	icon_override = 'icons/vore/custom_clothes_vr.dmi'
 	item_state = "vulpine_belt_mob"
 
-	storage_slots = 9
+	max_items = 9
 
-/obj/item/storage/belt/utility/fluff/vulpine/PopulateContents()
+/obj/item/storage/belt/utility/fluff/vulpine/legacy_spawn_contents()
 	. = ..()
 	new /obj/item/tool/screwdriver(src)
 	new /obj/item/tool/wrench(src)
@@ -261,14 +261,14 @@
 	desc = "The uniform worn by command officers in the mid 2260s."
 	icon_state = "trek_command"
 	item_state = "trek_command"
-	armor_type = /datum/armor/security/jumpsuit
+	armor_type = /datum/armor/station/padded
 
 /obj/item/clothing/under/rank/trek/engsec
 	name = "Operations Uniform"
 	desc = "The uniform worn by operations officers of the mid 2260s. You feel strangely vulnerable just seeing this..."
 	icon_state = "trek_engsec"
 	item_state = "trek_engsec"
-	armor_type = /datum/armor/security/jumpsuit
+	armor_type = /datum/armor/station/padded
 
 /obj/item/clothing/under/rank/trek/medsci
 	name = "MedSci Uniform"
@@ -338,14 +338,14 @@
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO|ARMS
 	permeability_coefficient = 0.50
 	allowed = list(
-		/obj/item/flashlight, /obj/item/analyzer,
+		/obj/item/flashlight, /obj/item/atmos_analyzer,
 		/obj/item/radio, /obj/item/tank/emergency/oxygen,
 		/obj/item/reagent_containers/hypospray, /obj/item/healthanalyzer,
 		/obj/item/reagent_containers/dropper,/obj/item/reagent_containers/syringe,
 		/obj/item/reagent_containers/glass/bottle,/obj/item/reagent_containers/glass/beaker,
 		/obj/item/reagent_containers/pill,/obj/item/storage/pill_bottle
 		)
-	armor_type = /datum/armor/security/low
+	armor_type = /datum/armor/security/light_formalwear
 
 /obj/item/clothing/suit/storage/trek/ds9/equipped(mob/user, slot, flags)
 	..()
@@ -440,7 +440,7 @@
 
 /obj/item/clothing/suit/storage/fluff/jacket/verb/toggle()
 	set name = "Toggle coat buttons"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set src in usr
 
 	if(!CHECK_MOBILITY(usr, MOBILITY_CAN_USE))
@@ -556,6 +556,7 @@
 	icon = 'icons/clothing/uniform/costume/maid.dmi'
 	icon_state = "latex"
 	worn_bodytypes = BODYTYPES(BODYTYPE_DEFAULT, BODYTYPE_TESHARI)
+	worn_render_flags = WORN_RENDER_SLOT_ONE_FOR_ALL
 
 	body_cover_flags = UPPER_TORSO|LOWER_TORSO
 
@@ -611,7 +612,7 @@
 	item_state = null
 	icon_override = null
 	slot_flags = SLOT_GLOVES | SLOT_TIE
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	slot = ACCESSORY_SLOT_ARMBAND
 
 //AegisOA:Xander Bevin
@@ -638,7 +639,7 @@
 	icon_override = 'icons/vore/custom_onmob_vr.dmi'
 	icon_state = "goldenstring"
 	item_state = "goldenstring"
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	slot_flags = SLOT_TIE
 
 //Chaoko99: Aika Hisakawa

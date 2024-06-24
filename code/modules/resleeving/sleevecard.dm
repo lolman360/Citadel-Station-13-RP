@@ -11,7 +11,7 @@
 	icon_state = "pai"
 	item_state = "electronic"
 
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_DATA = 2)
 	show_messages = 0
@@ -20,14 +20,14 @@
 	var/mob/living/silicon/infomorph/infomorph
 	var/current_emotion = 1
 
-	matter = list(MAT_STEEL = 4000, MAT_GLASS = 4000)
+	materials_base = list(MAT_STEEL = 4000, MAT_GLASS = 4000)
 
 /obj/item/sleevecard/relaymove(var/mob/user, var/direction)
 	if(!CHECK_MOBILITY(user, MOBILITY_CAN_MOVE))
 		return
-	var/obj/item/rig/rig = src.get_rig()
-	if(istype(rig))
-		rig.forced_move(direction, user)
+	var/obj/item/hardsuit/hardsuit = src.get_hardsuit()
+	if(istype(hardsuit))
+		hardsuit.forced_move(direction, user)
 
 /obj/item/sleevecard/Initialize(mapload)
 	. = ..()

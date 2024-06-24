@@ -18,7 +18,7 @@
 			)
 	name = "Trading Card Crate"
 	cost = 10
-	container_type = /obj/structure/closet/crate/allico
+	container_type = /obj/structure/closet/crate/corporate/allico
 	container_name = "cards crate"
 
 /datum/supply_pack/randomised/misc/dnd
@@ -34,7 +34,7 @@
 			)
 	name = "Miniatures Crate"
 	cost = 200
-	container_type = /obj/structure/closet/crate/allico
+	container_type = /obj/structure/closet/crate/corporate/allico
 	container_name = "Miniature Crate"
 
 /datum/supply_pack/randomised/misc/plushies
@@ -76,7 +76,7 @@
 			)
 	name = "Plushies Crate"
 	cost = 15
-	container_type = /obj/structure/closet/crate/allico
+	container_type = /obj/structure/closet/crate/corporate/allico
 	container_name = "Plushies Crate"
 
 /datum/supply_pack/misc/eftpos
@@ -161,7 +161,7 @@
 		/obj/item/storage/single_use/mre/menu10,
 	)
 	cost = 50
-	container_type = /obj/structure/closet/crate/centauri
+	container_type = /obj/structure/closet/crate/corporate/centauri
 	container_name = "ready to eat rations"
 
 /datum/supply_pack/misc/paste_rations
@@ -170,7 +170,7 @@
 		/obj/item/storage/single_use/mre/menu11 = 2,
 	)
 	cost = 25
-	container_type = /obj/structure/closet/crate/centauri
+	container_type = /obj/structure/closet/crate/corporate/centauri
 	container_name = "emergency rations"
 
 /datum/supply_pack/misc/medical_rations
@@ -179,7 +179,7 @@
 		/obj/item/storage/single_use/mre/menu13 = 2,
 	)
 	cost = 40
-	container_type = /obj/structure/closet/crate/centauri
+	container_type = /obj/structure/closet/crate/corporate/centauri
 	container_name = "emergency rations"
 
 /datum/supply_pack/misc/beltminer
@@ -192,14 +192,14 @@
 			/obj/item/storage/box/traumainjectors = 1
 			)
 	cost = 50
-	container_type = /obj/structure/closet/crate/secure/grayson
+	container_type = /obj/structure/closet/crate/secure/corporate/grayson
 	container_name = "Belt-miner gear crate"
 	access = ACCESS_SUPPLY_MINE
 
 /datum/supply_pack/misc/eva_rig
 	name = "eva hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/eva = 1
+			/obj/item/hardsuit/eva = 1
 			)
 	cost = 150
 	container_type = /obj/structure/closet/crate/secure/gear
@@ -213,10 +213,10 @@
 /datum/supply_pack/misc/mining_rig
 	name = "industrial hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/industrial = 1
+			/obj/item/hardsuit/industrial = 1
 			)
 	cost = 150
-	container_type = /obj/structure/closet/crate/secure/grayson
+	container_type = /obj/structure/closet/crate/secure/corporate/grayson
 	container_name = "industrial hardsuit crate"
 	access = list(ACCESS_SUPPLY_MINE,
 				  ACCESS_COMMAND_EVA)
@@ -225,10 +225,10 @@
 /datum/supply_pack/misc/medical_rig
 	name = "medical hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/medical = 1
+			/obj/item/hardsuit/medical = 1
 			)
 	cost = 150
-	container_type = /obj/structure/closet/crate/secure/veymed
+	container_type = /obj/structure/closet/crate/secure/corporate/veymed
 	container_name = "medical hardsuit crate"
 	access = ACCESS_MEDICAL_MAIN
 
@@ -246,7 +246,7 @@
 /datum/supply_pack/misc/security_rig
 	name = "hazard hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/hazard = 1
+			/obj/item/hardsuit/hazard = 1
 			)
 	cost = 150
 	container_type = /obj/structure/closet/crate/secure/gear
@@ -256,7 +256,7 @@
 /datum/supply_pack/misc/science_rig
 	name = "ami hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/hazmat = 1
+			/obj/item/hardsuit/hazmat = 1
 			)
 	cost = 150
 	container_type = /obj/structure/closet/crate/secure/gear
@@ -264,13 +264,13 @@
 	access = ACCESS_SCIENCE_RD
 
 /datum/supply_pack/misc/ce_rig
-	name = "advanced voidsuit (empty)"
+	name = "advanced hardsuit (empty)"
 	contains = list(
-			/obj/item/rig/ce = 1
+			/obj/item/hardsuit/ce = 1
 			)
 	cost = 150
-	container_type = /obj/structure/closet/crate/secure/aether
-	container_name = "advanced voidsuit crate"
+	container_type = /obj/structure/closet/crate/secure/corporate/aether
+	container_name = "advanced hardsuit crate"
 	access = ACCESS_ENGINEERING_CE
 
 
@@ -302,7 +302,7 @@
 	contains = list(
 			/obj/fiftyspawner/wax = 2,
 			/obj/item/healthanalyzer/apidean = 1,
-			/obj/item/analyzer/apidean = 1,
+			/obj/item/atmos_analyzer/apidean = 1,
 			/obj/item/reagent_scanner/apidean = 1,
 			/mob/living/bot/medibot/apidean = 1,
 			/obj/item/reagent_containers/food/drinks/bottle/ambrosia_mead = 2,
@@ -332,10 +332,19 @@
 /datum/supply_pack/misc/culture_alraune
 	name = "Alraune Culture Crate"
 	contains = list(
-			/obj/item/reagent_containers/food/snacks/alraune_bar = 3,
-			/obj/item/reagent_containers/food/snacks/bugsnacks = 3,
+			/obj/item/reagent_containers/food/snacks/wrapped/alraune_bar = 3,
+			/obj/item/reagent_containers/food/snacks/boxed/bugsnacks = 3,
 			/obj/item/reagent_containers/food/drinks/cans/alraune = 3
 			)
 	cost = 50
 	container_type = /obj/structure/closet/crate
 	container_name = "Alraune Culture crate"
+
+/datum/supply_pack/misc/music_players
+	name = "Music players"
+	contains = list(
+		/obj/item/device/walkpod = 3
+	)
+	cost = 150
+	container_type = /obj/structure/closet/crate
+	container_name = "Portable music players crate"

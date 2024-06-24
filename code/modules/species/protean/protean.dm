@@ -1,6 +1,10 @@
 #define DAM_SCALE_FACTOR 0.01
 #define METAL_PER_TICK 100
 
+/datum/physiology_modifier/intrinsic/species/protean
+	carry_strength_add = CARRY_STRENGTH_ADD_PROTEAN
+	carry_strength_factor = CARRY_FACTOR_MOD_PROTEAN
+
 /datum/species/protean
 	uid = SPECIES_ID_PROTEAN
 	name = SPECIES_PROTEAN
@@ -13,6 +17,7 @@
 	death_message = "rapidly loses cohesion, dissolving into a cloud of gray dust..."
 	knockout_message = "collapses inwards, forming a disordered puddle of gray goo."
 	remains_type = /obj/effect/debris/cleanable/ash
+	mob_physiology_modifier = /datum/physiology_modifier/intrinsic/species/protean
 
 	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch, /datum/unarmed_attack/bite) // Regular human attack verbs are enough.
 
@@ -28,7 +33,7 @@
 	assisted_langs = list(LANGUAGE_ROOTLOCAL, LANGUAGE_ROOTGLOBAL, LANGUAGE_VOX)
 	color_mult = TRUE
 
-	darksight = 3 // Major darksight is a bit much, regular one will do for the moment.
+	vision_innate = /datum/vision/baseline/species_tier_1
 
 	breath_type = null
 	poison_type = null
@@ -67,6 +72,7 @@
 		O_ORCH = /obj/item/organ/internal/nano/orchestrator,
 		O_FACT = /obj/item/organ/internal/nano/refactory
 		)
+	vision_organ = O_BRAIN
 	has_limbs = list(
 		BP_TORSO =  list("path" = /obj/item/organ/external/chest/unbreakable/nano),
 		BP_GROIN =  list("path" = /obj/item/organ/external/groin/unbreakable/nano),
@@ -99,24 +105,28 @@
 		/mob/living/carbon/human/proc/shapeshifter_select_ears,
 		/mob/living/carbon/human/proc/shapeshifter_select_horns,
 		/mob/living/proc/eat_trash,
-		/mob/living/carbon/human/proc/sonar_ping,
 		/mob/living/carbon/human/proc/succubus_drain,
 		/mob/living/carbon/human/proc/succubus_drain_finalize,
 		/mob/living/carbon/human/proc/succubus_drain_lethal,
 		/mob/living/carbon/human/proc/bloodsuck,
 		/mob/living/carbon/human/proc/tie_hair,
+		/mob/living/carbon/human/proc/hide_horns,
+		/mob/living/carbon/human/proc/hide_wings,
+		/mob/living/carbon/human/proc/hide_tail,
 		/mob/living/proc/shred_limb,
-		/mob/living/proc/flying_toggle,
-		/mob/living/proc/start_wings_hovering,
-		/mob/living/carbon/human/proc/tie_hair,
 		/mob/living/proc/glow_toggle,
 		/mob/living/proc/glow_color,
 		/mob/living/carbon/human/proc/lick_wounds,
 		/mob/living/carbon/human/proc/rig_transform,
+		/mob/living/carbon/human/proc/rig_self,
 		/mob/living/proc/usehardsuit) //prots get all the special verbs since they can't select traits.
+
 	species_statpanel = TRUE
 	var/global/list/protean_abilities = list()
-
+	abilities = list(
+		/datum/ability/species/sonar,
+		/datum/ability/species/toggle_flight
+	)
 	var/monochromatic = FALSE //IGNORE ME
 
 /datum/species/protean/New()
@@ -160,7 +170,7 @@
 		else
 			H.nif.durability = rand(21,25)
 
-	var/obj/item/rig/protean/prig = new /obj/item/rig/protean(H)
+	var/obj/item/hardsuit/protean/prig = new /obj/item/hardsuit/protean(H)
 	prig.myprotean = H
 
 /datum/species/protean/equip_survival_gear(var/mob/living/carbon/human/H)
@@ -172,9 +182,9 @@
 	permit.set_name(H.real_name)
 
 	if(H.backbag == 1) //Somewhat misleading, 1 == no bag (not boolean)
-		H.equip_to_slot_or_del(box, /datum/inventory_slot_meta/abstract/hand/left)
+		H.equip_to_slot_or_del(box, /datum/inventory_slot/abstract/hand/left)
 	else
-		H.equip_to_slot_or_del(box, /datum/inventory_slot_meta/abstract/put_in_backpack)
+		H.equip_to_slot_or_del(box, /datum/inventory_slot/abstract/put_in_backpack)
 
 /datum/species/protean/get_blood_colour(var/mob/living/carbon/human/H)
 	return rgb(80,80,80,230)
@@ -184,22 +194,24 @@
 
 /datum/species/protean/handle_death(var/mob/living/carbon/human/H, gibbed)		// citadel edit - FUCK YOU ACTUALLY GIB THE MOB AFTER REMOVING IT FROM THE BLOB HOW HARD CAN THIS BE!!
 	var/deathmsg = "<span class='userdanger'>You have died as a Protean. You may be revived by nanite chambers (once available), but otherwise, you may roleplay as your disembodied posibrain or respawn on another character.</span>"
-	// force eject brain
-	var/obj/item/organ/internal/the_brain = H.internal_organs_by_name[O_BRAIN]
-	if(the_brain)
-		the_brain.removed(H)
+	// force eject inv
+	H.drop_inventory(TRUE, TRUE, TRUE)
+	// force eject v*re
+	H.release_vore_contents(TRUE, TRUE)
 	if(istype(H.temporary_form, /mob/living/simple_mob/protean_blob))
 		var/mob/living/simple_mob/protean_blob/B = H.temporary_form
 		to_chat(B, deathmsg)
 	else if(!gibbed)
 		to_chat(H, deathmsg)
-		H.gib()
+	ASYNC
+		if(!QDELETED(H))
+			H.gib()
 
 /datum/species/protean/proc/getActualDamage(mob/living/carbon/human/H)
 	var/obj/item/organ/external/E = H.get_organ(BP_TORSO)
 	return E.brute_dam + E.burn_dam
 
-/datum/species/protean/handle_environment_special(var/mob/living/carbon/human/H)
+/datum/species/protean/handle_environment_special(mob/living/carbon/human/H, datum/gas_mixture/environment, dt)
 	if((getActualDamage(H) > damage_to_blob) && isturf(H.loc)) //So, only if we're not a blob (we're in nullspace) or in someone (or a locker, really, but whatever).
 		H.nano_intoblob()
 		return ..() //Any instakill shot runtimes since there are no organs after this. No point to not skip these checks, going to nullspace anyway.
@@ -222,7 +234,7 @@
 	if(refactory && !(refactory.status & ORGAN_DEAD))
 		STATPANEL_DATA_LINE("- -- --- Refactory Metal Storage --- -- -")
 		var/max = refactory.max_storage
-		for(var/material in refactory.materials)
+		for(var/material in refactory.stored_materials)
 			var/amount = refactory.get_stored_material(material)
 			STATPANEL_DATA_ENTRY("[capitalize(material)]", "[amount]/[max]")
 	else
@@ -285,16 +297,18 @@
 	var/dt = 2	// put it on param sometime but for now assume 2
 	var/mob/living/carbon/human/H = holder
 	var/obj/item/organ/external/E = H.get_organ(BP_TORSO)
+	var/obj/item/organ/external/HE = H.get_organ(BP_HEAD) // Head for disfigurement
 	var/heal = 1 * dt
 	var/brute_heal_left = max(0, heal - E.brute_dam)
 	var/burn_heal_left = max(0, heal - E.burn_dam)
 
 	E.heal_damage(min(heal, E.brute_dam), min(heal, E.burn_dam), TRUE, TRUE)
-
+	HE.disfigured = 0 // Fix disfigurement, become pretty once more
+	// I didn't want to constantly rebuild and lose my markings to stop being an unknown
 	holder.adjustBruteLoss(-brute_heal_left, include_robo = TRUE)
 	holder.adjustFireLoss(-burn_heal_left, include_robo = TRUE)
 	holder.adjustToxLoss(-3.6) // With them now having tox immunity, this is redundant, along with the rad regen, but I'm keeping it in, in case they do somehow get some system instability
-	holder.radiation = max(RAD_MOB_CURE_PROTEAN_REGEN)
+	holder.cure_radiation(RAD_MOB_CURE_PROTEAN_REGEN)
 
 /proc/protean_requires_healing(mob/living/carbon/human/H)
 	if(!istype(H))
@@ -304,7 +318,7 @@
 // PAN Card
 /obj/item/clothing/accessory/permit/nanotech
 	name = "\improper P.A.N. card"
-	desc = "This is a 'Permit for Advanced Nanotechnology' card. It allows the owner to possess and operate advanced nanotechnology on NanoTrasen property. It must be renewed on a monthly basis."
+	desc = "This is a 'Permit for Advanced Nanotechnology' card. It allows the owner to possess and operate advanced nanotechnology on Nanotrasen property. It must be renewed on a monthly basis."
 	icon = 'icons/obj/card_cit.dmi'
 	icon_state = "permit-pan"
 /obj/item/clothing/accessory/permit/nanotech/set_name(var/new_name)
@@ -318,18 +332,39 @@
 	set desc = "Allows a protean to solidify its form into one extremely similar to a hardsuit."
 	set category = "Abilities"
 
-	if(istype(loc, /obj/item/rig/protean))
-		var/obj/item/rig/protean/prig = loc
+	if(istype(loc, /obj/item/hardsuit/protean))
+		var/obj/item/hardsuit/protean/prig = loc
 		src.forceMove(get_turf(prig))
 		prig.forceMove(src)
 		return
 
 	if(isturf(loc))
-		var/obj/item/rig/protean/prig = locate() in contents
+		var/obj/item/hardsuit/protean/prig = locate() in contents
 		if(prig)
 			prig.forceMove(get_turf(src))
 			src.forceMove(prig)
 			return
+
+/mob/living/carbon/human/proc/rig_self()
+	set name = "Deploy Nanosuit To Self"
+	set desc = "Deploy a light nanocluster RIGsuit around yourself."
+	set category = "Abilities"
+
+	if(istype(back, /obj/item/hardsuit/protean))
+		var/obj/item/hardsuit/protean/suit = back
+		if(suit.myprotean == src)
+			suit.reset()
+			suit.forceMove(src)
+			to_chat(src, SPAN_WARNING("You retract your nanosuit."))
+			return
+
+	for(var/obj/item/hardsuit/protean/suit in contents)
+		force_equip_to_slot(suit, /datum/inventory_slot/inventory/back)
+		to_chat(src, SPAN_WARNING("You deploy your nanosuit."))
+		suit.toggle_seals(src, TRUE)
+		return
+
+	to_chat(src, SPAN_WARNING("You don't have a nanocluster RIG. Somehow."))
 
 #undef DAM_SCALE_FACTOR
 #undef METAL_PER_TICK

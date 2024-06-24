@@ -83,8 +83,8 @@
 				if(M)
 					S.icon_state = initial(S.icon_state)
 					S.icon = initial(S.icon)
-					S.reagents.trans_to_mob(M, S.reagents.total_volume, CHEM_BLOOD)
-					M.take_organ_damage(2)
+					S.reagents.trans_to_mob(M, S.reagents.total_volume, CHEM_INJECT)
+					M.take_random_targeted_damage(brute = 2)
 					S.visible_message("<span class=\"attack\"> [M] was hit by the syringe!</span>")
 					break
 				else if(S.loc == trg)
@@ -321,7 +321,7 @@
 
 /obj/item/mecha_parts/mecha_equipment/crisis_drone/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	..()
+	return ..()
 
 /obj/item/mecha_parts/mecha_equipment/crisis_drone/attach(obj/mecha/M as obj)
 	. = ..(M)

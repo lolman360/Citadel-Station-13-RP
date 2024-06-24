@@ -11,7 +11,7 @@
 	throw_force = 1.0
 	throw_speed = 1
 	throw_range = 2
-	w_class = ITEMSIZE_SMALL
+	w_class = WEIGHT_CLASS_SMALL
 	var/access = list()
 	access = ACCESS_MISC_CASHCRATE
 	var/worth = 0
@@ -199,7 +199,7 @@
 /obj/item/spacecash/ewallet/update_icon()
 	return //space cash
 
-/obj/item/spacecash/ewallet/examine(mob/user)
+/obj/item/spacecash/ewallet/examine(mob/user, dist)
 	. = ..()
 	if (!(user in view(2)) && user!=src.loc)
 		return

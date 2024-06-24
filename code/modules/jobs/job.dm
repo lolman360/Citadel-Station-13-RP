@@ -3,8 +3,6 @@
 	abstract_type = /datum/role/job
 
 	//? Intrinsics
-	/// ID of the job, used for save/load
-	var/id
 	/// The name of the job , used for preferences, bans and more. Make sure you know what you're doing before changing this.
 	var/title = "NOPE"
 	/// Description of the job
@@ -24,6 +22,10 @@
 	var/list/minimal_access = list()
 	/// With minimal access off, this gets added
 	var/list/additional_access = list()
+
+	//* Off-Duty
+	/// are we an off duty role?
+	var/is_off_duty = FALSE
 
 	//? Unsorted
 	/// Bitflags for the job.
@@ -76,9 +78,6 @@
 	// Requires a ckey to be whitelisted in jobwhitelist.txt
 	var/whitelist_only = 0
 
-	// Every hour playing this role gains this much time off. (Can be negative for off duty jobs!)
-	var/timeoff_factor = 3
-
 	// What type of PTO is that job earning?
 	var/pto_type
 
@@ -120,8 +119,6 @@
 		. |= ROLE_UNAVAILABLE_WHITELIST
 	if(!slots_remaining())
 		. |= ROLE_UNAVAILABLE_SLOTS_FULL
-	if(!player_has_enough_pto(C))
-		. |= ROLE_UNAVAILABLE_PTO
 	if(jobban_isbanned(C.mob, title))
 		. |= ROLE_UNAVAILABLE_BANNED
 	if(!player_old_enough(C))
@@ -153,8 +150,6 @@
 		return ROLE_UNAVAILABLE_WHITELIST
 	else if(latejoin && !slots_remaining(TRUE))
 		return ROLE_UNAVAILABLE_SLOTS_FULL
-	else if(!player_has_enough_pto(C))
-		return ROLE_UNAVAILABLE_PTO
 	else if(jobban_isbanned(C.mob, title))
 		return ROLE_UNAVAILABLE_BANNED
 	else if(!player_old_enough(C))
@@ -247,7 +242,7 @@
 	. = list()
 	// todo: why do we do assoc list? why don't we just cache? why why why????
 	for(var/title in alt_titles)
-		var/datum/prototype/alt_title/alt_datum = SSrepository.fetch(alt_titles[title])
+		var/datum/prototype/struct/alt_title/alt_datum = RCstructs.fetch(alt_titles[title])
 		if(!alt_datum)
 			continue
 		. += alt_datum
@@ -260,7 +255,7 @@
 	var/strict = FALSE
 	var/list/strict_titles = list()
 	var/list/all_titles = list()
-	for(var/datum/prototype/alt_title/alt_datum as anything in alt_title_datums())
+	for(var/datum/prototype/struct/alt_title/alt_datum as anything in alt_title_datums())
 		// check if we can be picked at all
 		if(!alt_datum.check_background_ids(background_ids, FALSE))
 			continue
@@ -288,11 +283,11 @@
 		// check if any enforced datums are there that forces them to be certain titles, and if so,
 		// that our 'normal' title is in there.
 		var/list/enforced = list()
-		for(var/datum/prototype/alt_title/alt_datum as anything in alt_title_datums())
+		for(var/datum/prototype/struct/alt_title/alt_datum as anything in alt_title_datums())
 			if(alt_datum.background_enforce && alt_datum.check_background_ids(background_ids))
 				enforced += alt_datum.title
 		return !length(enforced) || (alt_title in enforced)
-	var/datum/prototype/alt_title/alt_datum = SSrepository.fetch(alt_titles?[alt_title])
+	var/datum/prototype/struct/alt_title/alt_datum = RCstructs.fetch(alt_titles?[alt_title])
 	return alt_datum?.check_background_ids(background_ids)
 
 /**
@@ -301,7 +296,7 @@
  * @return enforced title as string, or null for none
  */
 /datum/role/job/proc/alt_title_enforcement(list/background_ids)
-	for(var/datum/prototype/alt_title/alt_datum as anything in alt_title_datums())
+	for(var/datum/prototype/struct/alt_title/alt_datum as anything in alt_title_datums())
 		// don't need to potentially enforce
 		if(!alt_datum.background_enforce)
 			continue
@@ -322,7 +317,7 @@
 
 /datum/role/job/proc/get_outfit(var/mob/living/carbon/human/H, var/alt_title)
 	if(alt_title && alt_titles)
-		var/datum/prototype/alt_title/A = alt_titles[alt_title]
+		var/datum/prototype/struct/alt_title/A = alt_titles[alt_title]
 		if(A && initial(A.title_outfit))
 			. = initial(A.title_outfit)
 	. = . || outfit_type
@@ -366,7 +361,9 @@
 	. = outfit.equip_base(H, title, alt_title)
 
 /datum/role/job/proc/get_access()
-	return minimal_access | (config_legacy.jobs_have_minimal_access? list() : additional_access)
+	. = minimal_access | (config_legacy.jobs_have_minimal_access? list() : additional_access)
+	if(faction == JOB_FACTION_STATION && CONFIG_GET(flag/almost_everyone_has_maintenance_access))
+		. |= ACCESS_ENGINEERING_MAINT
 
 // If the configuration option is set to require players to be logged as old enough to play certain jobs, then this proc checks that they are, otherwise it just returns 1
 /datum/role/job/proc/player_old_enough(client/C)
@@ -375,8 +372,10 @@
 /datum/role/job/proc/available_in_days(client/C)
 	if(C.has_jexp_bypass())
 		return 0
-	if(C && config_legacy.use_age_restriction_for_jobs && isnum(C.player_age) && isnum(minimal_player_age))
-		return max(0, minimal_player_age - C.player_age)
+	if(!CONFIG_GET(flag/job_check_account_age))
+		return 0
+	if(isnum(C.player.player_age) && isnum(minimal_player_age))
+		return max(0, minimal_player_age - C.player.player_age)
 	return 0
 
 /datum/role/job/proc/apply_fingerprints(var/mob/living/carbon/human/target)
@@ -405,7 +404,7 @@
 	if(alt_title && alt_titles)
 		var/typepath = alt_titles[alt_title]
 		if(typepath)
-			var/datum/prototype/alt_title/A = new typepath()
+			var/datum/prototype/struct/alt_title/A = new typepath()
 			if(A.title_blurb)
 				message |= A.title_blurb
 	return message
@@ -428,10 +427,6 @@
 	equip_preview(mannequin)
 	if(mannequin.back)
 		qdel(mannequin.back)
-
-/// Check client-specific availability rules.
-/datum/role/job/proc/player_has_enough_pto(client/C)
-	return timeoff_factor >= 0 || (C && LAZYACCESS(C.department_hours, pto_type) > 0)
 
 /datum/role/job/proc/equip_backpack(mob/living/carbon/human/H)
 	switch(H.backbag)

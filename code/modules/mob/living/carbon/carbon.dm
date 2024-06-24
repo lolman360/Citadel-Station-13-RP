@@ -28,20 +28,14 @@
 		qdel(food)
 	return ..()
 
-/mob/living/carbon/rejuvenate()
-	bloodstr.clear_reagents()
-	ingested.clear_reagents()
-	touching.clear_reagents()
-	..()
-
 /mob/living/carbon/gib()
 	for(var/mob/M in src)
 		if(M in src.stomach_contents)
 			src.stomach_contents.Remove(M)
-		M.loc = src.loc
+		M.forceMove(loc)
 		for(var/mob/N in viewers(src, null))
 			if(N.client)
-				N.show_message(text("<font color='red'><B>[M] bursts out of [src]!</B></font>"), 2)
+				N.show_message("<font color='red'><B>[M] bursts out of [src]!</B></font>", 2)
 	..()
 
 /mob/living/carbon/attack_hand(mob/user, list/params)
@@ -241,7 +235,7 @@
 
 /mob/living/carbon/verb/mob_sleep()
 	set name = "Sleep"
-	set category = "IC"
+	set category = VERB_CATEGORY_IC
 
 
 	if(is_sleeping())

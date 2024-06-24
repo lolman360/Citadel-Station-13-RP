@@ -60,13 +60,21 @@
 	energy = 0
 
 /datum/armor/general/samurai
-	melee = 1.0
-	bullet = 0.5
+	melee = 0.7
+	melee_soak = 5
+	bullet = 0.05
 	laser = 0.05
 
 /datum/armor/general/utilitarian_military
 	melee = 0.15
 	bullet = 0.4
 	laser = 0.6
+	energy = 0.3
+	bomb = 0.2
+
+/datum/armor/general/baroque_military
+	melee = 0.4
+	bullet = 0.3
+	laser = 0.4
 	energy = 0.3
 	bomb = 0.2

@@ -7,7 +7,6 @@
 /area/centcom/specops)
 "ac" = (
 /turf/unsimulated/wall{
-	icon = 'icons/obj/doors/Doorext.dmi';
 	icon_state = "door_locked";
 	name = "Sealed Door"
 	},
@@ -93,7 +92,7 @@
 	},
 /obj/structure/fans/tiny,
 /obj/machinery/access_button{
-	command = "cycle_exterior";
+	command = "cycle_ext";
 	frequency = 1380;
 	master_tag = "ert1_control";
 	pixel_x = 24;
@@ -214,7 +213,7 @@
 /obj/structure/closet/wardrobe/ert,
 /obj/item/modular_computer/laptop/preset/custom_loadout/elite,
 /obj/item/storage/box/survival/comp{
-	starts_with = list(/obj/item/tool/prybar/red,/obj/item/clothing/glasses/goggles,/obj/item/reagent_containers/hypospray/autoinjector,/obj/item/stack/medical/bruise_pack,/obj/item/flashlight/glowstick,/obj/item/reagent_containers/food/snacks/candy/proteinbar,/obj/item/clothing/mask/breath,/obj/item/tank/emergency/oxygen/engi)
+	starts_with = list(/obj/item/tool/prybar/red,/obj/item/clothing/glasses/goggles,/obj/item/reagent_containers/hypospray/autoinjector,/obj/item/stack/medical/bruise_pack,/obj/item/flashlight/glowstick,/obj/item/reagent_containers/food/snacks/wrapped/proteinbar,/obj/item/clothing/mask/breath,/obj/item/tank/emergency/oxygen/engi)
 	},
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
@@ -225,7 +224,7 @@
 	dir = 1
 	},
 /obj/item/storage/box/survival/comp{
-	starts_with = list(/obj/item/tool/prybar/red,/obj/item/clothing/glasses/goggles,/obj/item/reagent_containers/hypospray/autoinjector,/obj/item/stack/medical/bruise_pack,/obj/item/flashlight/glowstick,/obj/item/reagent_containers/food/snacks/candy/proteinbar,/obj/item/clothing/mask/breath,/obj/item/tank/emergency/oxygen/engi)
+	starts_with = list(/obj/item/tool/prybar/red,/obj/item/clothing/glasses/goggles,/obj/item/reagent_containers/hypospray/autoinjector,/obj/item/stack/medical/bruise_pack,/obj/item/flashlight/glowstick,/obj/item/reagent_containers/food/snacks/wrapped/proteinbar,/obj/item/clothing/mask/breath,/obj/item/tank/emergency/oxygen/engi)
 	},
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
@@ -305,7 +304,7 @@
 "aL" = (
 /obj/machinery/atmospherics/pipe/manifold/visible,
 /obj/machinery/access_button{
-	command = "cycle_interior";
+	command = "cycle_int";
 	frequency = 1380;
 	master_tag = "ert1_control";
 	pixel_x = -22;
@@ -382,10 +381,10 @@
 /area/shuttle/specops/centcom)
 "aQ" = (
 /obj/structure/table/rack/steel,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
 /obj/item/reagent_containers/hypospray,
 /obj/item/reagent_containers/hypospray,
 /obj/item/reagent_containers/hypospray,
@@ -538,7 +537,7 @@
 /turf/simulated/shuttle/floor/darkred,
 /area/shuttle/specops/centcom)
 "be" = (
-/obj/machinery/door/airlock/glass_medical{
+/obj/machinery/door/airlock/glass/medical{
 	name = "Medical Bay";
 	req_access = list(103)
 	},
@@ -612,12 +611,12 @@
 /obj/structure/table/rack/steel,
 /obj/item/gun/ballistic/automatic/sts35,
 /obj/item/gun/ballistic/automatic/sts35,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "bo" = (
@@ -721,12 +720,12 @@
 /obj/structure/table/rack/steel,
 /obj/item/gun/ballistic/automatic/sts35,
 /obj/item/gun/ballistic/automatic/sts35,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
-/obj/item/ammo_magazine/m545,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
+/obj/item/ammo_magazine/m556,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "bz" = (
@@ -892,10 +891,10 @@
 /area/shuttle/specops/centcom)
 "bS" = (
 /obj/structure/table/rack/steel,
-/obj/item/rig/ert/security,
-/obj/item/rig/ert/security,
-/obj/item/rig/ert/security,
-/obj/item/rig/ert/security,
+/obj/item/hardsuit/ert/security,
+/obj/item/hardsuit/ert/security,
+/obj/item/hardsuit/ert/security,
+/obj/item/hardsuit/ert/security,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "bT" = (
@@ -1291,7 +1290,7 @@
 /obj/item/mop,
 /obj/item/mop,
 /obj/item/mop,
-/obj/item/rig/ert/janitor,
+/obj/item/hardsuit/ert/janitor,
 /obj/item/lightreplacer,
 /obj/item/lightreplacer,
 /obj/item/storage/box/lights/mixed,
@@ -1464,7 +1463,7 @@
 /area/shuttle/specops/centcom)
 "da" = (
 /obj/structure/table/rack,
-/obj/item/rig/ert,
+/obj/item/hardsuit/ert,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "db" = (
@@ -1475,14 +1474,14 @@
 	req_access = list(160)
 	},
 /obj/structure/table/rack,
-/obj/item/rig/ert,
+/obj/item/hardsuit/ert,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dc" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/mounted/taser,
-/obj/item/rig_module/mounted/taser,
-/obj/item/rig_module/mounted/taser,
+/obj/item/hardsuit_module/mounted/taser,
+/obj/item/hardsuit_module/mounted/taser,
+/obj/item/hardsuit_module/mounted/taser,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dd" = (
@@ -1503,10 +1502,10 @@
 /area/shuttle/specops/centcom)
 "dg" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/device/drill,
-/obj/item/rig_module/device/drill,
-/obj/item/rig_module/maneuvering_jets,
-/obj/item/rig_module/maneuvering_jets,
+/obj/item/hardsuit_module/device/drill,
+/obj/item/hardsuit_module/device/drill,
+/obj/item/hardsuit_module/maneuvering_jets,
+/obj/item/hardsuit_module/maneuvering_jets,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dh" = (
@@ -1520,7 +1519,7 @@
 /turf/simulated/shuttle/floor/darkred,
 /area/shuttle/specops/centcom)
 "dj" = (
-/obj/machinery/door/airlock/glass_engineering{
+/obj/machinery/door/airlock/glass/engineering{
 	name = "Engineering";
 	req_access = list(103)
 	},
@@ -1652,34 +1651,34 @@
 /area/shuttle/specops/centcom)
 "dv" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/rescue_pharm,
-/obj/item/rig_module/sprinter,
-/obj/item/rig_module/sprinter,
+/obj/item/hardsuit_module/rescue_pharm,
+/obj/item/hardsuit_module/sprinter,
+/obj/item/hardsuit_module/sprinter,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dw" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/mounted,
-/obj/item/rig_module/mounted/egun,
-/obj/item/rig_module/mounted/egun,
+/obj/item/hardsuit_module/mounted,
+/obj/item/hardsuit_module/mounted/egun,
+/obj/item/hardsuit_module/mounted/egun,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dx" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/chem_dispenser/combat,
-/obj/item/rig_module/chem_dispenser/combat,
-/obj/item/rig_module/chem_dispenser/injector,
-/obj/item/rig_module/chem_dispenser/injector,
-/obj/item/rig_module/device/healthscanner,
-/obj/item/rig_module/device/healthscanner,
+/obj/item/hardsuit_module/chem_dispenser/combat,
+/obj/item/hardsuit_module/chem_dispenser/combat,
+/obj/item/hardsuit_module/chem_dispenser/injector,
+/obj/item/hardsuit_module/chem_dispenser/injector,
+/obj/item/hardsuit_module/device/healthscanner,
+/obj/item/hardsuit_module/device/healthscanner,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dy" = (
 /obj/structure/table/steel_reinforced,
-/obj/item/rig_module/device/rcd,
-/obj/item/rig_module/device/rcd,
-/obj/item/rig_module/device/plasmacutter,
-/obj/item/rig_module/device/plasmacutter,
+/obj/item/hardsuit_module/device/rcd,
+/obj/item/hardsuit_module/device/rcd,
+/obj/item/hardsuit_module/device/plasmacutter,
+/obj/item/hardsuit_module/device/plasmacutter,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dz" = (
@@ -1706,9 +1705,8 @@
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dB" = (
-/obj/machinery/autolathe{
+/obj/machinery/lathe/autolathe{
 	desc = "Your typical Autolathe. It appears to have much more options than your regular one, however...";
-	hacked = 1;
 	name = "Unlocked Autolathe"
 	},
 /turf/simulated/shuttle/floor/black,
@@ -1752,7 +1750,7 @@
 /area/shuttle/specops/centcom)
 "dF" = (
 /obj/structure/table/woodentable,
-/obj/item/stamp/centcomm,
+/obj/item/stamp/centcom,
 /obj/item/storage/box/cdeathalarm_kit,
 /obj/item/storage/box/trackimp,
 /turf/simulated/floor/carpet,
@@ -1826,7 +1824,7 @@
 /area/shuttle/specops/centcom)
 "dL" = (
 /obj/machinery/access_button{
-	command = "cycle_interior";
+	command = "cycle_int";
 	frequency = 1381;
 	master_tag = "ert2_control";
 	pixel_x = -22;
@@ -1874,10 +1872,10 @@
 /area/shuttle/specops/centcom)
 "dP" = (
 /obj/structure/table/rack/steel,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
 /obj/item/storage/belt/utility/chief/full,
 /obj/item/storage/belt/utility/chief/full,
 /obj/item/storage/belt/utility/chief/full,
@@ -1915,7 +1913,7 @@
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dS" = (
-/obj/structure/filingcabinet/filingcabinet,
+/obj/structure/filingcabinet/tall,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "dT" = (
@@ -2009,7 +2007,7 @@
 /area/shuttle/specops/centcom)
 "ed" = (
 /obj/machinery/access_button{
-	command = "cycle_exterior";
+	command = "cycle_ext";
 	frequency = 1381;
 	master_tag = "ert2_control";
 	pixel_x = 24;
@@ -2060,10 +2058,10 @@
 	pixel_y = 32
 	},
 /obj/structure/table/rack/steel,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
-/obj/item/rig/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
+/obj/item/hardsuit/ert/engineer,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "py" = (
@@ -2083,7 +2081,7 @@
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "zV" = (
-/obj/machinery/door/airlock/glass_command{
+/obj/machinery/door/airlock/glass/command{
 	req_one_access = list(103)
 	},
 /turf/simulated/shuttle/floor/black,
@@ -2093,10 +2091,10 @@
 	pixel_y = -32
 	},
 /obj/structure/table/rack/steel,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
-/obj/item/rig/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
+/obj/item/hardsuit/ert/medical,
 /turf/simulated/shuttle/floor/black,
 /area/shuttle/specops/centcom)
 "WJ" = (

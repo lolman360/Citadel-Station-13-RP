@@ -42,14 +42,14 @@ GLOBAL_LIST_INIT(multiz_hole_baseturfs, typecacheof(list(
 /turf/proc/baseturf_core()
 	// todo: this is shitcode, pull it out on maploader refactor.
 	// this is very obviously a copypaste from ChangeTurf.
-	. = SSmapping.level_trait(z, ZTRAIT_BASETURF) || GLOB.using_map.base_turf_by_z["[z]"] || /turf/space
+	. = SSmapping.level_baseturf(z) || world.turf
 	if(!ispath(.))
 		. = text2path(.)
 		if (!ispath(.))
-			warning("Z-level [z] has invalid baseturf '[SSmapping.level_trait(z, ZTRAIT_BASETURF)]'")
-			. = /turf/space
-	if(. == /turf/space)		// no space/basic check, if you use space/basic in a map honestly get bent
-		if(istype(GetBelow(src), /turf/simulated))
+			warning("Z-level [z] has invalid baseturf '[SSmapping.level_baseturf(z)]'")
+			. = world.turf
+	if(. == world.turf)		// no space/basic check, if you use space/basic in a map honestly get bent
+		if(istype(below(), /turf/simulated))
 			. = /turf/simulated/open
 /**
  * get baseturf on bottom
@@ -72,36 +72,46 @@ GLOBAL_LIST_INIT(multiz_hole_baseturfs, typecacheof(list(
 // Creates a new turf
 // new_baseturfs can be either a single type or list of types, formated the same as baseturfs. see turf.dm
 /turf/proc/ChangeTurf(path, list/new_baseturfs, flags)
+	// todo: hopefully someday we can get simulated/open to just be turf/open or something once
+	//       we refactor ZAS
+	//       then we can skip all this bullshit and have proper space zmimic
+	//       as long as zm overhead isn't too high.
+	//* THIS CANNOT CALL ANY PROCS UP UNTIL 'new path'! *//
 	switch(path)
 		if(null)
 			return
 		if(/turf/baseturf_bottom)
-			path = SSmapping.level_trait(z, ZTRAIT_BASETURF) || GLOB.using_map.base_turf_by_z["[z]"] || /turf/space
+			var/turf/below = below()
+			path = SSmapping.level_baseturf(z) || /turf/space
 			if(!ispath(path))
-				path = text2path(path)
-				if (!ispath(path))
-					warning("Z-level [z] has invalid baseturf '[SSmapping.level_trait(z, ZTRAIT_BASETURF)]'")
-					path = /turf/space
+				stack_trace("Z-level [z] has invalid baseturf '[SSmapping.level_baseturf(z)]'")
+				path = /turf/space
 			if(path == /turf/space)		// no space/basic check, if you use space/basic in a map honestly get bent
-				if(istype(GetBelow(src), /turf/simulated))
+				if(istype(below, /turf/simulated))
 					path = /turf/simulated/open
+			else if(path == /turf/simulated/open)
+				if(istype(below, /turf/space))
+					path = /turf/space
 		if(/turf/space/basic)
+			var/turf/below = below()
 			// basic doesn't initialize and this will cause issues
 			// no warning though because this can happen naturaly as a result of it being built on top of
-			if(istype(GetBelow(src), /turf/simulated))
+			if(istype(below, /turf/simulated))
 				path = /turf/simulated/open
 			else
 				path = /turf/space
 		if(/turf/space)
-			if(istype(GetBelow(src), /turf/simulated))
+			var/turf/below = below()
+			if(istype(below, /turf/simulated))
 				path = /turf/simulated/open
 		if(/turf/simulated/open)
-			if(istype(GetBelow(src), /turf/space))
+			var/turf/below = below()
+			if(istype(below, /turf/space))
 				path = /turf/space
 
-	if(!GLOB.use_preloader && path == type && !(flags & CHANGETURF_FORCEOP) && (baseturfs == new_baseturfs)) // Don't no-op if the map loader requires it to be reconstructed, or if this is a new set of baseturfs
+	if(!global.dmm_preloader_active && path == type && !(flags & CHANGETURF_FORCEOP) && (baseturfs == new_baseturfs)) // Don't no-op if the map loader requires it to be reconstructed, or if this is a new set of baseturfs
 		return src
-	if(flags & CHANGETURF_SKIP)
+	if(!(atom_flags & ATOM_INITIALIZED) || (flags & CHANGETURF_SKIP))
 		return new path(src)
 
 	// store lighting
@@ -355,6 +365,7 @@ GLOBAL_LIST_INIT(multiz_hole_baseturfs, typecacheof(list(
  * every if(!density) is a if(!istype(src, /turf/closed)) in this version.
  */
 /turf/proc/PlaceOnTop(list/new_baseturfs, turf/fake_turf_type, flags)
+	//* THIS CANNOT CALL ANY 'new'-CALLING PROCS UNTIL CHANGETURF CALLS! *//
 	var/area/turf_area = loc
 	if(new_baseturfs && !length(new_baseturfs))
 		new_baseturfs = list(new_baseturfs)
@@ -424,7 +435,7 @@ GLOBAL_LIST_INIT(multiz_hole_baseturfs, typecacheof(list(
 
 //If you modify this function, ensure it works correctly with lateloaded map templates.
 /turf/proc/AfterChange(flags, oldType) //called after a turf has been replaced in ChangeTurf()
-	levelupdate()
+	update_underfloor_objects()
 	if (above)
 		above.update_mimic()
 
@@ -433,6 +444,6 @@ GLOBAL_LIST_INIT(multiz_hole_baseturfs, typecacheof(list(
 		qdel(L)
 
 /turf/proc/ReplaceWithLattice()
-	ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
+	. = ScrapeAway(flags = CHANGETURF_INHERIT_AIR)
 	if(!(locate(/obj/structure/lattice) in .))
 		new /obj/structure/lattice(.)

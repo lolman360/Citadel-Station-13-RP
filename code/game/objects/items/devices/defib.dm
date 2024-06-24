@@ -13,7 +13,7 @@
 	damage_force = 5
 	throw_force = 6
 	preserve_item = 1
-	w_class = ITEMSIZE_LARGE
+	w_class = WEIGHT_CLASS_BULKY
 	origin_tech = list(TECH_BIO = 4, TECH_POWER = 2)
 	action_button_name = "Remove/Replace Paddles"
 
@@ -109,7 +109,7 @@
 
 /obj/item/defib_kit/verb/toggle_paddles()
 	set name = "Toggle Paddles"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 
 	var/mob/living/carbon/human/user = usr
 	if(!paddles)
@@ -133,9 +133,9 @@
 	if(!istype(M))
 		return 0 //not equipped
 
-	if((slot_flags & SLOT_BACK) && M.item_by_slot(SLOT_ID_BACK) == src)
+	if((slot_flags & SLOT_BACK) && M.item_by_slot_id(SLOT_ID_BACK) == src)
 		return 1
-	if((slot_flags & SLOT_BELT) && M.item_by_slot(SLOT_ID_BELT) == src)
+	if((slot_flags & SLOT_BELT) && M.item_by_slot_id(SLOT_ID_BELT) == src)
 		return 1
 
 	return 0
@@ -162,7 +162,7 @@
 	desc = "A belt-equipped defibrillator that can be rapidly deployed."
 	icon_state = "defibcompact"
 	item_state = "defibcompact"
-	w_class = ITEMSIZE_NORMAL
+	w_class = WEIGHT_CLASS_NORMAL
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_BIO = 5, TECH_POWER = 3)
 
@@ -195,7 +195,7 @@
 	gender = PLURAL
 	damage_force = 2
 	throw_force = 6
-	w_class = ITEMSIZE_LARGE
+	w_class = WEIGHT_CLASS_BULKY
 
 	var/safety = 1 //if you can zap people with the paddles on harm mode
 	var/combat = 0 //If it can be used to revive people wearing thick clothing (e.g. spacesuits)
@@ -296,7 +296,7 @@
 /obj/item/shockpaddles/proc/check_contact(mob/living/carbon/human/H)
 	if(!combat)
 		for(var/obj/item/clothing/cloth in list(H.wear_suit, H.w_uniform))
-			if((cloth.body_cover_flags & UPPER_TORSO) && (cloth.clothing_flags & THICKMATERIAL))
+			if((cloth.body_cover_flags & UPPER_TORSO) && (cloth.clothing_flags & CLOTHING_THICK_MATERIAL))
 				return FALSE
 	return TRUE
 
@@ -470,19 +470,12 @@
 	add_attack_logs(user,H,"Shocked using [name]")
 
 /obj/item/shockpaddles/proc/make_alive(mob/living/carbon/human/M) //This revives the mob
-	dead_mob_list.Remove(M)
-	if((M in living_mob_list) || (M in dead_mob_list))
-		WARNING("Mob [M] was defibbed but already in the living or dead list still!")
-	living_mob_list += M
-
-	M.timeofdeath = 0
-	M.set_stat(UNCONSCIOUS) //Life() can bring them back to consciousness if it needs to.
-	M.failed_last_breath = 0 //So mobs that died of oxyloss don't revive and have perpetual out of breath.
-	M.reload_fullscreen()
+	. = M.revive()
+	if(!.)
+		return
 
 	M.emote("gasp")
 	M.afflict_paralyze(20 * rand(10,25))
-	M.update_health()
 
 /obj/item/shockpaddles/proc/make_announcement(var/message, var/msg_class)
 	audible_message("<b>\The [src]</b> [message]", "\The [src] vibrates slightly.")
@@ -651,18 +644,18 @@
 	item_state = "jumperpaddles0"
 	use_on_synthetic = 1
 
-// Rig Defibs
-/obj/item/shockpaddles/standalone/rig
+// Hardsuit Defibs
+/obj/item/shockpaddles/standalone/hardsuit
 	desc = "You shouldn't be seeing these."
 	chargetime = (2 SECONDS)
 
-/obj/item/shockpaddles/standalone/rig/checked_use(var/charge_amt)
+/obj/item/shockpaddles/standalone/hardsuit/checked_use(var/charge_amt)
 	return 1
 
-/obj/item/shockpaddles/standalone/rig/emp_act(severity)
+/obj/item/shockpaddles/standalone/hardsuit/emp_act(severity)
 	return
 
-/obj/item/shockpaddles/standalone/rig/can_use(mob/user, mob/M)
+/obj/item/shockpaddles/standalone/hardsuit/can_use(mob/user, mob/M)
 	return 1
 
 #undef DEFIB_TIME_LIMIT

@@ -20,7 +20,7 @@
 
 /obj/item/clothing/ears/earmuffs/headphones/verb/togglemusic()
 	set name = "Toggle Headphone Music"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set src in usr
 	if(!istype(usr, /mob/living)) return
 	if(usr.stat) return
@@ -52,7 +52,7 @@
 	name = "skrell tentacle wear"
 	desc = "Some stuff worn by skrell to adorn their head tentacles."
 	icon = 'icons/obj/clothing/ears.dmi'
-	w_class = ITEMSIZE_TINY
+	w_class = WEIGHT_CLASS_TINY
 	slot_flags = SLOT_EARS
 
 /obj/item/clothing/ears/skrell/chain
@@ -192,3 +192,29 @@
 	name = "light blue headtail cloth"
 	icon_state = "skrell_cloth_lblue_male"
 	item_state_slots = list(SLOT_ID_RIGHT_HAND = "egg2", SLOT_ID_LEFT_HAND = "egg2")
+
+/obj/item/clothing/ears/laurel
+	name = "laurel wreath"
+	desc = "A dark green laurel wreath that's worn tight around the head."
+	icon = 'icons/obj/clothing/ears.dmi'
+	icon_state = "laurel"
+	w_class = WEIGHT_CLASS_TINY
+	slot_flags = SLOT_EARS
+	drop_sound = 'sound/items/drop/wrapper.ogg'
+	pickup_sound = 'sound/items/drop/wrapper.ogg'
+
+/obj/item/clothing/ears/laurel/silver
+	name = "silver laurel wreath"
+	desc = "A laurel wreath made of silver that's worn tight around the head."
+	icon_state = "laurel_s"
+	slot_flags = SLOT_EARS
+	drop_sound = 'sound/items/drop/ring.ogg'
+	pickup_sound = 'sound/items/pickup/ring.ogg'
+
+/obj/item/clothing/ears/laurel/gold
+	name = "golden laurel wreath"
+	desc = "A laurel wreath made of gold that's worn tight around the head."
+	icon_state = "laurel_g"
+	slot_flags = SLOT_EARS
+	drop_sound = 'sound/items/drop/ring.ogg'
+	pickup_sound = 'sound/items/pickup/ring.ogg'

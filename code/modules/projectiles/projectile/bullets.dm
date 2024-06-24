@@ -50,10 +50,10 @@
 	var/chance = damage
 	if(istype(A, /turf/simulated/wall))
 		var/turf/simulated/wall/W = A
-		chance = round(damage/W.material.integrity*180)
+		chance = round(damage/W.material_outer.density*1.8)
 	else if(istype(A, /obj/machinery/door))
 		var/obj/machinery/door/D = A
-		chance = round(damage/D.maxhealth*180)
+		chance = round(damage/D.integrity_max*180)
 		if(D.glass) chance *= 2
 	else if(istype(A, /obj/structure/girder))
 		chance = 100
@@ -235,7 +235,7 @@
 //EMP shotgun 'slug', it's basically a beanbag that pops a tiny emp when it hits. //Not currently used
 /obj/projectile/bullet/shotgun/ion
 	name = "ion slug"
-	fire_sound = 'sound/weapons/Laser.ogg' // Really? We got nothing better than this?
+	fire_sound = 'sound/weapons/gunshot/gunshot_tech_huge.ogg'
 	damage = 15
 	embed_chance = 0
 	sharp = 0
@@ -308,25 +308,25 @@
 	SA_vulnerability = MOB_CLASS_DEMONIC
 	holy = TRUE
 
-/obj/projectile/bullet/rifle/a545
+/obj/projectile/bullet/rifle/a556
 	fire_sound = 'sound/weapons/weaponsounds_rifleshot.ogg'
 	damage = 25
 
-/obj/projectile/bullet/rifle/a545/ap
+/obj/projectile/bullet/rifle/a556/ap
 	damage = 20
 	armor_penetration = 50 // At 40 or more armor, this will do more damage than standard rounds.
 
-/obj/projectile/bullet/rifle/a545/hp
+/obj/projectile/bullet/rifle/a556/hp
 	damage = 35
 	armor_penetration = -50
 	penetrating = 0
 
-/obj/projectile/bullet/rifle/a545/hunter
+/obj/projectile/bullet/rifle/a556/hunter
 	damage = 15
 	SA_bonus_damage = 35 // 50 total on animals.
 	SA_vulnerability = MOB_CLASS_ANIMAL
 
-/obj/projectile/bullet/rifle/a145 // 14.5×114mm is bigger than a .50 BMG round.
+/obj/projectile/bullet/rifle/a127 // 14.5×114mm is bigger than a .50 BMG round.
 	fire_sound = 'sound/weapons/Gunshot_cannon.ogg' // This is literally an anti-tank rifle caliber. It better sound like a fucking cannon.
 	damage = 80
 	stun = 3
@@ -483,15 +483,46 @@
 	icon_state = "fireball"
 	damage = 10
 	embed_chance = 0
-	incendiary = 2
+	//incendiary = 2 //The Trail of Fire doesn't work.
 	flammability = 4
 	agony = 30
 	range = 4
 	vacuum_traversal = 0
 
+/obj/projectile/bullet/incendiary/flamethrower/weak
+	flammability = 2
+
 /obj/projectile/bullet/incendiary/flamethrower/large
 	damage = 15
 	range = 6
+
+/obj/projectile/bullet/incendiary/caseless
+	name = "12.7mm phoron slug"
+	icon_state = "bullet_alt"
+	damage = 60
+	damage_type = BRUTE
+	incendiary = 1
+	flammability = 4
+	armor_penetration = 40
+	penetrating = 5
+	combustion = TRUE
+
+/obj/projectile/bullet/incendiary/caseless/on_hit(var/atom/movable/target, var/blocked = 0)
+	if(isliving(target))
+		var/mob/living/L = target
+		L.adjustFireLoss(10)
+
+/obj/projectile/bullet/incendiary/phoronshrap
+	name = "phoron shrapnel slug"
+	icon_state = "bullet_alt"
+	damage = 40
+	armor_penetration = 30
+	damage_type = BRUTE
+	incendiary = 1
+	flammability = 4
+	penetrating = 1
+	combustion = TRUE
+
 
 /* Practice rounds and blanks */
 
@@ -506,6 +537,8 @@
 	nodamage = 1
 	embed_chance = 0
 	sharp = 0
+	incendiary = 1
+	flammability = 4
 
 	combustion = FALSE
 

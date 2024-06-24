@@ -19,7 +19,7 @@
 
 /obj/item/reagent_containers/cartridge/dispenser/verb/set_label_verb()
 	set name = "Set Label"
-	set category = "Object"
+	set category = VERB_CATEGORY_OBJECT
 	set src in usr
 
 	var/new_label = input(usr, "Enter a new label.", "Label Cartridge", label) as text|null
@@ -31,7 +31,7 @@
 
 	set_label(new_label)
 
-/obj/item/reagent_containers/cartridge/dispenser/examine(mob/user)
+/obj/item/reagent_containers/cartridge/dispenser/examine(mob/user, dist)
 	. = ..()
 	. += "It has a capacity of [volume] units."
 	if(reagents.total_volume <= 0)
