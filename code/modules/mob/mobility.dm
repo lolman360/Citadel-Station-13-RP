@@ -42,9 +42,14 @@
 			. &= ~MOBILITY_CAN_STAND
 
 	// set, return, and signal.
+	var/old = mobility_flags
 	mobility_flags = (. & ~(blocked | mobility_flags_blocked)) | (forced | mobility_flags_forced)
 	. = mobility_flags
+	if(mobility_flags == old)
+		return
+
 	SEND_SIGNAL(src, COMSIG_MOB_ON_UPDATE_MOBILITY, .)
+	inventory?.on_mobility_update()
 
 /mob/proc/update_mobility_blocked()
 	var/old = mobility_flags_blocked

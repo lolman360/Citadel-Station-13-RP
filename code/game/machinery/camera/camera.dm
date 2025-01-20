@@ -110,7 +110,7 @@ CREATE_WALL_MOUNTING_TYPES(/obj/machinery/camera)
 	src.view_range = num
 	GLOB.cameranet.updateVisibility(src, 0)
 
-/obj/machinery/camera/attack_hand(mob/user, list/params)
+/obj/machinery/camera/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
 	var/mob/living/carbon/human/L = user
 	if(!istype(L))
 		return
@@ -257,13 +257,14 @@ CREATE_WALL_MOUNTING_TYPES(/obj/machinery/camera)
 	if(isXRay())
 		P.SetSight(SEE_TURFS | SEE_MOBS | SEE_OBJS)
 
-/obj/machinery/camera/update_icon()
+/obj/machinery/camera/update_icon_state()
 	if (!status || (machine_stat & BROKEN))
 		icon_state = "[initial(icon_state)]1"
 	else if (machine_stat & EMPED)
 		icon_state = "[initial(icon_state)]emp"
 	else
 		icon_state = initial(icon_state)
+	return ..()
 
 /obj/machinery/camera/proc/triggerCameraAlarm(duration = 0)
 	alarm_on = 1

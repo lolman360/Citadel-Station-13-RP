@@ -56,7 +56,7 @@
 
 /obj/machinery/biogenerator/Initialize(mapload, newdir)
 	. = ..()
-	var/datum/reagents/R = new/datum/reagents(1000)
+	var/datum/reagent_holder/R = new/datum/reagent_holder(1000)
 	reagents = R
 	R.my_atom = src
 
@@ -249,6 +249,7 @@
 
 /obj/machinery/biogenerator/update_icon()
 	cut_overlays()
+	. = ..()
 	if(beaker)
 		add_overlay("[base_icon_state]-standby")
 		if(processing)

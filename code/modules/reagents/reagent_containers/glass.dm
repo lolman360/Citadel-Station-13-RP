@@ -61,7 +61,7 @@
 	base_desc = desc
 
 
-/obj/item/reagent_containers/glass/attack_self(mob/user)
+/obj/item/reagent_containers/glass/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -122,7 +122,7 @@
 			to_chat(user, "<span class='notice'>You set the label to \"[tmp_label]\".</span>")
 			label_text = tmp_label
 			update_name_label()
-	if(istype(W,/obj/item/storage/bag))
+	if(istype(W,/obj/item/storage/bag) || istype(W,/obj/item/storage/part_replacer))
 		..()
 	if(istype(W,/obj/item/reagent_containers/glass) || istype(W,/obj/item/reagent_containers/food/drinks) || istype(W,/obj/item/reagent_containers/food/condiment))
 		return
@@ -172,7 +172,7 @@
 	. = ..()
 	update_icon()
 
-/obj/item/reagent_containers/glass/beaker/attack_hand(mob/user, list/params)
+/obj/item/reagent_containers/glass/beaker/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
 	..()
 	update_icon()
 
@@ -292,7 +292,7 @@
 		user.put_in_hands_or_drop(new /obj/item/clothing/head/helmet/bucket)
 		qdel(src)
 		return
-	else if(D.is_material_stack_of(/datum/material/steel))
+	else if(D.is_material_stack_of(/datum/prototype/material/steel))
 		var/obj/item/stack/material/M = D
 		if (M.use(1))
 			var/obj/item/secbot_assembly/edCLN_assembly/B = new /obj/item/secbot_assembly/edCLN_assembly(get_turf(src))

@@ -92,7 +92,7 @@
 			toggle_close_open()
 
 
-/obj/structure/fireaxecabinet/attack_hand(mob/user, list/params)
+/obj/structure/fireaxecabinet/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
 	//var/hasaxe = 0	//Fuck this. Fuck everything about this. Who wrote this. Why.
 	//if(fireaxe)
 	//	hasaxe = 1
@@ -180,6 +180,7 @@
 		return
 
 /obj/structure/fireaxecabinet/update_icon() //Template: fireaxe[has fireaxe][is opened][hits taken][is smashed]. If you want the opening or closing animations, add "opening" or "closing" right after the numbers
+	. = ..()
 	hasaxe = 0
 	if(fireaxe)
 		hasaxe = 1

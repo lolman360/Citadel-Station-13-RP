@@ -32,7 +32,7 @@ GLOBAL_LIST_EMPTY(possible_gifts)
 	. = ..()
 	. += SPAN_NOTICE("It contains \a [initial(contains_type.name)].")
 
-/obj/item/a_gift/attack_self(mob/user)
+/obj/item/a_gift/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -76,7 +76,6 @@ GLOBAL_LIST_EMPTY(possible_gifts)
 	var/gift_type = pick(gift_type_list)
 
 	return gift_type
-
 
 /obj/item/a_gift/anything
 	name = "christmas gift"

@@ -52,7 +52,11 @@
 	/// panic bunker is still resolving
 	var/panic_bunker_pending = FALSE
 
-	//? Context Menus
+	//* Actions *//
+	/// our action holder
+	var/datum/action_holder/action_holder
+
+	//* Context Menus *//
 	/// open context menu
 	var/datum/radial_menu/context_menu/context_menu
 
@@ -104,22 +108,6 @@
 	/// client preferences
 	var/datum/game_preferences/preferences
 
-	//? Statpanel
-	/// statpanel tab ; can be null (e.g. we're looking at verb tabs)
-	var/statpanel_tab
-	/// statpanel initialized
-	var/statpanel_ready = FALSE
-	/// turf being listed
-	var/turf/statpanel_turf
-	/// tabs the panel has
-	var/list/statpanel_tabs
-	/// statpanel variable tabs: spells / other "simple" action button frameworks
-	var/list/statpanel_spell_last
-	/// are we on byond stat? if so we can just skip the js one in data transmit (and vice versa)
-	var/statpanel_on_byond = FALSE
-	/// did we get autoswitched to byond stat for turf? if so we'll switch back when we un-list
-	var/statpanel_for_turf = FALSE
-
 	//? Throttling
 	/// block re-execution of expensive verbs
 	var/verb_throttle = 0
@@ -136,6 +124,21 @@
 	/// cutscene lockout: set after a browser synchronization command to delay the next one
 	/// since byond is deranged and will send winsets and browse calls out of order sometimes.
 	var/cutscene_lockout = FALSE
+
+	//* UI - Client *//
+	/// our tooltips system
+	var/datum/tooltip/tooltips
+	/// chat panel
+	var/datum/tgui_panel/tgui_panel
+	/// statpanel
+	var/datum/client_statpanel/tgui_stat
+
+	//* UI - Map *//
+	/// Our action drawer
+	var/datum/action_drawer/action_drawer
+	/// Our actor HUD holder
+	var/datum/actor_hud_holder/actor_huds
+
 
 		////////////////
 		//ADMIN THINGS//
@@ -164,7 +167,6 @@
 	var/area = null
 	///when the client last died as a mouse
 	var/time_died_as_mouse = null
-	var/datum/tooltip/tooltips 	= null
 
 	var/adminhelped = 0
 
@@ -293,3 +295,14 @@
 	for(var/datum/atom_hud_provider/provider as anything in atom_hud_providers)
 		provider.remove_client(src)
 	atom_hud_providers = null
+
+//* Transfer *//
+
+/**
+ * transfers us to a mob
+ *
+ * **never directly set ckey on a client or mob!**
+ */
+/client/proc/transfer_to(mob/moving_to)
+	var/mob/moving_from = mob
+	return moving_from.transfer_client_to(moving_to)

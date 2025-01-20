@@ -21,7 +21,7 @@
 	to_chat(user, "<b>ERROR ERROR ERROR</b>")
 	return CLICKCHAIN_DO_NOT_PROPAGATE
 
-/obj/item/aicard/attack_self(mob/user)
+/obj/item/aicard/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -90,6 +90,7 @@
 
 /obj/item/aicard/update_icon()
 	cut_overlays()
+	. = ..()
 	if(carded_ai)
 		if (!carded_ai.control_disabled)
 			add_overlay("aicard-on")
@@ -174,6 +175,7 @@
 
 /obj/item/aicard/aitater/update_icon()
 	cut_overlays()
+	. = ..()
 	if(carded_ai)
 		if (!carded_ai.control_disabled)
 			add_overlay("aitater-on")
@@ -191,6 +193,7 @@
 
 /obj/item/aicard/aispook/update_icon()
 	cut_overlays()
+	. = ..()
 	if(carded_ai)
 		if (!carded_ai.control_disabled)
 			add_overlay("aispook-on")

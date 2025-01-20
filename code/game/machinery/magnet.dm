@@ -13,7 +13,7 @@
 	anchored = TRUE
 	use_power = USE_POWER_IDLE
 	idle_power_usage = 50
-	hides_underfloor = OBJ_UNDERFLOOR_UNLESS_CREATED_ONTOP
+	hides_underfloor = OBJ_UNDERFLOOR_UNLESS_PLACED_ONTOP
 	hides_underfloor_update_icon = TRUE
 
 	/// Radio frequency.
@@ -248,7 +248,7 @@
 /obj/machinery/magnetic_controller/attack_ai(mob/user)
 	return attack_hand(user)
 
-/obj/machinery/magnetic_controller/attack_hand(mob/user, list/params)
+/obj/machinery/magnetic_controller/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
 	if(machine_stat & (BROKEN|NOPOWER))
 		return
 	user.set_machine(src)

@@ -41,7 +41,7 @@
 		update_icon()
 		return
 
-/obj/item/glass_jar/attack_self(mob/user)
+/obj/item/glass_jar/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -84,6 +84,7 @@
 /obj/item/glass_jar/update_icon() // Also updates name and desc
 	underlays.Cut()
 	cut_overlays()
+	. = ..()
 	switch(contains)
 		if(0)
 			name = initial(name)

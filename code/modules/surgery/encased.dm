@@ -19,8 +19,11 @@
 ///////////////////////////////////////////////////////////////
 
 /datum/surgery_step/open_encased/saw
+	step_name = "Saw bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/circular_saw = 100, \
+		/obj/item/surgical/saw_bronze = 75, \
 		/obj/item/material/knife/machete/hatchet = 75,	\
 		/obj/item/surgical/saw_primitive = 60
 	)
@@ -61,7 +64,7 @@
 	user.visible_message("<font color='red'>[user]'s hand slips, cracking [target]'s [affected.encased] with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, cracking [target]'s [affected.encased] with \the [tool]!</font>" )
 
-	affected.create_wound(CUT, 20)
+	affected.create_wound(WOUND_TYPE_CUT, 20)
 	affected.fracture()
 
 ///////////////////////////////////////////////////////////////
@@ -69,6 +72,8 @@
 ///////////////////////////////////////////////////////////////
 
 /datum/surgery_step/open_encased/retract
+	step_name = "Retract bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/retractor = 100,
 		/obj/item/surgical/retractor_primitive = 75
@@ -115,7 +120,7 @@
 	var/self_msg = "<font color='red'>Your hand slips, cracking [target]'s  [affected.encased]!</font>"
 	user.visible_message(msg, self_msg)
 
-	affected.create_wound(BRUISE, 20)
+	affected.create_wound(WOUND_TYPE_BRUISE, 20)
 	affected.fracture()
 
 ///////////////////////////////////////////////////////////////
@@ -123,6 +128,8 @@
 ///////////////////////////////////////////////////////////////
 
 /datum/surgery_step/open_encased/close
+	step_name = "Close bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/retractor = 100,
 		/obj/item/surgical/retractor_primitive = 75
@@ -170,7 +177,7 @@
 	var/self_msg = "<font color='red'>Your hand slips, bending [target]'s [affected.encased] the wrong way!</font>"
 	user.visible_message(msg, self_msg)
 
-	affected.create_wound(BRUISE, 20)
+	affected.create_wound(WOUND_TYPE_BRUISE, 20)
 	affected.fracture()
 
 	/*if (prob(40)) //TODO: ORGAN REMOVAL UPDATE.
@@ -182,6 +189,8 @@
 ///////////////////////////////////////////////////////////////
 
 /datum/surgery_step/open_encased/mend
+	step_name = "Mend bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/bonegel = 100
 	)
@@ -223,6 +232,8 @@
 // Saw/Retractor/Gel Combi-open and close.
 ///////////////////////////////////////////////////////////////
 /datum/surgery_step/open_encased/advancedsaw_open
+	step_name = "Divert bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/circular_saw/manager = 100
 	)
@@ -265,13 +276,15 @@
 	user.visible_message("<font color='red'>[user]'s hand slips, searing [target]'s [affected.encased] with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, searing [target]'s [affected.encased] with \the [tool]!</font>" )
 
-	affected.create_wound(CUT, 20)
-	affected.create_wound(BURN, 15)
+	affected.create_wound(WOUND_TYPE_CUT, 20)
+	affected.create_wound(WOUND_TYPE_BURN, 15)
 	if(prob(affected.damage))
 		affected.fracture()
 
 
 /datum/surgery_step/open_encased/advancedsaw_mend
+	step_name = "Seal bones"
+
 	allowed_tools = list(
 		/obj/item/surgical/circular_saw/manager = 100
 	)

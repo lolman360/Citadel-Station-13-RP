@@ -22,7 +22,7 @@
 		to_chat(user, "<span class='notice'>You have to go closer if you want to read it.</span>")
 
 //hit yourself with it
-/obj/item/holowarrant/attack_self(mob/user)
+/obj/item/holowarrant/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -61,6 +61,7 @@
 	return CLICKCHAIN_DO_NOT_PROPAGATE
 
 /obj/item/holowarrant/update_icon()
+	. = ..()
 	if(active)
 		icon_state = "holowarrant_filled"
 	else

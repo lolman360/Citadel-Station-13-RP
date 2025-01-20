@@ -21,6 +21,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/mend_vessels
+	step_name = "Mend vessels"
+
 	priority = 1
 	allowed_tools = list(
 		/obj/item/surgical/FixOVein = 100,
@@ -48,7 +50,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user]'s hand slips, tearing at [target]'s brainstem with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, tearing at [target]'s brainstem with \the [tool]!</font>" )
-	affected.create_wound(PIERCE, 10)
+	affected.create_wound(WOUND_TYPE_PIERCE, 10)
 	target.adjust_unconscious(20 * 10)
 
 /////////////////////////////
@@ -56,6 +58,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/drill_vertebrae
+	step_name = "Drill vertebrae"
+
 	priority = 3 //Do this instead of expanding the skull cavity
 	allowed_tools = list(
 		/obj/item/surgical/surgicaldrill = 100,
@@ -88,7 +92,7 @@
 	//var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user] almost loses their grip on the [tool]!</font>" , \
 	"<font color='red'>Your hand slips and nearly shreds [target]'s brainstem with \the [tool]!</font>" )
-	/*affected.create_wound(PIERCE, 10)
+	/*affected.create_wound(WOUND_TYPE_PIERCE, 10)
 	target.adjust_unconscious(20 * 15)
 	spawn()
 		for(var/obj/item/organ/internal/brain/O in affected.internal_organs)
@@ -99,6 +103,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/clean_chips
+	step_name = "Clear bone chips"
+
 	priority = 3 //Do this instead of picking around for implants.
 	allowed_tools = list(
 		/obj/item/surgical/hemostat = 100,
@@ -128,7 +134,7 @@
 	//var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user]'s hand slips, gouging [target]'s brainstem with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, gouging [target]'s brainstem with \the [tool]!</font>" )
-	/*affected.create_wound(CUT, 5)
+	/*affected.create_wound(WOUND_TYPE_CUT, 5)
 	target.adjust_unconscious(20 * 10)
 	spawn()
 		for(var/obj/item/organ/internal/brain/O in affected.internal_organs) //If there's more than one...
@@ -139,6 +145,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/mend_cord
+	step_name = "Mend spinal cord"
+
 	priority = 1 //Do this after IB.
 	allowed_tools = list(
 		/obj/item/surgical/FixOVein = 100,
@@ -168,7 +176,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user]'s hand slips, tearing at [target]'s spinal cord with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, tearing at [target]'s spinal cord with \the [tool]!</font>" )
-	affected.create_wound(PIERCE, 5)
+	affected.create_wound(WOUND_TYPE_PIERCE, 5)
 	target.adjust_unconscious(20 * 20)
 	spawn()
 		for(var/obj/item/organ/internal/brain/O in affected.internal_organs)
@@ -179,6 +187,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/mend_vertebrae
+	step_name = "Mend vertebrae"
+
 	priority = 3 //Do this instead of fixing bones.
 	allowed_tools = list(
 		/obj/item/surgical/bonegel = 100,
@@ -206,7 +216,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user]'s hand slips, tearing at [target]'s spinal cord with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, tearing at [target]'s spinal cord with \the [tool]!</font>" )
-	affected.create_wound(PIERCE, 5)
+	affected.create_wound(WOUND_TYPE_PIERCE, 5)
 	target.adjust_unconscious(20 * 15)
 	spawn()
 		for(var/obj/item/organ/internal/brain/O in affected.internal_organs)
@@ -217,6 +227,8 @@
 /////////////////////////////
 
 /datum/surgery_step/brainstem/realign_tissue
+	step_name = "Realign tissue"
+
 	priority = 3 //Do this instead of searching for objects in the skull.
 	allowed_tools = list(
 		/obj/item/surgical/hemostat = 100,
@@ -246,7 +258,7 @@
 	var/obj/item/organ/external/affected = target.get_organ(target_zone)
 	user.visible_message("<font color='red'>[user]'s hand slips, gouging [target]'s brainstem with \the [tool]!</font>" , \
 	"<font color='red'>Your hand slips, gouging [target]'s brainstem with \the [tool]!</font>" )
-	affected.create_wound(CUT, 5)
+	affected.create_wound(WOUND_TYPE_CUT, 5)
 	target.adjust_unconscious(20 * 30)
 	spawn()
 		for(var/obj/item/organ/internal/brain/O in affected.internal_organs)

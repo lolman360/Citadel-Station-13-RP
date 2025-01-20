@@ -1,3 +1,8 @@
+/mob
+	//* Impairments *//
+	/// active feign_impairment types
+	/// * lazy list
+	var/list/impairments_feigned
 
 /**
  * Intialize a mob
@@ -15,11 +20,10 @@
  */
 /mob/Initialize(mapload)
 	// mob lists
-	GLOB.mob_list += src
-	if(stat == DEAD)
-		dead_mob_list += src
-	else
-		living_mob_list += src
+	mob_list_register(stat)
+	// actions
+	actions_controlled = new /datum/action_holder/mob_actor(src)
+	actions_innate = new /datum/action_holder/mob_actor(src)
 	// physiology
 	init_physiology()
 	// atom HUDs
@@ -48,6 +52,8 @@
 	initialize_actionspeed()
 	// ssd overlay
 	update_ssd_overlay()
+	// iff factions
+	init_iff()
 	return ..()
 
 /mob/Destroy()
@@ -82,6 +88,9 @@
 	SEND_GLOBAL_SIGNAL(COMSIG_GLOBAL_MOB_DEL, src)
 	// abilities
 	dispose_abilities()
+	// actions
+	QDEL_NULL(actions_controlled)
+	QDEL_NULL(actions_innate)
 	// this kicks out client
 	ghostize()
 	// get rid of our shit and nullspace everything first..
@@ -90,10 +99,8 @@
 	if(hud_used)
 		QDEL_NULL(hud_used)
 	dispose_rendering()
-	// perspective
-	using_perspective?.remove_mobs(src, TRUE)
-	if(self_perspective)
-		QDEL_NULL(self_perspective)
+	// perspective; it might be gone now because self perspective is destroyed in ..()
+	using_perspective?.remove_mob(src, TRUE)
 	// physiology
 	QDEL_NULL(physiology)
 	physiology_modifiers = null
@@ -102,6 +109,8 @@
 	// actionspeed
 	actionspeed_modification = null
 	return QDEL_HINT_HARDDEL
+
+//* Mob List Registration *//
 
 /mob/proc/mob_list_register(for_stat)
 	GLOB.mob_list += src
@@ -171,7 +180,7 @@
 	if(C.statpanel_tab("Status"))
 		STATPANEL_DATA_ENTRY("Ping", "[round(client.lastping,1)]ms (Avg: [round(client.avgping,1)]ms)")
 		STATPANEL_DATA_ENTRY("Map", "[(LEGACY_MAP_DATUM)?.name || "Loading..."]")
-		if(!isnull(SSmapping.next_station) && (SSmapping.next_station.name != SSmapping.loaded_station.name))
+		if(!isnull(SSmapping.next_station) && !isnull(SSmapping.loaded_station) && (SSmapping.next_station.name != SSmapping.loaded_station.name))
 			STATPANEL_DATA_ENTRY("Next Map", "[SSmapping.next_station.name]")
 
 /// Message, type of message (1 or 2), alternative message, alt message type (1 or 2)
@@ -425,21 +434,6 @@
 			. += M
 	. -= src
 
-/mob/proc/ret_grab(obj/effect/list_container/mobl/L as obj, flag)
-	return
-
-/**
- * Verb to activate the object in your held hand
- *
- * Calls attack self on the item and updates the inventory hud for hands
- */
-/mob/verb/mode()
-	set name = "Activate Held Object"
-	set category = VERB_CATEGORY_OBJECT
-	set src = usr
-
-	return
-
 /**
  * Get the notes of this mob
  *
@@ -592,7 +586,7 @@
 		qdel(M)
 		return
 
-	M.key = key
+	transfer_client_to(M)
 	if(M.mind)
 		M.mind.reset()
 	return
@@ -723,7 +717,7 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 /mob/proc/pull_damage()
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
-		if(H.health - H.halloss <= config_legacy.health_threshold_softcrit)
+		if(H.health - H.halloss <= H.getSoftCritHealth())
 			for(var/name in H.organs_by_name)
 				var/obj/item/organ/external/e = H.organs_by_name[name]
 				if(e && H.lying)
@@ -1040,9 +1034,6 @@ GLOBAL_VAR_INIT(exploit_warn_spam_prevention, 0)
 /mob/proc/update_client_color()
 	if(client && client.color)
 		animate(client, color = null, time = 10)
-	return
-
-/mob/proc/swap_hand()
 	return
 
 /mob/proc/will_show_tooltip()

@@ -59,7 +59,7 @@
 
 /obj/item/integrated_circuit/manipulation/anchoring/remove(mob/user, silent, index)
 	if(assembly.anchored_by == src)
-		silent ? null : to_chat(SPAN_WARNING("With the bolts deployed you can't remove the circuit."))
+		silent ? null : to_chat(user, SPAN_WARNING("With the bolts deployed you can't remove the circuit."))
 		return
 	. = ..()
 
@@ -291,7 +291,7 @@
 	set_pin_data(IC_OUTPUT, 4, contents)
 	push_data()
 
-/obj/item/integrated_circuit/manipulation/grabber/attack_self(mob/user)
+/obj/item/integrated_circuit/manipulation/grabber/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -495,17 +495,17 @@
 	ext_cooldown = 1
 	cooldown_per_use = 10
 	var/static/list/mtypes = list(
-		/datum/material/iron,
-		/datum/material/glass,
-		/datum/material/silver,
-		/datum/material/gold,
-		/datum/material/diamond,
-		/datum/material/uranium,
-		/datum/material/plasma,
-		/datum/material/bluespace,
-		/datum/material/bananium,
-		/datum/material/titanium,
-		/datum/material/plastic
+		/datum/prototype/material/iron,
+		/datum/prototype/material/glass,
+		/datum/prototype/material/silver,
+		/datum/prototype/material/gold,
+		/datum/prototype/material/diamond,
+		/datum/prototype/material/uranium,
+		/datum/prototype/material/plasma,
+		/datum/prototype/material/bluespace,
+		/datum/prototype/material/bananium,
+		/datum/prototype/material/titanium,
+		/datum/prototype/material/plastic
 		)
 
 /obj/item/integrated_circuit/manipulation/matman/ComponentInitialize()
@@ -517,7 +517,7 @@
 	var/datum/component/material_container/materials = GetComponent(/datum/component/material_container)
 	set_pin_data(IC_OUTPUT, 2, materials.total_amount)
 	for(var/I in 1 to mtypes.len)
-		var/datum/material/M = materials.materials[SSmaterials.GetMaterialRef(I)]
+		var/datum/prototype/material/M = materials.materials[SSmaterials.GetMaterialRef(I)]
 		var/amount = materials[M]
 		if(M)
 			set_pin_data(IC_OUTPUT, I+2, amount)
@@ -548,7 +548,7 @@
 			var/datum/component/material_container/mt = H.GetComponent(/datum/component/material_container)
 			var/suc
 			for(var/I in 1 to mtypes.len)
-				var/datum/material/M = materials.materials[mtypes[I]]
+				var/datum/prototype/material/M = materials.materials[mtypes[I]]
 				if(M)
 					var/U = clamp(get_pin_data(IC_INPUT, I+2),-100000,100000)
 					if(!U)
@@ -635,12 +635,12 @@
 	name = "mining drill"
 	desc = "A mining drill that can drill through rocks."
 	extended_desc = "A mining drill to strike the earth.  It takes some time to get the job done and \
-	must remain stationary until complete."
+	must remain stationary until complete. By default an advanced mining drill is installed but better once can be attached."
 	category_text = "Manipulation"
-	ext_cooldown = 1
+	ext_cooldown = 5 //Required to not make instant death circuits
 	complexity = 40
-	cooldown_per_use = 3 SECONDS
-	ext_cooldown = 6 SECONDS
+	cooldown_per_use = 1 //We have 'busy' as our safty net
+	can_be_asked_input = TRUE
 	inputs = list(
 		"target" = IC_PINTYPE_REF
 		)
@@ -653,6 +653,9 @@
 	spawn_flags = IC_SPAWN_RESEARCH
 	power_draw_per_use = 1000
 
+	var/obj/item/pickaxe/current_pickaxe
+	var/digspeed = 3 SECONDS
+
 	var/busy = FALSE
 	var/targetlock
 	var/usedx
@@ -662,15 +665,57 @@
 	var/drill_force = 15
 	var/turf/simulated/mineral
 
+/obj/item/integrated_circuit/mining/mining_drill/proc/ask_for_input(mob/living/user, obj/item/I,  a_intent)
+	if(!current_pickaxe)
+		if(!isobj(I))
+			return FALSE
+		attackby_react(I, user, a_intent)
+	else
+		attack_self(user)
+
+/obj/item/integrated_circuit/mining/mining_drill/attackby_react(var/obj/item/pickaxe/I, var/mob/living/user)
+	//Check if it truly is a pickaxe
+	if(!(istype(I,/obj/item/pickaxe)))
+		to_chat(user,"<span class='warning'>The [I.name] doesn't seem to fit in here.</span>")
+		return
+
+	//Check if there is no other pickaxe already inside
+	if(current_pickaxe)
+		to_chat(user,"<span class='notice'>There is already a [current_pickaxe.name] inside.</span>")
+		return
+
+	if(!user.attempt_insert_item_for_installation(I, src))
+		return
+
+	current_pickaxe = I
+	to_chat(user,"<span class='warning'>You attach the [I.name] inside the assembly.</span>")
+	digspeed = I.digspeed
+
+/obj/item/integrated_circuit/mining/mining_drill/attack_self(mob/user)
+	. = ..()
+	if(.)
+		return
+	//Check if no drill is attached
+	if(!current_pickaxe)
+		to_chat(user, "<span class='notice'>There is currently no mining tool attached.</span>")
+		return
+
+	//Remove beaker and put in user's hands/location
+	to_chat(user, "<span class='notice'>You yank the [current_pickaxe] out of the slot.</span>")
+	user.put_in_hands(current_pickaxe)
+	current_pickaxe = null
+	//Reset to default
+	digspeed = 3 SECONDS
+
 /obj/item/integrated_circuit/mining/mining_drill/do_work(ord)
 	if(ord == 1)
 		var/atom/target = get_pin_data(IC_INPUT, 1)
 		var/drill_delay = null
-		if(!target || busy)
+		if(!target || busy || !target.Adjacent(assembly))
 			activate_pin(3)
 			return
 		src.assembly.visible_message(SPAN_DANGER("[assembly] starts to drill [target]!"), null, SPAN_WARNING("You hear a drill."))
-		drill_delay = isturf(target)? 6 SECONDS : isliving(target) ? issimple(target) ? 2 SECONDS : 3 SECONDS : 4 SECONDS
+		drill_delay = isturf(target)? digspeed : isliving(target) ? issimple(target) ? 2 SECONDS : 3 SECONDS : 4 SECONDS
 		busy = TRUE
 		targetlock = target
 		usedx = assembly.loc.x
@@ -691,7 +736,7 @@
 	if(isliving(target))
 		if(ishuman(target))
 			var/mob/living/carbon/human/S = target
-			S.apply_damage(drill_force, BRUTE)
+			S.apply_damage(drill_force, DAMAGE_TYPE_BRUTE)
 			return
 		else if(issimple(target))
 			var/mob/living/simple_mob/S = target
@@ -835,10 +880,13 @@
 	installed_gun = null // It will be qdel'd by ..() if still in our contents
 	return ..()
 
-/obj/item/integrated_circuit/manipulation/weapon_firing/proc/ask_for_input(obj/item/I, mob/living/user, a_intent)
-	if(!isobj(I))
-		return FALSE
-	attackby_react(I, user, a_intent)
+/obj/item/integrated_circuit/manipulation/weapon_firing/proc/ask_for_input(mob/living/user, obj/item/I,  a_intent)
+	if(!installed_gun)
+		if(!isobj(I))
+			return FALSE
+		attackby_react(I, user, a_intent)
+	else
+		attack_self(user)
 
 /obj/item/integrated_circuit/manipulation/weapon_firing/attackby_react(var/obj/O, var/mob/user)
 	if(istype(O, /obj/item/gun))
@@ -855,7 +903,7 @@
 	else
 		..()
 
-/obj/item/integrated_circuit/manipulation/weapon_firing/attack_self(mob/user)
+/obj/item/integrated_circuit/manipulation/weapon_firing/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -872,41 +920,41 @@
 	if(!installed_gun)
 		return
 
-	var/datum/integrated_io/target_x = inputs[1]
-	var/datum/integrated_io/target_y = inputs[2]
+	var/target_x = get_pin_data(IC_INPUT, 1)
+	var/target_y = get_pin_data(IC_INPUT, 2)
 
 	if(src.assembly)
-		if(isnum(target_x.data))
-			target_x.data = round(target_x.data)
-		if(isnum(target_y.data))
-			target_y.data = round(target_y.data)
+		if(isnum(target_x))
+			set_pin_data(IC_INPUT, 1, round(target_x))
+		if(isnum(target_y))
+			set_pin_data(IC_INPUT, 2, round(target_y))
 
 		var/turf/T = get_turf(src.assembly)
 
-		if(target_x.data == 0 && target_y.data == 0) // Don't shoot ourselves.
+		if(target_x == 0 && target_y == 0) // Don't shoot ourselves.
 			return
 
 		// We need to do this in order to enable relative coordinates, as locate() only works for absolute coordinates.
 		var/i
-		if(target_x.data > 0)
-			i = abs(target_x.data)
+		if(target_x > 0)
+			i = abs(target_x)
 			while(i > 0)
 				T = get_step(T, EAST)
 				i--
 		else
-			i = abs(target_x.data)
+			i = abs(target_x)
 			while(i > 0)
 				T = get_step(T, WEST)
 				i--
 
 		i = 0
-		if(target_y.data > 0)
-			i = abs(target_y.data)
+		if(target_y > 0)
+			i = abs(target_y)
 			while(i > 0)
 				T = get_step(T, NORTH)
 				i--
-		else if(target_y.data < 0)
-			i = abs(target_y.data)
+		else if(target_y < 0)
+			i = abs(target_y)
 			while(i > 0)
 				T = get_step(T, SOUTH)
 				i--
@@ -946,7 +994,7 @@
 	detach_grenade()
 	. =..()
 
-/obj/item/integrated_circuit/manipulation/grenade/proc/ask_for_input(obj/item/I, mob/living/user, a_intent)
+/obj/item/integrated_circuit/manipulation/grenade/proc/ask_for_input(mob/living/user, obj/item/I,  a_intent)
 	if(!isobj(I))
 		return FALSE
 	attackby_react(I, user, a_intent)
@@ -965,7 +1013,7 @@
 	else
 		return ..()
 
-/obj/item/integrated_circuit/manipulation/grenade/attack_self(mob/user)
+/obj/item/integrated_circuit/manipulation/grenade/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return

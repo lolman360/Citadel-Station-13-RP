@@ -21,7 +21,8 @@
 	desc = "A back-mounted hardsuit deployment and control mechanism."
 	slot_flags = SLOT_BACK
 	w_class = WEIGHT_CLASS_HUGE
-	action_button_name = "Toggle Heatsink"
+	rad_flags = NONE
+	item_action_name = "Toggle Heatsink"
 
 	// These values are passed on to all component pieces.
 	armor_type = /datum/armor/hardsuit
@@ -447,7 +448,7 @@
 					if(seal_delay && !instant && !do_self(M, seal_delay, DO_AFTER_IGNORE_ACTIVE_ITEM | DO_AFTER_IGNORE_MOVEMENT, NONE))
 						failed_to_seal = 1
 
-					piece.copy_atom_colour(src)
+					piece.copy_atom_color(src)
 					piece.icon_state = "[suit_state][is_sealing ? "_sealed" : ""]"
 					piece.update_worn_icon()
 					switch(msg_type)
@@ -483,7 +484,7 @@
 			if(!piece)
 				continue
 			piece.icon_state = "[suit_state][is_activated() ? "_sealed" : ""]"
-			piece.copy_atom_colour(src)
+			piece.copy_atom_color(src)
 			piece.update_worn_icon()
 
 		if(is_activated())
@@ -539,7 +540,7 @@
 		else
 			update_airtight(piece, 1) // Seal
 
-/obj/item/hardsuit/ui_action_click()
+/obj/item/hardsuit/ui_action_click(datum/action/action, datum/event_args/actor/actor)
 	toggle_cooling(usr)
 
 /obj/item/hardsuit/proc/toggle_cooling(var/mob/user)
@@ -572,8 +573,8 @@
 /obj/item/hardsuit/proc/get_environment_temperature()
 	if (ishuman(loc))
 		var/mob/living/carbon/human/H = loc
-		if(istype(H.loc, /obj/mecha))
-			var/obj/mecha/M = H.loc
+		if(istype(H.loc, /obj/vehicle/sealed/mecha))
+			var/obj/vehicle/sealed/mecha/M = H.loc
 			return M.return_temperature()
 		else if(istype(H.loc, /obj/machinery/atmospherics/component/unary/cryo_cell))
 			var/obj/machinery/atmospherics/component/unary/cryo_cell/cryo = H.loc
@@ -955,8 +956,8 @@
 		else if (deploy_mode != ONLY_RETRACT)
 			if(check_slot && check_slot == use_obj)
 				return
-			use_obj.copy_atom_colour(src)
-			if(!H.equip_to_slot_if_possible(use_obj, equip_to, null, INV_OP_FORCE))
+			use_obj.copy_atom_color(src)
+			if(!H.equip_to_slot_if_possible(use_obj, equip_to, INV_OP_FORCE))
 				if(check_slot && warn == 1)
 					to_chat(H, "<span class='danger'>You are unable to deploy \the [piece] as \the [check_slot] [check_slot.gender == PLURAL ? "are" : "is"] in the way.</span>")
 					return
@@ -1134,11 +1135,6 @@
 	//This is sota the goto stop mobs from moving var
 	if(!CHECK_MOBILITY(user, MOBILITY_CAN_MOVE))
 		return
-
-	if(locate(/obj/effect/stop/, wearer.loc))
-		for(var/obj/effect/stop/S in wearer.loc)
-			if(S.victim == wearer)
-				return
 
 	if(!wearer.lastarea)
 		wearer.lastarea = get_area(wearer.loc)
