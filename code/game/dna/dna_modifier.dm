@@ -538,18 +538,11 @@
 		if (!src.connected.occupant)
 			return 1
 
-		if (prob((80 + (src.radiation_duration / 2))))
+		if (prob((80 + (src.radiation_duration))))
 			block = miniscrambletarget(num2text(selected_ui_target), src.radiation_intensity, src.radiation_duration)
 			src.connected.occupant.dna.SetUISubBlock(src.selected_ui_block,src.selected_ui_subblock,block)
 			src.connected.occupant.UpdateAppearance()
 			connected.occupant.afflict_radiation(RAD_MOB_AFFLICT_DNA_MODIFIER(radiation_intensity, radiation_duration))
-		else
-			if	(prob(20+src.radiation_intensity))
-				randmutb(src.connected.occupant)
-				domutcheck(src.connected.occupant,src.connected)
-			else
-				randmuti(src.connected.occupant)
-				src.connected.occupant.UpdateAppearance()
 			src.connected.occupant.apply_effect(((src.radiation_intensity*2)+src.radiation_duration), IRRADIATE, check_protection = 0)
 		src.connected.locked = lock_state
 		return 1 // return 1 forces an update to all Nano uis attached to src

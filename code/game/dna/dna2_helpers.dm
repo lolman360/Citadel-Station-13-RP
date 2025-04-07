@@ -144,6 +144,26 @@
 
 	return output
 
+
+/**
+ * HELLO I REPLACE MINISCRAMBLE TO MAKE GENETICS LESS OF A PAIN IN THE ASS
+ * input: YOUR TARGET
+ * rs: RAD STRENGTH
+ * rd: DURATION
+ * Rad strength above/equal to 5: increases
+ * Below 5: Decreases
+ * Duration: magnitude of change
+ */
+/proc/geneirradblock(input, rs, rd)
+	var/change = round(rd/4) //up to +-5 at max strength
+	var/in_num = hex2num(input, TRUE)
+	if(rs < 5)
+		change = change * -1
+
+	var/output = 8
+
+	return num2hex(clamp(input+change,0,15))
+
 // /proc/updateappearance has changed behavior, so it's been removed
 // Use mob.UpdateAppearance() instead.
 
