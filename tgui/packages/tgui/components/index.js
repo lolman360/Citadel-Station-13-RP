@@ -40,6 +40,7 @@ export { Slider } from './Slider';
 export { Stack } from './Stack';
 export { Table } from './Table';
 export { Tabs } from './Tabs';
+export { LayeredTabs } from "./LayeredTabs";
 export { TextArea } from './TextArea';
 export { TimeDisplay } from './TimeDisplay';
 export { TrackOutsideClicks } from './TrackOutsideClicks';

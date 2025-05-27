@@ -236,7 +236,7 @@ export const TGUIProsfabControl = (props: TGUILatheControlProps, context) => {
                     {
                       Object.values(data.designs.instances).filter(
                         (d) => searchText.length > 2
-                          ? d.name.toLowerCase().includes(searchText) : (d.category === category)
+                          ? d.name.toLowerCase().includes(searchText) : (d.category.includes(category))
                       ).sort((d1, d2) =>
                         d1.name.localeCompare(d2.name)
                       ).map((d) => (

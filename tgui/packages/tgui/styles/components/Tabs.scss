@@ -122,6 +122,8 @@ $fg-map: colors.$fg-map !default;
   }
 
   .Tab--selected {
+    flex-grow: 1;
+    flex-direction: column;
     border-right: math.div(1em, 6) solid $color-default;
   }
 }

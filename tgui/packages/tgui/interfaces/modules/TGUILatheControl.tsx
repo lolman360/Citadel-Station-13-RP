@@ -7,7 +7,7 @@
 
 import { BooleanLike } from "common/react";
 import { ModuleData, useLocalState, useModule } from "../../backend";
-import { Box, Button, Collapsible, Dropdown, Input, LabeledList, NoticeBox, NumberInput, ProgressBar, Stack, Table, Tabs } from "../../components";
+import { Box, Button, Collapsible, Dropdown, Input, LabeledList, NoticeBox, NumberInput, ProgressBar, Stack, Table, Tabs, LayeredTabs } from "../../components";
 import { Section, SectionProps } from "../../components/Section";
 import { Modular } from "../../layouts/Modular";
 import { WindowProps } from "../../layouts/Window";
@@ -15,7 +15,6 @@ import { Design } from "../common/Design";
 import { IngredientsAvailable, IngredientsSelected } from "../common/Ingredients";
 import { MaterialRender, FullMaterialsContext, MaterialStorage, MATERIAL_STORAGE_UNIT_NAME, renderMaterialAmount } from "../common/Materials";
 import { ReagentContents, ReagentContentsData, REAGENT_STORAGE_UNIT_NAME } from "../common/Reagents";
-
 export interface TGUILatheControlProps {
 
 }
@@ -70,6 +69,11 @@ export const TGUILatheControl = (props: TGUILatheControlProps, context) => {
     context,
     `${data.$ref}-category`,
     data.designs.categories.length? data.designs.categories[1] : "General"
+  );
+  const [subCategory, setSubCategory] = useLocalState<string>(
+    context,
+    `${data.$ref}-subCategory`,
+    data.designs.subcategories[category].length ? data.designs.subcategories[category][1] : ""
   );
   const [resourcesSelect, setResourcesSelect] = useLocalState<string>(
     context,
@@ -220,17 +224,29 @@ export const TGUILatheControl = (props: TGUILatheControlProps, context) => {
           <Stack fluid fill>
             <Stack.Item grow={0.3}>
               <Section fill title="Categories" scrollable>
-                <Tabs vertical>
+                <LayeredTabs vertical>
                   {
                     data.designs.categories.sort((c1, c2) => c1.localeCompare(c2)).map((cat) => (
-                      <Tabs.Tab key={cat} fluid color="transparent"
+                      <LayeredTabs.LayeredTab key={cat} fluid color="transparent"
+                        tabText={cat}
                         selected={cat === category}
-                        onClick={() => setCategory(cat)}>
-                        {cat}
-                      </Tabs.Tab>
+                        onClick={() => setCategory(cat)}
+                        children={<Tabs vertical>
+                                  {
+                                    data.designs.subcategories[category].sort((c1, c2) => c1.localeCompare(c2)).map((subcat) => (
+                                      <Tabs.Tab key={subcat} fluid color="transparent"
+                                        selected={cat === subCategory}
+                                        onClick={() => setSubCategory(subcat)}>
+                                        {subcat}
+                                      </Tabs.Tab>
+                                    ))
+                                  }
+                                </Tabs>}
+                      >
+                      </LayeredTabs.LayeredTab>
                     ))
                   }
-                </Tabs>
+                </LayeredTabs>
               </Section>
             </Stack.Item>
             <Stack.Item grow={1.15}>
@@ -246,7 +262,7 @@ export const TGUILatheControl = (props: TGUILatheControlProps, context) => {
                     {
                       Object.values(data.designs.instances).filter(
                         (d) => searchText.length > 2
-                          ? d.name.toLowerCase().includes(searchText) : (d.category.includes(category))
+                          ? d.name.toLowerCase().includes(searchText) : (d.category.includes(category) && (!subCategory || d.subcategories.includes(subCategory)))
                       ).sort((d1, d2) =>
                         d1.name.localeCompare(d2.name)
                       ).map((d) => (

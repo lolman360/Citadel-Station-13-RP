@@ -35,6 +35,7 @@ export const LayeredTabs = props => {
 const LayeredTab = props => {
   const {
     className,
+    tabText,
     selected,
     color,
     icon,
@@ -64,15 +65,20 @@ const LayeredTab = props => {
         </div>
       )}
       <div className="Tab__text">
-        {children}
+        {tabText}
       </div>
       {canRender(rightSlot) && (
         <div className="Tab__right">
           {rightSlot}
         </div>
       )}
+      {selected && (
+        <div className="LayeredTab__subtab">
+          {children}
+        </div>
+      )}
     </div>
   );
 };
 
-Tabs.Tab = Tab;
+LayeredTabs.LayeredTab = LayeredTab;
