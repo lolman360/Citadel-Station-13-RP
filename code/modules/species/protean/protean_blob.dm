@@ -551,6 +551,7 @@
 	if(istype(loc, /obj/item/holder))
 		var/obj/item/holder/H = loc
 		H.sync()
+		H.item_state = icon_living
 
 
 /mob/living/simple_mob/protean_blob/proc/leap_attack()

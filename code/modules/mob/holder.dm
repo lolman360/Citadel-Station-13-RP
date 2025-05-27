@@ -6,6 +6,10 @@
 	icon_state = ""
 	SET_APPEARANCE_FLAGS(KEEP_TOGETHER | PIXEL_SCALE | TILE_BOUND)
 	slot_flags = SLOT_HEAD | SLOT_HOLSTER
+	item_icons = list(
+			SLOT_ID_LEFT_HAND = 'icons/mob/items/lefthand_uniforms.dmi',
+			SLOT_ID_RIGHT_HAND = 'icons/mob/items/righthand_uniforms.dmi',
+			)
 	show_messages = 1
 	origin_tech = null
 	inhand_default_type = INHAND_DEFAULT_ICON_HOLDERS
@@ -15,6 +19,27 @@
 	throw_speed = 3
 	var/static/list/holder_mob_icon_cache = list()
 	var/mob/living/held_mob
+
+
+SLOT_ID_BACK			"back"
+SLOT_ID_UNIFORM			"uniform"
+SLOT_ID_HEAD			"head"
+SLOT_ID_SUIT			"suit"
+SLOT_ID_BELT			"belt"
+SLOT_ID_LEFT_POCKET		"lpocket"
+SLOT_ID_RIGHT_POCKET	"rpocket"
+SLOT_ID_WORN_ID			"id"
+SLOT_ID_SHOES			"shoes"
+SLOT_ID_GLASSES			"glasses"
+SLOT_ID_GLOVES			"gloves"
+SLOT_ID_SUIT_STORAGE	"suitstore"
+SLOT_ID_MASK			"mask"
+SLOT_ID_LEFT_EAR		"lear"
+SLOT_ID_RIGHT_EAR		"rear"
+/// *ONLY USE THIS FOR RENDERING* - this is nonsensical anywhere else
+#define SLOT_ID_LEFT_HAND		"left_hand"
+/// *ONLY USE THIS FOR RENDERING* - this is nonsensical anywhere else
+#define SLOT_ID_RIGHT_HAND		"right_hand"
 
 /obj/item/holder/Initialize(mapload)
 	. = ..()
