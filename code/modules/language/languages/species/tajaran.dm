@@ -46,7 +46,7 @@
 	signlang_verb = list("gestures with their hands", "gestures with their ears and tail", "gestures with their ears, tail and hands")
 	colour = "tajaran"
 	key = "l"
-	language_flags = LANGUAGE_SIGNLANG | LANGUAGE_NO_STUTTER | LANGUAGE_NONVERBAL
+	language_flags = LANGUAGE_FULLY_NONVERBAL | LANGUAGE_NO_STUTTER | LANGUAGE_PARTIALLY_NONVERBAL
 	shorthand = "TAJR"
 
 /datum/prototype/language/tajsign/can_speak_special(var/mob/speaker)	// TODO: If ever we make external organs assist languages, convert this over to the new format

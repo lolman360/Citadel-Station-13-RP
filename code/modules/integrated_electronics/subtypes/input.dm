@@ -1163,7 +1163,7 @@ GLOBAL_DATUM_INIT(circuit_translation_context, /datum/translation_context/simple
 	var/signlang = FALSE
 	if(M && msg)
 		if(speaking)
-			if(!((speaking.language_flags & LANGUAGE_NONVERBAL) || (speaking.language_flags & LANGUAGE_SIGNLANG)))
+			if(!((speaking.language_flags & LANGUAGE_PARTIALLY_NONVERBAL) || (speaking.language_flags & LANGUAGE_FULLY_NONVERBAL)))
 				signlang = FALSE
 				msg = speaking.scramble(msg, my_langs)
 			else

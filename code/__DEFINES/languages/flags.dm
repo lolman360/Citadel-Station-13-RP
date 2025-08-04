@@ -4,9 +4,9 @@
 /// Language can only be acquired by spawning or an admin.
 #define LANGUAGE_RESTRICTED   (1<<1)
 /// Language has a significant non-verbal component. Speech is garbled without line-of-sight.
-#define LANGUAGE_NONVERBAL    (1<<2)
+#define LANGUAGE_PARTIALLY_NONVERBAL    (1<<2)
 /// Language is completely non-verbal. Speech is displayed through emotes for those who can understand.
-#define LANGUAGE_SIGNLANG     (1<<3)
+#define LANGUAGE_FULLY_NONVERBAL     (1<<3)
 /// Broadcast to all mobs with this language.
 #define LANGUAGE_HIVEMIND     (1<<4)
 /// Do not add to general languages list.
@@ -23,8 +23,8 @@
 DEFINE_BITFIELD(language_flags, list(
 	BITFIELD(LANGUAGE_WHITELISTED),
 	BITFIELD(LANGUAGE_RESTRICTED),
-	BITFIELD(LANGUAGE_NONVERBAL),
-	BITFIELD(LANGUAGE_SIGNLANG),
+	BITFIELD(LANGUAGE_PARTIALLY_NONVERBAL),
+	BITFIELD(LANGUAGE_FULLY_NONVERBAL),
 	BITFIELD(LANGUAGE_HIVEMIND),
 	BITFIELD(LANGUAGE_NONGLOBAL),
 	BITFIELD(LANGUAGE_INNATE),

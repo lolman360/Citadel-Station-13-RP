@@ -95,7 +95,7 @@
 	if(!listening) //Turning ON
 		var/list/allowed = list()
 		for(var/datum/prototype/language/L in user.languages)
-			if(L.language_flags & (LANGUAGE_NONVERBAL | LANGUAGE_HIVEMIND))
+			if(L.language_flags & (LANGUAGE_PARTIALLY_NONVERBAL | LANGUAGE_HIVEMIND))
 				continue
 			if(!context.can_translate(L))
 				continue
@@ -135,7 +135,7 @@
 	if(!language)
 		return //Borgs were causing runtimes when passing language=null
 
-	if (language && (language.language_flags & LANGUAGE_NONVERBAL))
+	if (language && (language.language_flags & LANGUAGE_PARTIALLY_NONVERBAL))
 		return //Not gonna translate sign language
 
 	if (visual && L.has_status_effect(/datum/status_effect/sight/blindness))

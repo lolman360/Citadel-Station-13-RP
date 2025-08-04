@@ -249,7 +249,7 @@ var/list/channel_to_radio_key = new
 		return
 
 	//Self explanatory.
-	if(is_muzzled() && !(speaking && (speaking.language_flags & LANGUAGE_SIGNLANG)))
+	if(is_muzzled() && !(speaking && (speaking.language_flags & LANGUAGE_FULLY_NONVERBAL)))
 		to_chat(src, "<span class='danger'>You're muzzled and cannot speak!</span>")
 		return
 
@@ -257,7 +257,7 @@ var/list/channel_to_radio_key = new
 		return
 
 	//For speech disorders (hulk, slurring, stuttering)
-	if(!(speaking && (speaking.language_flags & LANGUAGE_NO_STUTTER || speaking.language_flags & LANGUAGE_SIGNLANG)))
+	if(!(speaking && (speaking.language_flags & LANGUAGE_NO_STUTTER || speaking.language_flags & LANGUAGE_FULLY_NONVERBAL)))
 		var/list/message_data = list(message, verb, whispering)
 		if(handle_speech_problems(message_data))
 			message = message_data[1]
@@ -325,11 +325,11 @@ var/list/channel_to_radio_key = new
 
 	//Handle nonverbal and sign languages here
 	if (speaking)
-		if (speaking.language_flags & LANGUAGE_SIGNLANG)
+		if (speaking.language_flags & LANGUAGE_FULLY_NONVERBAL)
 			log_say("(SIGN) [message]", src)
 			return say_signlang(message, pick(speaking.signlang_verb), speaking)
 
-		if (speaking.language_flags & LANGUAGE_NONVERBAL)
+		if (speaking.language_flags & LANGUAGE_PARTIALLY_NONVERBAL)
 			if (prob(30))
 				src.custom_emote(1, "[pick(speaking.signlang_verb)].")
 

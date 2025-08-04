@@ -30,7 +30,7 @@
 	var/exclaim_verb = "exclaims"
 	/// Optional. When not specified speech_verb + quietly/softly is used instead.
 	var/whisper_verb
-	/// list of emotes that might be displayed if this language has LANGUAGE_NONVERBAL or LANGUAGE_SIGNLANG language_flags
+	/// list of emotes that might be displayed if this language has LANGUAGE_PARTIALLY_NONVERBAL or LANGUAGE_FULLY_NONVERBAL language_flags
 	var/signlang_verb = list("signs", "gestures")
 	/// CSS style to use for strings in this language.
 	var/colour = "body"
@@ -217,7 +217,7 @@
 	if(name != "Noise")	// Audible Emotes
 		if(ishuman(speaker))
 			var/mob/living/carbon/human/H = speaker
-			if(H.species.has_organ[O_VOICE] && !(language_flags & LANGUAGE_SIGNLANG) && !(language_flags & LANGUAGE_NONVERBAL)) // Does the species need a voicebox? Is the language even spoken?
+			if(H.species.has_organ[O_VOICE] && !(language_flags & LANGUAGE_FULLY_NONVERBAL) && !(language_flags & LANGUAGE_PARTIALLY_NONVERBAL)) // Does the species need a voicebox? Is the language even spoken?
 				var/obj/item/organ/internal/voicebox/vocal = H.internal_organs_by_name[O_VOICE]
 				if(!vocal || vocal.is_broken() || vocal.mute)
 					return FALSE

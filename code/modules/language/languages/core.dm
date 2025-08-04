@@ -44,7 +44,7 @@
 	signlang_verb = list("gestures")
 	colour = "say_quote"
 	key = "s"
-	language_flags = LANGUAGE_SIGNLANG|LANGUAGE_NO_STUTTER|LANGUAGE_NONVERBAL
+	language_flags = LANGUAGE_FULLY_NONVERBAL|LANGUAGE_NO_STUTTER|LANGUAGE_PARTIALLY_NONVERBAL
 	shorthand = "SIGN"
 
 /datum/prototype/language/sign/can_speak_special(var/mob/speaker)	// TODO: If ever we make external organs assist languages, convert this over to the new format
