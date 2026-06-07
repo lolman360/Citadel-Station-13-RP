@@ -427,12 +427,13 @@
 				break
 			if(prig)
 				prig.forceMove(get_turf(src))
+				H.drop_item_to_ground(blobholder)
 				forceMove(prig)
 				blobholder.update_state()
 				if(back)
 					H.equip_to_slot_if_possible(prig,SLOT_ID_BACK, INV_OP_FORCE | INV_OP_DIRECTLY_EQUIPPING | INV_OP_SHOULD_NOT_INTERCEPT | INV_OP_SILENT)
 				return
-				
+
 
 	if(isturf(loc))
 		var/obj/item/hardsuit/protean/prig
