@@ -144,6 +144,8 @@
 	var/impersonate_bodytype_legacy
 	/// for impersonating a bodytype but actually.
 	var/impersonate_bodytype
+	/// for impersonating a species
+	var/datum/species/impersonate_species_for_iconbase
 	/// Shadekin abilities/potentially other species-based?
 	var/ability_flags = NONE
 	/// Suit sensor loadout pref.
@@ -267,11 +269,12 @@
 	// ignore ssd status
 	var/override_ssd = FALSE
 
-	//? movement
-	/// are we trying to crawl under someone? mob if true
-	var/mob/crawling_under_someone
 	var/hiding_wings = FALSE
 	var/hiding_tail = FALSE
 	var/hiding_horns = FALSE
 
 	var/datum/ability_handler/ab_handler
+
+	var/body_alpha = 255
+	var/hair_alpha = 255
+	var/datum/immune_system/immune_system

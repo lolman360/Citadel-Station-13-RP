@@ -21,7 +21,7 @@
 	desc = "A small, normal-looking drone. It looks like one you'd find on station, except... IT'S COMING AT YOU!"
 	catalogue_data = list(/datum/category_item/catalogue/technology/drone/corrupt_maint_drone)
 
-	icon = 'icons/mob/robots.dmi'
+	icon = 'icons/mob/robot-legacy.dmi'
 	icon_state = "corrupt-repairbot"
 	icon_living = "corrupt-repairbot"
 	hovering = FALSE // Can trigger landmines.
@@ -29,7 +29,7 @@
 	iff_factions = MOB_IFF_FACTION_HIVEBOT
 	maxHealth = 25
 	health = 25
-	movement_cooldown = 0
+	movement_base_speed = 6.66
 	movement_sound = 'sound/effects/servostep.ogg'
 
 	pass_flags = ATOM_PASS_TABLE

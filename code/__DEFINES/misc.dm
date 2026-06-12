@@ -1,4 +1,5 @@
 // These get to go at the top, because they're special
+
 //You can use these defines to get the typepath of the currently running proc/verb (yes procs + verbs are objects)
 /* eg:
 /mob/living/carbon/human/death()
@@ -11,8 +12,8 @@ Will print: "/mob/living/carbon/human/death" (you can optionally embed it in a s
 #define THIS_PROC_TYPE_STR_WITH_ARGS "[THIS_PROC_TYPE]([args.Join(",")])"
 /// This one is WEIRD, in some cases (When used in certain defines? (eg: ASSERT)) THIS_PROC_TYPE will fail to work, but THIS_PROC_TYPE_WEIRD will work instead
 #define THIS_PROC_TYPE_WEIRD ......
-//define THIS_PROC_TYPE_WEIRD_STR "[THIS_PROC_TYPE_WEIRD]" //Included for completeness
-//define THIS_PROC_TYPE_WEIRD_STR_WITH_ARGS "[THIS_PROC_TYPE_WEIRD]([args.Join(",")])" //Ditto
+#define THIS_PROC_TYPE_WEIRD_STR "[THIS_PROC_TYPE_WEIRD]"
+#define THIS_PROC_TYPE_WEIRD_STR_WITH_ARGS "[THIS_PROC_TYPE_WEIRD]([args.Join(",")])"
 
 /// Invisibility constants. These should only be used for TRUE invisibility, AKA nothing living players touch
 ///
@@ -30,11 +31,14 @@ Will print: "/mob/living/carbon/human/death" (you can optionally embed it in a s
 /// * Underfloor objects (we don't want them to be interactable at all)
 /// * Abstract objects (we don't want them to be interactable at all)
 
+#define INVISIBILITY_NONE 0
 #define INVISIBILITY_LIGHTING		20
 #define INVISIBILITY_LEVEL_ONE		35
 #define INVISIBILITY_LEVEL_TWO		45
 #define INVISIBILITY_OBSERVER		60
 #define INVISIBILITY_EYE			61
+/// for various map helpers that should be able to be seen in certain cases
+#define INVISIBILITY_MAP_HELPER     70
 
 #define SEE_INVISIBLE_MINIMUM		5
 #define SEE_INVISIBLE_NOLIGHTING	15
@@ -114,21 +118,21 @@ Will print: "/mob/living/carbon/human/death" (you can optionally embed it in a s
 #define MAX_BOOK_MESSAGE_LEN	24576
 #define MAX_RECORD_LENGTH		24576
 #define MAX_LNAME_LEN			64
-#define MAX_NAME_LEN			64
-
+#define MAX_NAME_LEN			52
 /// 512GQ file
 #define MAX_TEXTFILE_LENGTH		128000
 // Event defines.
 #define EVENT_LEVEL_MUNDANE		1
 #define EVENT_LEVEL_MODERATE	2
 #define EVENT_LEVEL_MAJOR		3
+#define EVENT_LEVEL_EXTREME		4
 
 /// General-purpose life speed define for plants.
 #define HYDRO_SPEED_MULTIPLIER	1
 
 #define ANNOUNCER_NAME "Facility PA"
 
-#define DEFAULT_JOB_TYPE /datum/role/job/station/assistant
+#define DEFAULT_JOB_TYPE /datum/prototype/role/job/station/assistant
 
 //Assistant/Visitor/Whatever
 #define USELESS_JOB	"Visitor"
@@ -140,9 +144,6 @@ Will print: "/mob/living/carbon/human/death" (you can optionally embed it in a s
 #endif
 #ifndef CUSTOM_ITEM_MOB
 #define CUSTOM_ITEM_MOB		'icons/mob/custom_items_mob.dmi'
-#endif
-#ifndef CUSTOM_ITEM_SYNTH
-#define CUSTOM_ITEM_SYNTH	'icons/mob/custom_synthetic.dmi'
 #endif
 
 #define WALL_CAN_OPEN	1
@@ -263,9 +264,6 @@ var/list/economy_station_departments = list(
 /// Not really needed but consistancy I guess.
 #define TSC_XION	"Xion"
 #define TSC_ZH		"Zeng-Hu"
-
-///The number of deciseconds in a day
-#define MIDNIGHT_ROLLOVER		864000
 
 /// Maximum effective value of client.view (According to DM references)
 #define MAX_CLIENT_VIEW	34
@@ -516,3 +514,12 @@ GLOBAL_LIST_EMPTY(##LIST_NAME);\
 #error T_BOARD already defined elsewhere, we can't use it.
 #endif
 #define T_BOARD(name) "circuit board (" + (name) + ")"
+
+//name for blank icon states for clothing
+#define CLOTHING_BLANK_ICON_STATE "blank"
+
+#define CLONE_BIOMASS 30
+
+#define BUTTON_SLIDE_IN (1<<0)
+#define BUTTON_FADE_IN (1<<1)
+#define BUTTON_FADE_OUT (1<<2)

@@ -91,10 +91,11 @@
 
 	else if(istype(AM,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = AM
-		if(istype(R.module_active,/obj/item/pickaxe))
-			attackby(R.module_active,R)
+		var/obj/item/pickaxe/maybe_pickaxe = R.get_held_item_of_type(/obj/item/pickaxe)
+		if(maybe_pickaxe)
+			maybe_pickaxe.melee_interaction_chain(src, R)
 
 	else if(istype(AM,/obj/vehicle/sealed/mecha))
 		var/obj/vehicle/sealed/mecha/M = AM
-		if(istype(M.selected,/obj/item/mecha_parts/mecha_equipment/tool/drill))
+		if(istype(M.selected,/obj/item/vehicle_module/tool/drill))
 			M.selected.action(src)

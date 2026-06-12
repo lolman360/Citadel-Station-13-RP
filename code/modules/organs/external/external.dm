@@ -6,6 +6,10 @@
 	organ_tag = "limb"
 	decays = FALSE
 
+	//* Behaviour *//
+	/// this covers things like 'can this limb be injected' or 'can this limb be healed'
+	var/behaviour_flags = NONE
+
 	//* Coverage *//
 	/// body_cover_flags that count as covering us
 	var/body_part_flags = NONE
@@ -99,7 +103,8 @@
 	var/list/children = list()
 	/// Internal organs of this body part
 	var/list/internal_organs = list()
-	/// Currently implanted objects.
+	/// Implanted entities.
+	/// * Not necessarily `/obj/item/implant`, or even an `/obj/item`.
 	var/list/implants = list()
 	/// Relative size of the organ.
 	var/organ_rel_size = 25
@@ -153,17 +158,20 @@
 	addtimer(CALLBACK(src, PROC_REF(get_icon)), 1)
 
 /obj/item/organ/external/Destroy()
-
-	if(parent && parent.children)
-		parent.children -= src
+	if(parent)
+		if(parent.children)
+			parent.children -= src
+		parent = null
 
 	if(children)
 		for(var/obj/item/organ/external/C in children)
 			qdel(C)
+		children = null
 
 	if(internal_organs)
 		for(var/obj/item/organ/O in internal_organs)
 			qdel(O)
+		internal_organs = null
 
 	if(splinted && splinted.loc == src)
 		qdel(splinted)
@@ -176,7 +184,7 @@
 		while(null in owner.organs)
 			owner.organs -= null
 
-	implants.Cut() // Remove these too!
+	QDEL_LIST_NULL(implants)
 
 	return ..()
 
@@ -376,11 +384,11 @@
 
 	// todo: lol this is shit
 	// legacy: jostle if broken
-	if(is_broken() && brute && !(damage_mode & DAMAGE_MODE_GRADUAL))
+	if(is_broken() && brute && !(damage_mode & DAMAGE_MODE_GRADUAL) && owner)
 		jostle_bone(brute)
 		if(organ_can_feel_pain() && IS_CONSCIOUS(owner) && prob(40))
 			spawn(-1)
-				owner.emote("scream")	//getting hit on broken hand hurts
+				owner.emote_nosleep("scream")	//getting hit on broken hand hurts
 
 	// todo: optimization
 	// legacy: autopsy data
@@ -419,7 +427,8 @@
 			else
 				create_wound( WOUND_TYPE_BRUISE, damage_anyways_brute )
 			// rest goes into shock
-			owner.shock_stage += overflow_brute * 0.33
+			if(owner)
+				owner.shock_stage += overflow_brute * 0.33
 	if(burn)
 		var/can_inflict_burn = max(0, max_damage - burn_dam)
 		if(can_inflict_burn >= burn)
@@ -432,7 +441,8 @@
 			overflow_burn -= damage_anyways_burn
 			create_wound(WOUND_TYPE_BURN, damage_anyways_burn + can_inflict_burn)
 			// rest goes into shock
-			owner.shock_stage += overflow_burn * 0.33
+			if(owner)
+				owner.shock_stage += overflow_burn * 0.33
 
 	// sync the organ's damage with its wounds
 	update_damages()
@@ -551,7 +561,7 @@
 			to_chat(user, SPAN_WARNING("You can't reach your [src] while holding [tool] in the same hand!"))
 			return FALSE
 
-	user.setClickCooldown(user.get_attack_speed(tool))
+	user.setClickCooldownLegacy(user.get_attack_speed_legacy(tool))
 	if(!do_mob(user, owner, 10))
 		to_chat(user, SPAN_WARNING("You must stand still to do that."))
 		return FALSE
@@ -801,7 +811,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 			if(!(W.can_autoheal() || (bicardose && inaprovaline) || myeldose))	//bicaridine and inaprovaline stop internal wounds from growing bigger with time, unless it is so small that it is already healing
 				W.open_wound(0.1)
 
-			owner.vessel.remove_reagent("blood", W.damage/40) //line should possibly be moved to handle_blood, so all the bleeding stuff is in one place.
+			owner.erase_blood(W.damage / 40)
 			if(prob(1))
 				owner.custom_pain("You feel a stabbing pain in your [name]!", 50)
 
@@ -1166,7 +1176,7 @@ Note that amputating the affected organ does in fact remove the infection from t
 
 	if(company)
 		model = company
-		var/datum/robolimb/R = GLOB.all_robolimbs[company]
+		var/datum/robolimb/R = GLOB.all_robolimbs[isnum(company) ? GLOB.all_robolimbs[company] : company]
 		if(!R || (species && (species.name in R.species_cannot_use)))
 			R = GLOB.basic_robolimb
 		if(R)
@@ -1254,6 +1264,8 @@ Note that amputating the affected organ does in fact remove the infection from t
 /obj/item/organ/external/proc/is_malfunctioning()
 	return ((robotic >= ORGAN_ROBOT) && (brute_dam + burn_dam) >= min_broken_damage*0.83 && prob(brute_dam + burn_dam)) // Makes robotic limb damage scalable
 
+// TODO: rework embeds, this only works for tiny items right now as
+//       larger ones won't be removable!!
 /obj/item/organ/external/proc/embed(var/obj/item/W, var/silent = 0)
 	if(!owner || loc != owner)
 		return
@@ -1270,8 +1282,9 @@ Note that amputating the affected organ does in fact remove the infection from t
 		owner.visible_message("<span class='danger'>\The [W] sticks in the wound!</span>")
 	implants += W
 	owner.embedded_flag = 1
-	add_verb(owner, /mob/proc/yank_out_object)
-	W.add_blood(owner)
+	// add_verb(owner, /mob/proc/yank_out_object)
+	if(!(owner.species.species_flags & NO_BLOOD))
+		W.add_blood(owner)
 	W.forceMove(owner)
 
 /obj/item/organ/external/removed(var/mob/living/user, var/ignore_children = 0)

@@ -30,7 +30,7 @@
 
 	fire_icon_state = "monkey"
 
-	unarmed_types = list(/datum/unarmed_attack/bite, /datum/unarmed_attack/claws)
+	unarmed_types = list(/datum/melee_attack/unarmed/bite, /datum/melee_attack/unarmed/claws)
 	inherent_verbs = list(/mob/living/proc/ventcrawl)
 	meat_type = /obj/item/reagent_containers/food/snacks/meat/monkey
 
@@ -222,13 +222,13 @@
 //Also, M was added to the end of the spawn names to signify that it's a monkey, since some names were conflicting.
 
 /mob/living/carbon/human/sharkm/Initialize(mapload)
-	..(mapload, SPECIES_MONKEY_AKULA)
+	return ..(mapload, SPECIES_MONKEY_AKULA)
 
 /mob/living/carbon/human/sergallingm/Initialize(mapload)
-	..(mapload, SPECIES_MONKEY_SERGAL)
+	return ..(mapload, SPECIES_MONKEY_SERGAL)
 
 /mob/living/carbon/human/sparram/Initialize(mapload)
-	..(mapload, SPECIES_MONKEY_NEVREAN)
+	return ..(mapload, SPECIES_MONKEY_NEVREAN)
 
 /mob/living/carbon/human/wolpin/Initialize(mapload)
-	..(mapload, SPECIES_MONKEY_VULPKANIN)
+	return ..(mapload, SPECIES_MONKEY_VULPKANIN)

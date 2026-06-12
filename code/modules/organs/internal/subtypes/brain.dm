@@ -17,6 +17,9 @@
 	var/mob/living/carbon/brain/brainmob = null
 	var/can_assist = TRUE
 
+	// TODO: /obj/item/organ/internal/consciousness_holder or something, this is just copypaste
+	var/compatible_with_mirrors = TRUE
+
 /obj/item/organ/internal/brain/Initialize(mapload, ...)
 	. = ..()
 	addtimer(CALLBACK(src, PROC_REF(clear_brainmob_hud)), 15)
@@ -306,3 +309,16 @@
 	if(ishuman(owner))
 		var/mob/living/carbon/human/H = owner
 		color = H.species.blood_color
+
+/obj/item/organ/internal/brain/holosphere
+	decays = FALSE
+
+/obj/item/organ/internal/brain/holosphere/take_damage(amount, var/silent=0)
+	return
+
+/obj/item/organ/internal/brain/holosphere/can_die()
+	return FALSE
+
+/obj/item/organ/internal/brain/holosphere/removed(var/mob/living/user)
+	. = ..()
+	QDEL_NULL(src)

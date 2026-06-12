@@ -4,6 +4,7 @@
 	icon = 'icons/obj/bureaucracy.dmi'
 	icon_state = "folder"
 	w_class = WEIGHT_CLASS_SMALL
+	belt_storage_class = BELT_CLASS_SMALL
 	pressure_resistance = 2
 	drop_sound = 'sound/items/drop/paper.ogg'
 	pickup_sound = 'sound/items/pickup/paper.ogg'
@@ -18,10 +19,6 @@
 	))
 	/// Do we hide the contents on examine?
 	var/contents_hidden = FALSE
-
-/obj/item/folder/suicide_act(mob/living/user)
-	user.visible_message(SPAN_SUICIDE("[user] begins filing an imaginary death warrant! It looks like [user.p_theyre()] trying to commit suicide!"))
-	return OXYLOSS
 
 /obj/item/folder/Initialize(mapload)
 	update_icon()
@@ -93,7 +90,7 @@
 
 	return data
 
-/obj/item/folder/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/obj/item/folder/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return

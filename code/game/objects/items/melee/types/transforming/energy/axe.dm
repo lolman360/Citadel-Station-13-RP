@@ -38,11 +38,10 @@
 	desc = "An energised axe."
 	active_damage_force = 30
 	active_throw_force = 20
-	armor_penetration = 25
+	damage_tier = 4
 	damage_force = 15
 	use_cell = TRUE
 	hitcost = 120
 
-/obj/item/melee/transforming/energy/axe/charge/loaded/Initialize(mapload)
-	. = ..()
-	bcell = new/obj/item/cell/device/weapon(src)
+/obj/item/melee/transforming/energy/axe/charge/loaded
+	cell_type = /obj/item/cell/basic/tier_1/weapon

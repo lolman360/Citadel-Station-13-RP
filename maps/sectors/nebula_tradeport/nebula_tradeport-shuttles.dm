@@ -73,7 +73,7 @@
 /datum/shuttle/autodock/overmap/trade/scoophead
 	name = "Scoophead trade Shuttle"
 	warmup_time = 5
-	shuttle_area = list(/area/shuttle/scoophead, /area/shuttle/scoophead/cockpit, /area/shuttle/scoophead/main, /area/shuttle/scoophead/main2, /area/shuttle/scoophead/office, /area/shuttle/scoophead/engineering)
+	shuttle_area = list(/area/shuttle/scoophead/cockpit, /area/shuttle/scoophead/main, /area/shuttle/scoophead/engineering)
 	current_location = "tradeport_scoophead"
 	docking_controller_tag = "tradeport_scoophead_docker"
 	fuel_consumption = 4
@@ -84,7 +84,7 @@
 	desc = "A shuttle linked to the Nebula Gas Station. Its a cargo ship refitted to be a smaller trade ship, easier to land than the Beruang. The Free Trade Union will always deliver."
 	color = "#ff811a" //Orange
 	fore_dir = WEST
-	vessel_mass = 10000
+	vessel_mass = 8000
 	vessel_size = SHIP_SIZE_SMALL
 	shuttle = "Scoophead trade Shuttle"
 
@@ -105,14 +105,9 @@
 /area/shuttle/scoophead/main
 	name = "Scoophead Trading Section"
 
-/area/shuttle/scoophead/office
-	name = "Scoophead Office"
-
 /area/shuttle/scoophead/engineering
 	name = "Scoophead Engine Bay"
 
-/area/shuttle/scoophead/main2
-	name = "Scoophead TraderSection"
 
 //Arrowhead Shuttle
 
@@ -310,6 +305,41 @@
 
 /area/shuttle/runabout
 	name = "Teshari Runabout"
+	requires_power = 1
+	icon_state = "shuttle2"
+	dynamic_lighting = DYNAMIC_LIGHTING_ENABLED
+	area_flags = AREA_RAD_SHIELDED | AREA_FLAG_ERODING
+	sound_env = SMALL_ENCLOSED
+
+/datum/shuttle/autodock/overmap/trade/salvager
+	name = "GCSS Vevalia Salvage Shuttle"
+	warmup_time = 8
+	shuttle_area = list(/area/shuttle/salvager)
+	current_location = "tradeport_scavenging"
+	docking_controller_tag = "solar_salvage_docker"
+	fuel_consumption = 3
+	move_time = 10
+
+/obj/overmap/entity/visitable/ship/landable/trade/salvager
+	name = "GCSS Vevalia Salvage Shuttle"
+	desc = "A small shuttle of Skrell design, refitted for salvage work."
+	scanner_name = "ORS Crescend Radio Shuttle"
+	scanner_desc = @{"[i]Registration[/i]: GCSS Vevalia
+[i]Class[/i]: Salvage Shuttle
+[i]Transponder[/i]: Transmitting (CIV), Registered with the Guardian Corporation
+[b]Notice[/b]: A vessel part of a bigger fleet arround the Guardian Corporation Mothership. Here in the sector to do legal salvage. the Guardian Corporation is small, and Neutral to NT."}
+	color = "#71831f"
+	fore_dir = EAST
+	vessel_mass = 10000
+	vessel_size = SHIP_SIZE_SMALL
+	shuttle = "GCSS Vevalia Salvage Shuttle"
+
+/obj/machinery/computer/shuttle_control/explore/salvager
+	name = "short jump console"
+	shuttle_tag = "GCSS Vevalia Salvage Shuttle"
+
+/area/shuttle/salvager
+	name = "Vevalia"
 	requires_power = 1
 	icon_state = "shuttle2"
 	dynamic_lighting = DYNAMIC_LIGHTING_ENABLED

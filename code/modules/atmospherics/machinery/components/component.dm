@@ -3,7 +3,7 @@
 
 /obj/machinery/atmospherics/component
 	obj_flags = OBJ_ON_BLUEPRINTS | OBJ_MELEE_TARGETABLE | OBJ_RANGE_TARGETABLE
-	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_OFFLINE | INTERACT_MACHINE_OFFLINE_SILICON
+	interaction_flags_machine = INTERACT_MACHINE_ALLOW_SILICON | INTERACT_MACHINE_OPEN | INTERACT_MACHINE_OPEN_SILICON | INTERACT_MACHINE_OFFLINE
 	default_deconstruct = 4 SECONDS
 	tool_deconstruct = TOOL_WRENCH
 	default_unanchor = null
@@ -91,7 +91,7 @@
 	.["powerSetting"] = power_setting
 	.["powerUsage"] = power_current
 
-/obj/machinery/atmospherics/component/ui_act(action, list/params, datum/tgui/ui)
+/obj/machinery/atmospherics/component/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -146,7 +146,13 @@
 		visible = SPAN_WARNING("[e_args.performer] starts tinkering with [src] using their [I]!"),
 		otherwise_self = SPAN_WARNING("You start tinkering with [src] using your [I]..."),
 	)
-	if(!do_after(e_args.performer, default_multitool_hijack, src, mobility_flags = MOBILITY_CAN_USE, progress_instance = create_actor_progress_bar(e_args)))
+	if(!do_after(
+		e_args.performer,
+		default_multitool_hijack,
+		src,
+		mobility_flags = MOBILITY_CAN_USE,
+		progress_instance = default_multitool_hijack ? create_actor_progress_bar(e_args, default_multitool_hijack) : null,
+	))
 		return TRUE
 	// todo: uh, this obviously needs a wrapper
 	ui_interact(e_args.initiator)

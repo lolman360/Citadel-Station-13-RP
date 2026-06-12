@@ -12,7 +12,7 @@
 	C.alpha = H.ui_alpha
 	LAZYADD(H.other_important, C)
 	CL.screen += C
-	RegisterSignal(C, COMSIG_CLICK, PROC_REF(component_ui_interact))
+	RegisterSignal(C, COMSIG_ATOM_CLICK, PROC_REF(component_ui_interact))
 
 /datum/component/personal_crafting
 	registered_type = /datum/component/personal_crafting
@@ -33,6 +33,7 @@
 					CAT_FURNITURE,
 				),
 				CAT_PRIMAL = CAT_NONE,
+				CAT_SPECIAL = CAT_NONE,
 				CAT_FOOD = list(
 					CAT_BREAD,
 					CAT_BURGER,
@@ -126,7 +127,7 @@
 
 /datum/component/personal_crafting/proc/get_surroundings(atom/a)
 	. = list()
-	.["tool_behaviour"] = list()
+	.["tool_behavior"] = list()
 	.["other"] = list()
 	.["instances"] = list()
 	for(var/obj/item/I in get_environment(a))
@@ -139,15 +140,17 @@
 		if(istype(I, /obj/item/stack))
 			var/obj/item/stack/S = I
 			.["other"][I.type] += S.amount
-		else if(I.tool_behaviour)
-			.["tool_behaviour"] += I.tool_behaviour
+		else if(I.tool_behavior)
+			.["tool_behavior"] += I.tool_behavior
 			.["other"][I.type] += 1
 		else
 			if(istype(I, /obj/item/reagent_containers))
 				var/obj/item/reagent_containers/RC = I
 				if(RC.is_open_container())
-					for(var/datum/reagent/A in RC.reagents.reagent_list)
-						.["other"][A.type] += A.volume
+					// todo: this shouldn't be by type.
+					for(var/id in RC.reagents.reagent_volumes)
+						var/datum/reagent/A = SSchemistry.fetch_reagent(id)
+						.["other"][A.type] += RC.reagents.reagent_volumes[id]
 			.["other"][I.type] += 1
 
 /datum/component/personal_crafting/proc/check_tools(atom/a, datum/crafting_recipe/R, list/contents)
@@ -155,18 +158,18 @@
 		return TRUE
 	var/list/possible_tools = list()
 	var/list/present_qualities = list()
-	present_qualities |= contents["tool_behaviour"]
+	present_qualities |= contents["tool_behavior"]
 	for(var/obj/item/I in a.contents)
 		if(istype(I, /obj/item/storage))
 			for(var/obj/item/SI in I.contents)
 				possible_tools += SI.type
-				if(SI.tool_behaviour)
-					present_qualities.Add(SI.tool_behaviour)
+				if(SI.tool_behavior)
+					present_qualities.Add(SI.tool_behavior)
 
 		possible_tools += I.type
 
-		if(I.tool_behaviour)
-			present_qualities.Add(I.tool_behaviour)
+		if(I.tool_behavior)
+			present_qualities.Add(I.tool_behavior)
 
 	possible_tools |= contents["other"]
 
@@ -235,34 +238,17 @@
 			surroundings = get_environment(a, R.blacklist)
 			surroundings -= Deletion
 			if(ispath(A, /datum/reagent))
-				var/datum/reagent/RG = new A
-				var/datum/reagent/RGNT
+				var/datum/reagent/wanted_reagent = SSchemistry.fetch_reagent(A)
 				while(amt > 0)
 					var/obj/item/reagent_containers/RC = locate() in surroundings
-					RG = RC.reagents.get_reagent(RG.id)
-					if(RG)
-						if(!locate(RG.type) in Deletion)
-							Deletion += new RG.type()
-						if(RG.volume > amt)
-							RG.volume -= amt
-							data = RG.data
-							RC.reagents.conditional_update(RC)
-							RG = locate(RG.type) in Deletion
-							RG.volume = amt
-							RG.data += data
+					surroundings -= RC
+					if(RC.reagents?.reagent_volumes?[wanted_reagent.id])
+						var/removing_volume = RC.reagents.reagent_volumes[wanted_reagent.id]
+						removing_volume = min(removing_volume, amt)
+						RC.reagents.remove_reagent(wanted_reagent.id, removing_volume)
+						amt -= removing_volume
+						if(amt <= 0)
 							continue main_loop
-						else
-							surroundings -= RC
-							amt -= RG.volume
-							RC.reagents.reagent_list -= RG
-							RC.reagents.conditional_update(RC)
-							RGNT = locate(RG.type) in Deletion
-							RGNT.volume += RG.volume
-							RGNT.data += RG.data
-							qdel(RG)
-						RC.on_reagent_change()
-					else
-						surroundings -= RC
 			else if(ispath(A, /obj/item/stack))
 				var/obj/item/stack/S
 				var/obj/item/stack/SD
@@ -296,14 +282,7 @@
 	for(var/M in R.parts)
 		partlist[M] = R.parts[M]
 	for(var/A in R.parts)
-		if(istype(A, /datum/reagent))
-			var/datum/reagent/RG = locate(A) in Deletion
-			if(RG.volume > partlist[A])
-				RG.volume = partlist[A]
-			. += RG
-			Deletion -= RG
-			continue
-		else if(istype(A, /obj/item/stack))
+		if(istype(A, /obj/item/stack))
 			var/obj/item/stack/ST = locate(A) in Deletion
 			if(ST.amount > partlist[A])
 				ST.amount = partlist[A]
@@ -321,7 +300,7 @@
 		Deletion.Cut(Deletion.len)
 		qdel(DL)
 
-/datum/component/personal_crafting/proc/component_ui_interact(source, location, control, params, user)
+/datum/component/personal_crafting/proc/component_ui_interact(datum/source, mob/user, location, control, params)
 	// SIGNAL_HANDLER
 
 	if(user == parent)
@@ -394,7 +373,7 @@
 	data["crafting_recipes"] = crafting_recipes
 	return data
 
-/datum/component/personal_crafting/ui_act(action, list/params, datum/tgui/ui)
+/datum/component/personal_crafting/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return
 	switch(action)

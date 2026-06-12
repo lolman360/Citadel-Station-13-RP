@@ -23,8 +23,12 @@
 #define OBJ_NO_SCULPTING			(1<<10)
 /// wall-mounted; facing *towards* the wall we're mounted on (e.g. be NORTH if we're shifted north)
 #define OBJ_WALL_MOUNTED			(1<<11)
+/// Does this object prevent things from being built on it
+#define OBJ_BLOCKS_CONSTRUCTION		(1<<12)
+/// Does this object prevent same-direction things from being built on it
+#define OBJ_BLOCKS_CONSTRUCTION_DIR	(1<<13)
 /// Allow throwing stuff through us if we get destroyed by a throw
-#define OBJ_ALLOW_THROW_THROUGH     (1<<3)
+#define OBJ_ALLOW_THROW_THROUGH     (1<<23)
 
 DEFINE_BITFIELD(obj_flags, list(
 	BITFIELD(OBJ_EMAGGED),

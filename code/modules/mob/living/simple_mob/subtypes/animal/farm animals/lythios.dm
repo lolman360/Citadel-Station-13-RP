@@ -4,11 +4,11 @@
 /datum/category_item/catalogue/fauna/livestock/icegoat
 	name = "Experimental Livestock - Glacicorn"
 	desc = "A genetically engineered lifeform distantly related to the domesticated goat.\
-	It is currently being developed by NT as part of an independent initiative to slowly\
-	ween itself off reliance on Centauri Provisions for its food. It is capable of surviving\
-	in the harshest colds, and survives off of chemical processes only possible in extreme cold.\
-	As a result it dies rather quickly in what most races would consider 'comfortable' heat.\
-	Theirs ice spikes though dangerous are seen as a necessary defense for theoretical predators.\
+	It is currently being developed by NT as part of an independent initiative to slowly \
+	ween itself off reliance on Centauri Provisions for its food. It is capable of surviving \
+	in the harshest colds, and survives off of chemical processes only possible in extreme cold. \
+	As a result it dies rather quickly in what most races would consider 'comfortable' heat. \
+	Theirs ice spikes though dangerous are seen as a necessary defense for theoretical predators. \
 	Its milk is notably chilled by frost oil created as a by product of surviving on icy planets."
 	value = CATALOGUER_REWARD_TRIVIAL
 
@@ -55,6 +55,10 @@
 	udder = new(50)
 	udder.my_atom = src
 
+/mob/living/simple_mob/animal/icegoat/Destroy()
+	QDEL_NULL(udder)
+	return ..()
+
 /mob/living/simple_mob/animal/icegoat/BiologicalLife(seconds, times_fired)
 	if((. = ..()))
 		return
@@ -64,8 +68,8 @@
 			udder.add_reagent("milk", rand(4,8))
 			udder.add_reagent("frostoil", rand(1, 2))
 
-		if(locate(/obj/effect/plant) in loc)
-			var/obj/effect/plant/SV = locate() in loc
+		if(locate(/obj/structure/plant) in loc)
+			var/obj/structure/plant/SV = locate() in loc
 			SV.die_off(1)
 
 		if(locate(/obj/machinery/portable_atmospherics/hydroponics/soil/invisible) in loc)
@@ -73,8 +77,8 @@
 			qdel(SP)
 
 		if(!pulledby)
-			var/obj/effect/plant/food
-			food = locate(/obj/effect/plant) in oview(5,loc)
+			var/obj/structure/plant/food
+			food = locate(/obj/structure/plant) in oview(5,loc)
 			if(food)
 				var/step = get_step_to(src, food, 0)
 				Move(step)
@@ -82,7 +86,7 @@
 /mob/living/simple_mob/animal/icegoat/Move()
 	..()
 	if(!stat)
-		for(var/obj/effect/plant/SV in loc)
+		for(var/obj/structure/plant/SV in loc)
 			SV.die_off(1)
 
 /mob/living/simple_mob/animal/icegoat/attackby(var/obj/item/O as obj, var/mob/user as mob)
@@ -100,11 +104,11 @@
 
 /datum/category_item/catalogue/fauna/livestock/woolie
 	name = "Experimental Livestock - Woolie"
-	desc = "A large ball of dense wool hiding an unusual octopedal creature.\
-	It has been genetically engineered almost from scratch to create an animal\
-	capable of producing a natural clothing fiber on even the coldest worlds.\
-	Cloth can be sheared from the outer most layers of its woolen coat which\
-	regrows quickly. Lower layers of the coat tend to be too dense to shear.\
+	desc = "A large ball of dense wool hiding an unusual octopedal creature. \
+	It has been genetically engineered almost from scratch to create an animal \
+	capable of producing a natural clothing fiber on even the coldest worlds. \
+	Cloth can be sheared from the outer most layers of its woolen coat which \
+	regrows quickly. Lower layers of the coat tend to be too dense to shear. \
 	These peaceful animals have temperment similar to sheep and are very peaceful."
 	value = CATALOGUER_REWARD_TRIVIAL
 
@@ -172,9 +176,9 @@
 
 /datum/category_item/catalogue/fauna/livestock/furnacegrub
 	name = "Experimental Livestock - Furnace Grub"
-	desc = "After years of study by NT xenobiologists, the genes that allowed solar moths\
-	to produce heat were extracted and engineered into a docile and mostly safe living furnace.\
-	The 'Furnace Grub' as it has been dubbed could provide passive heating even without power systems,\
+	desc = "After years of study by NT xenobiologists, the genes that allowed solar moths \
+	to produce heat were extracted and engineered into a docile and mostly safe living furnace. \
+	The 'Furnace Grub' as it has been dubbed could provide passive heating even without power systems, \
 	which NT hopes can be sold to prospective colonists seeking to colonize the most icy planets."
 	value = CATALOGUER_REWARD_TRIVIAL
 
@@ -197,7 +201,7 @@
 	legacy_melee_damage_lower = 1
 	legacy_melee_damage_upper = 3
 
-	movement_cooldown = 8
+	movement_base_speed = 10 / 8
 
 	meat_amount = 3
 	meat_type = /obj/item/reagent_containers/food/snacks/meat/grubmeat

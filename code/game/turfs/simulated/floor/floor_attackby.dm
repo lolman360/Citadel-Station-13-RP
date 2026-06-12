@@ -1,13 +1,6 @@
 /turf/simulated/floor/attackby(obj/item/C as obj, mob/user as mob)
-
 	if(!C || !user)
 		return 0
-
-	if(isliving(user) && istype(C, /obj/item))
-		var/mob/living/L = user
-		if(L.a_intent != INTENT_HELP)
-			attack_tile(C, L) // Be on help intent if you want to decon something.
-			return
 
 	if(istype(C, /obj/item/stack/tile/roofing))
 		var/expended_tile = FALSE // To track the case. If a ceiling is built in a multiz zlevel, it also necessarily roofs it against weather
@@ -33,7 +26,7 @@
 
 				if(R.use(1)) // Cost of roofing tiles is 1:1 with cost to place lattice and plating
 					T.ReplaceWithLattice()
-					T.ChangeTurf(/turf/simulated/floor, flags = CHANGETURF_INHERIT_AIR | CHANGETURF_PRESERVE_OUTDOORS)
+					T.PlaceOnTop(/turf/simulated/floor, flags = CHANGETURF_INHERIT_AIR | CHANGETURF_PRESERVE_OUTDOORS)
 					playsound(src, 'sound/weapons/Genhit.ogg', 50, 1)
 					user.visible_message("<span class='notice'>[user] patches a hole in the ceiling.</span>", "<span class='notice'>You patch a hole in the ceiling.</span>")
 					expended_tile = TRUE

@@ -123,7 +123,7 @@
 	icon = 'icons/mob/dogborg_vr.dmi'
 	icon_state = "kibble"
 
-/obj/item/trash/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/trash/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(ishuman(target))
 		var/mob/living/carbon/human/H = target
 		if(H.species.trashcan == 1)
@@ -135,12 +135,13 @@
 
 	if(isrobot(target))
 		var/mob/living/silicon/robot/R = target
-		if(R.module.type == /obj/item/robot_module/robot/quad/jani) // You can now feed the trash borg yay.
-			if(!user.attempt_insert_item_for_installation(src, R.vore_selected))
+		if(R.module.type == /datum/prototype/robot_module/nanotrasen/janitor && R.chassis.type == /datum/prototype/robot_chassis/quadruped) // You can now feed the trash borg yay.
+			if(R.vore_selected)
+				if(!user.attempt_insert_item_for_installation(src, R.vore_selected))
+					return
+				playsound(R,'sound/items/eatfood.ogg', rand(10,50), 1)
+				R.visible_message("<span class='warning'>[user] feeds [R] with [src]!</span>")
 				return
-			playsound(R,'sound/items/eatfood.ogg', rand(10,50), 1)
-			R.visible_message("<span class='warning'>[user] feeds [R] with [src]!</span>")
-			return
 	return ..()
 
 /obj/item/trash/fancyplate

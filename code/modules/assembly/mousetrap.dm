@@ -4,6 +4,7 @@
 	icon_state = "mousetrap"
 	origin_tech = list(TECH_COMBAT = 1)
 	materials_base = list(MAT_STEEL = 100)
+	belt_storage_class = BELT_CLASS_SMALL
 	var/armed = 0
 
 
@@ -83,7 +84,7 @@
 
 
 /obj/item/assembly/mousetrap/Crossed(var/atom/movable/AM)
-	if(AM.is_incorporeal())
+	if(AM.is_incorporeal() || AM.is_avoiding_ground())
 		return
 	if(armed)
 		if(ishuman(AM))

@@ -55,6 +55,7 @@
 		/obj/item/reagent_containers/food/drinks/bottle/champagne = 3,
 		/obj/item/reagent_containers/food/drinks/bottle/coconutmilk = 5,
 		/obj/item/reagent_containers/food/drinks/bottle/unathijuice = 2,
+		/obj/item/reagent_containers/food/drinks/cans/pineapple_juice = 15,
 		/obj/item/reagent_containers/food/drinks/cans/sodawater = 15,
 		/obj/item/reagent_containers/food/drinks/cans/tonic = 15,
 		/obj/item/reagent_containers/food/drinks/cans/gingerale = 15,
@@ -107,6 +108,7 @@
 		/obj/item/reagent_containers/food/drinks/bottle/space_mountain_wind = 5,
 		/obj/item/reagent_containers/food/drinks/bottle/coconutmilk = 5,
 		/obj/item/reagent_containers/food/drinks/bottle/unathijuice = 2,
+		/obj/item/reagent_containers/food/drinks/cans/pineapple_juice = 15,
 		/obj/item/reagent_containers/food/drinks/cans/sodawater = 15,
 		/obj/item/reagent_containers/food/drinks/cans/tonic = 15,
 		/obj/item/reagent_containers/food/drinks/cans/gingerale = 15,
@@ -119,6 +121,10 @@
 		/obj/item/glass_extra/stick = 30,
 		/obj/item/glass_extra/straw = 30,
 		/obj/item/storage/single_use/med_pouch/overdose = 2,
+		/obj/item/reagent_containers/food/drinks/coffee_cup = 10,
+		/obj/item/reagent_containers/food/condiment/small/packet/creamer = 20,
+		/obj/item/reagent_containers/food/condiment/small/packet/sugar = 20,
+		/obj/item/reagent_containers/food/condiment/small/packet/astrotame = 20,
 	)
 	contraband = list()
 	vend_delay = 15

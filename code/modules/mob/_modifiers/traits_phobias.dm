@@ -198,7 +198,7 @@
 		if(istype(thing, /obj/effect/debris/cleanable/spiderling_remains)) // Dead spiderlings are a bit spooky.
 			fear_amount += 1
 
-		if(istype(thing, /obj/effect/spider/spiderling)) // Live spiderlings are also spooky.
+		if(istype(thing, /obj/structure/spider/spiderling)) // Live spiderlings are also spooky.
 			fear_amount += 2
 
 		if(istype(thing, /obj/item/toy/plushie/spider)) // Plushies are spooky so people can be assholes with them.
@@ -513,7 +513,7 @@
 		if(istype(thing, /obj/item/storage/box/syringes))
 			fear_amount += 2
 
-		if(istype(thing, /obj/item/mecha_parts/mecha_equipment/tool/syringe_gun))
+		if(istype(thing, /obj/item/vehicle_module/tool/syringe_gun))
 			fear_amount += 8 //Syringe gun for a big ass mech.
 
 		if(istype(thing, /obj/machinery/sleep_console)) //Sleepers got them needles in them.
@@ -522,7 +522,7 @@
 		if(istype(thing, /obj/item/implanter))
 			fear_amount += 8 //Very big needle.
 
-		if(istype(thing, /obj/item/gun/launcher/syringe))
+		if(istype(thing, /obj/item/gun/projectile/ballistic/syringe))
 			fear_amount += 6
 
 		if(istype(thing, /mob/living/carbon/human))

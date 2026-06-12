@@ -158,7 +158,7 @@
 
 /obj/machinery/sleeper
 	name = "sleeper"
-	desc = "A stasis pod with built-in injectors, a dialysis machine, and a limited health scanner."
+	desc = "A stasis pod with built-in injectors, a dialysis machine, and a limited health scanner.\n <span class='notice'>\[Accepts Upgrades\]</span>"
 	icon = 'icons/obj/medical/cryogenic2.dmi'
 	icon_state = "sleeper_0"
 	density = TRUE
@@ -253,11 +253,11 @@
 					beaker.reagents,
 					min(
 						remaining_beaker_volume_for_dialysis * (3 / 4),
-						length(occupant.reagents.reagent_list) * 3,
+						length(occupant.reagents.reagent_volumes) * 3,
 					),
 					dialysis_reagent_filter_flags,
 				)
-				occupant.vessel.trans_to_holder(beaker.reagents, filtered_volume * (1 / 3))
+				occupant.take_blood_legacy(beaker, filtered_volume * (1 / 3))
 			else
 				toggle_filter()
 
@@ -268,7 +268,7 @@
 					beaker.reagents,
 					min(
 						beaker.reagents.maximum_volume - beaker.reagents.total_volume,
-						length(occupant.ingested.reagent_list) * 3,
+						length(occupant.ingested.reagent_volumes) * 3,
 					),
 					dialysis_reagent_filter_flags,
 				)

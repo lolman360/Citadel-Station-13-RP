@@ -51,7 +51,7 @@ GLOBAL_LIST_BOILERPLATE(all_mops, /obj/item/mop)
 			user.do_attack_animation(T)
 		if (mopmode == MOPMODE_TILE)
 			//user.visible_message(SPAN_WARNING("[user] begins to clean \the [T]."))
-			user.setClickCooldown(3)
+			user.setClickCooldownLegacy(3)
 			if(do_after(user, mopspeed, T))
 				if(T)
 					T.clean(src, user)
@@ -65,7 +65,7 @@ GLOBAL_LIST_BOILERPLATE(all_mops, /obj/item/mop)
 // TO DO : MAKE SWEEPING WORK
 
 /obj/item/mop/proc/sweep(var/mob/user, var/turf/target)
-	user.setClickCooldown(sweep_time)
+	user.setClickCooldownLegacy(sweep_time)
 	var/direction = get_dir(get_turf(src),target)
 	var/list/turfs
 	if (direction in GLOB.cardinal)
@@ -91,9 +91,9 @@ GLOBAL_LIST_BOILERPLATE(all_mops, /obj/item/mop)
 	animate(mopimage, alpha = 50, time = sweep_time*1.2)
 	var/sweep_step = (sweep_time - 1) * 0.5
 	spawn(1)
-		mopimage.forceMove(target, sweep_step)
+		mopimage.forceMove(target)
 		sleep(sweep_step)
-		mopimage.forceMove(end, sweep_step)
+		mopimage.forceMove(end)
 	spawn(sweep_time+1)
 		qdel(mopimage)
 
@@ -113,7 +113,7 @@ GLOBAL_LIST_BOILERPLATE(all_mops, /obj/item/mop)
 
 		else if (user)
 			//You hit a wall!
-			user.setClickCooldown(2)
+			user.setClickCooldownLegacy(2)
 			user.afflict_stun(20 * 2)
 			shake_camera(user, 1, 1)
 			playsound(T,"thud", 20, 1, -3)

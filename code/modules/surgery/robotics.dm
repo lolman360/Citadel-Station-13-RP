@@ -8,6 +8,7 @@
 	surface_odd_buff = 30 // can do it basically anywhere but a floor
 
 /datum/surgery_step/robotics/can_use(mob/living/user, mob/living/carbon/human/target, target_zone, obj/item/tool)
+	if(!..()) return FALSE
 	if (isslime(target))
 		return 0
 	if (target_zone == O_EYES)	//there are specific steps for eye surgery
@@ -211,11 +212,11 @@
 				to_chat(user, "<span class='notice'>There are no burnt wires here!</span>")
 				return SURGERY_FAILURE
 			else
-				if(!C.can_use(1))
+				if(C.get_amount() < 5)
 					to_chat(user, "<span class='danger'>You need at least five cable pieces to repair this part.</span>") //usage amount made more consistent with regular cable repair
 					return SURGERY_FAILURE
 				else
-					C.use(1)
+					C.use(5)
 
 		return affected && affected.open == 3 && (affected.disfigured || affected.burn_dam > 0) && target_zone != O_MOUTH
 

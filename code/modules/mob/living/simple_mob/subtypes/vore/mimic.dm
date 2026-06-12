@@ -67,7 +67,7 @@
 
 	maxHealth = 125
 	health = 125
-	movement_cooldown = 7
+	movement_base_speed = 10 / 7
 
 	response_help = "touches"
 	response_disarm = "pushes"
@@ -93,11 +93,6 @@
 	var/obj/structure/closet/crate/real_crate
 
 	var/knockdown_chance = 10 //Stubbing your toe on furniture hurts.
-
-	showvoreprefs = 0 //Hides mechanical vore prefs for mimics. You can't see their gaping maws when they're just sitting idle.
-
-/mob/living/simple_mob/vore/aggressive/mimic
-	swallowTime = 3 SECONDS
 
 /datum/ai_holder/polaris/mimic
 	wander = FALSE
@@ -180,7 +175,7 @@
 
 	maxHealth = 250
 	health = 250
-	movement_cooldown = 10
+	movement_base_speed = 10 / 10
 
 	legacy_melee_damage_lower = 15
 	legacy_melee_damage_upper = 30
@@ -258,7 +253,7 @@
 
 	maxHealth = 150
 	health = 150
-	movement_cooldown = 7
+	movement_base_speed = 10 / 7
 
 	legacy_melee_damage_lower = 10
 	legacy_melee_damage_upper = 20
@@ -308,7 +303,7 @@
 	if(!isliving(victim))
 		return
 	var/mob/living/L = victim
-	if(L.hovering)
+	if(L.is_avoiding_ground())
 		return
 	awaken(L)
 
@@ -353,7 +348,7 @@
 
 	maxHealth = 100
 	health = 100
-	movement_cooldown = 5
+	movement_base_speed = 10 / 5
 
 	response_help = "touches"
 	response_disarm = "pushes"
@@ -395,7 +390,7 @@
 
 	maxHealth = 125
 	health = 125
-	movement_cooldown = 7
+	movement_base_speed = 10 / 7
 
 	response_help = "touches"
 	response_disarm = "pushes"
@@ -434,7 +429,7 @@
 
 	maxHealth = 150
 	health = 150
-	movement_cooldown = 7
+	movement_base_speed = 10 / 7
 
 	response_help = "touches"
 	response_disarm = "pushes"

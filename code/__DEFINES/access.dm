@@ -290,9 +290,6 @@ STANDARD_ACCESS_DATUM(ACCESS_MEDICAL_SURGERY, station/medical/surgery, "Surgery"
 #define ACCESS_MEDICAL_PSYCH 64 // Psychiatrist's office
 STANDARD_ACCESS_DATUM(ACCESS_MEDICAL_PSYCH, station/medical/psych, "Phychiatrist's Office")
 
-#define ACCESS_SCIENCE_XENOARCH 65
-STANDARD_ACCESS_DATUM(ACCESS_SCIENCE_XENOARCH, station/science/xenoarch, "Xenoarchaeology")
-
 #define ACCESS_MEDICAL_EQUIPMENT 66
 STANDARD_ACCESS_DATUM(ACCESS_MEDICAL_EQUIPMENT, station/medical/equipment, "Medical Equipment")
 
@@ -327,6 +324,9 @@ STANDARD_ACCESS_DATUM(ACCESS_SCIENCE_MAIN, station/science/main, "Science")
 
 #define ACCESS_SCIENCE_XENOBIO 55
 STANDARD_ACCESS_DATUM(ACCESS_SCIENCE_XENOBIO, station/science/xenobiology, "Xenobiology Lab")
+
+#define ACCESS_SCIENCE_XENOARCH 65
+STANDARD_ACCESS_DATUM(ACCESS_SCIENCE_XENOARCH, station/science/xenoarch, "Xenoarchaeology")
 
 #define ACCESS_SCIENCE_XENOBOTANY 77
 STANDARD_ACCESS_DATUM(ACCESS_SCIENCE_XENOBOTANY, station/science/xenobotany, "Xenobotany Garden")
@@ -400,6 +400,11 @@ STANDARD_ACCESS_DATUM(ACCESS_CENTCOM_ADMIRAL, centcom/admiral, "Admiral")
 
 #define ACCESS_FACTION_SYNDICATE 150//General Syndicate Access
 STANDARD_ACCESS_DATUM(ACCESS_FACTION_SYNDICATE, faction/syndicate, "Syndicate")
+
+//? SDF
+
+#define ACCESS_FACTION_SDF 155//SDF (for ghost roles)
+STANDARD_ACCESS_DATUM(ACCESS_FACTION_SDF, faction/sdf, "SDF")
 
 //? Pirate
 
@@ -478,3 +483,14 @@ STANDARD_ACCESS_DATUM(ACCESS_SPECIAL_SILICONS, special/silicons, "Synthetic")
 
 #define ACCESS_NETWORK 404
 STANDARD_ACCESS_DATUM(ACCESS_NETWORK, misc/network, "Network")
+
+// POI
+
+#define ACCESS_CASINO_1 410 //Used for the Casino POI
+STANDARD_ACCESS_DATUM(ACCESS_CASINO_1,  misc/casinoPOI1, "Casino 1")
+
+#define ACCESS_CASINO_2 411 //Used for the Casino POI
+STANDARD_ACCESS_DATUM(ACCESS_CASINO_2,  misc/casinoPOI2, "Casino 2")
+
+#define ACCESS_CASINO_3 412 //Used for the Casino POI
+STANDARD_ACCESS_DATUM(ACCESS_CASINO_3,  misc/casinoPOI3, "Casino 3")

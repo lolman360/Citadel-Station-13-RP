@@ -15,7 +15,7 @@
 
 	maxHealth = 300
 	health = 300
-	movement_cooldown = 0
+	movement_base_speed = 6.66
 
 	vision_innate = /datum/vision/baseline/demon
 
@@ -58,7 +58,7 @@
 
 /mob/living/simple_mob/vore/demon/zMove(direction)
 	if(shifted_out)
-		var/turf/destination = get_vertical_step(src, direction)
+		var/turf/destination = get_step_multiz(src, direction)
 		if(destination)
 			forceMove(destination)
 		return TRUE

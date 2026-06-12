@@ -28,12 +28,12 @@
 /area/submap/cave/SupplyDrop1)
 "h" = (
 /obj/structure/closet/crate,
-/obj/item/gun/energy/stunrevolver,
-/obj/item/gun/energy/stunrevolver,
+/obj/item/gun/projectile/energy/stunrevolver,
+/obj/item/gun/projectile/energy/stunrevolver,
 /obj/item/storage/box/flare,
 /obj/item/stack/marker_beacon/ten,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_3/weapon,
+/obj/item/cell/basic/tier_3/weapon,
 /obj/item/trash/tastybread,
 /obj/item/trash/tastybread,
 /obj/item/trash/sosjerky,

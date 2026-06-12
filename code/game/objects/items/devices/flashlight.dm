@@ -9,6 +9,9 @@
 	item_action_name = "Toggle Flashlight"
 	light_wedge = LIGHT_WIDE
 	worth_intrinsic = 25
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR | SUIT_STORAGE_CLASS_HARDWEAR
+	belt_storage_class = BELT_CLASS_MEDIUM
+	belt_storage_size = BELT_SIZE_FOR_FLASHLIGHT
 
 	var/on = FALSE
 	/// Luminosity when on
@@ -18,8 +21,9 @@
 	/// Range of light when on, can be negative.
 	var/flashlight_range = 4
 
-	var/obj/item/cell/cell
-	var/cell_type = /obj/item/cell/device
+	var/cell_type = /obj/item/cell/basic/tier_1/small
+	var/cell_accept = CELL_TYPE_SMALL | CELL_TYPE_WEAPON
+
 	var/list/brightness_levels
 	var/brightness_level = "medium"
 	var/power_usage
@@ -29,11 +33,11 @@
 	var/spawn_dir
 
 /obj/item/flashlight/Initialize(mapload)
+	init_cell_slot_easy_tool(cell_type, cell_accept)
 	set_flashlight()
 	. = ..()
 
-	if(power_use && cell_type)
-		cell = new cell_type(src)
+	if(power_use)
 		brightness_levels = list("low" = 0.25, "medium" = 0.5, "high" = 1)
 		power_usage = brightness_levels[brightness_level]
 	else
@@ -43,10 +47,10 @@
 
 /obj/item/flashlight/Destroy()
 	STOP_PROCESSING(SSobj, src)
-	QDEL_NULL(cell)
 	return ..()
 
 /obj/item/flashlight/process(delta_time)
+	var/obj/item/cell/cell = obj_cell_slot?.cell
 	if(!on || !cell)
 		return PROCESS_KILL
 
@@ -54,13 +58,10 @@
 		if(cell.use(power_usage) != power_usage) //We weren't able to use our full power_usage amount!
 			visible_message(SPAN_WARNING("\The [src] flickers before going dull."))
 			set_light(FALSE)
-			playsound(src.loc, /datum/soundbyte/grouped/sparks, 10, 1, -3) //Small cue that your light went dull in your pocket.
+			playsound(src.loc, /datum/soundbyte/sparks, 10, 1, -3) //Small cue that your light went dull in your pocket.
 			on = FALSE
 			update_appearance()
 			return PROCESS_KILL
-
-/obj/item/flashlight/get_cell(inducer)
-	return cell
 
 /obj/item/flashlight/verb/toggle()
 	set name = "Toggle Flashlight Brightness"
@@ -101,23 +102,25 @@
 
 /obj/item/flashlight/examine(mob/user, dist)
 	. = ..()
+	var/obj/item/cell/cell = obj_cell_slot?.cell
 	if(power_use && brightness_level)
 		. += "\The [src] is set to [brightness_level]. "
 		if(cell)
 			. += "\The [src] has a \the [cell] attached. "
-			if(cell.charge <= cell.maxcharge*0.25)
+			if(cell.charge <= cell.max_charge*0.25)
 				. += "It appears to have a low amount of power remaining."
-			else if(cell.charge > cell.maxcharge*0.25 && cell.charge <= cell.maxcharge*0.5)
+			else if(cell.charge > cell.max_charge*0.25 && cell.charge <= cell.max_charge*0.5)
 				. += "It appears to have an average amount of power remaining."
-			else if(cell.charge > cell.maxcharge*0.5 && cell.charge <= cell.maxcharge*0.75)
+			else if(cell.charge > cell.max_charge*0.5 && cell.charge <= cell.max_charge*0.75)
 				. += "It appears to have an above average amount of power remaining."
-			else if(cell.charge > cell.maxcharge*0.75 && cell.charge <= cell.maxcharge)
+			else if(cell.charge > cell.max_charge*0.75 && cell.charge <= cell.max_charge)
 				. += "It appears to have a high amount of power remaining."
 
 /obj/item/flashlight/AltClick(mob/user)
 	attack_self(user)
 
 /obj/item/flashlight/attack_self(mob/user, datum/event_args/actor/actor)
+	var/obj/item/cell/cell = obj_cell_slot?.cell
 	if(power_use)
 		if(!isturf(user.loc))
 			to_chat(user, "You cannot turn the light on while in this [user.loc].") //To prevent some lighting anomalities.
@@ -140,7 +143,7 @@
 		O.emp_act(severity)
 	..()
 
-/obj/item/flashlight/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/flashlight/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(on && user.zone_sel.selecting == O_EYES && isliving(target))
@@ -175,52 +178,26 @@
 				if(L.getBrainLoss() > 15)
 					to_chat(user, SPAN_NOTICE("There's visible lag between left and right pupils' reactions."))
 
-				var/list/pinpoint = list("oxycodone"=1,"tramadol"=5)
-				var/list/dilating = list("space_drugs"=5,"mindbreaker"=1)
-				if(L.reagents.has_any_reagent(pinpoint) || H.ingested.has_any_reagent(pinpoint))
+				// todo: reagent effects.
+				var/static/list/reagents_that_cause_constriction = list(
+					/datum/reagent/tramadol,
+					/datum/reagent/oxycodone,
+				)
+				var/static/list/reagents_that_cause_dilation = list(
+					/datum/reagent/space_drugs,
+					/datum/reagent/mindbreaker,
+				)
+				if(L.reagents.has_any(reagents_that_cause_constriction) || H.ingested.has_any(reagents_that_cause_constriction))
 					to_chat(user, SPAN_NOTICE("\The [L]'s pupils are already pinpoint and cannot narrow any more."))
-				else if(L.reagents.has_any_reagent(dilating) || H.ingested.has_any_reagent(dilating))
+				else if(L.reagents.has_any(reagents_that_cause_dilation) || H.ingested.has_any(reagents_that_cause_dilation))
 					to_chat(user, SPAN_NOTICE("\The [L]'s pupils narrow slightly, but are still very dilated."))
 				else
 					to_chat(user, SPAN_NOTICE("\The [L]'s pupils narrow."))
 
-			user.setClickCooldown(user.get_attack_speed(src)) //can be used offensively
+			user.setClickCooldownLegacy(user.get_attack_speed_legacy(src)) //can be used offensively
 			L.flash_eyes()
 		return CLICKCHAIN_DO_NOT_PROPAGATE
 	return ..()
-
-/obj/item/flashlight/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
-	if(user.get_inactive_held_item() == src)
-		if(cell)
-			cell.update_appearance()
-			user.put_in_hands(cell)
-			cell = null
-			to_chat(user, SPAN_NOTICE("You remove the cell from the [src]."))
-			playsound(src, 'sound/machines/button.ogg', 30, TRUE, 0)
-			on = FALSE
-			update_appearance()
-			return
-		..()
-	else
-		return ..()
-
-/obj/item/flashlight/attackby(obj/item/W, mob/user as mob)
-	if(power_use)
-		if(istype(W, /obj/item/cell))
-			if(istype(W, /obj/item/cell/device))
-				if(!cell)
-					if(!user.attempt_insert_item_for_installation(W, src))
-						return
-					cell = W
-					to_chat(user, SPAN_NOTICE("You install a cell in \the [src]."))
-					playsound(src, 'sound/machines/button.ogg', 30, 1, 0)
-					update_appearance()
-				else
-					to_chat(user, SPAN_NOTICE("\The [src] already has a cell."))
-			else
-				to_chat(user, SPAN_NOTICE("\The [src] cannot use that type of cell."))
-	else
-		..()
 
 /obj/item/flashlight/pen
 	name = "penlight"
@@ -277,19 +254,19 @@
 		test_attachment = new
 	return test_attachment
 
-/obj/item/flashlight/maglight/using_as_item(atom/target, datum/event_args/actor/clickchain/e_args, clickchain_flags, datum/callback/reachability_check)
+/obj/item/flashlight/maglight/using_as_item(atom/target, datum/event_args/actor/clickchain/clickchain, clickchain_flags)
 	. = ..()
 	if(. & CLICKCHAIN_DO_NOT_PROPAGATE)
 		return
 	if(istype(target, /obj/item/gun))
 		var/obj/item/gun/gun_target = target
 		var/obj/item/gun_attachment/flashlight/maglight/test_attach = get_test_attachment()
-		if(gun_target.can_install_attachment(test_attach, e_args))
-			if(!e_args.performer.temporarily_remove_from_inventory(src))
-				e_args.chat_feedback(SPAN_WARNING("[src] is stuck to your hands!"), src)
+		if(gun_target.can_install_attachment(test_attach, clickchain))
+			if(!clickchain.performer.temporarily_remove_from_inventory(src))
+				clickchain.chat_feedback(SPAN_WARNING("[src] is stuck to your hands!"), src)
 				return CLICKCHAIN_DO_NOT_PROPAGATE
 			var/obj/item/gun_attachment/flashlight/maglight/attaching = new
-			if(!gun_target.install_attachment(attaching, e_args))
+			if(!gun_target.install_attachment(attaching, clickchain))
 				CRASH("install failed after check")
 			else
 				attaching.our_maglight = src
@@ -383,6 +360,7 @@
 	on = FALSE
 	src.damage_force = initial(src.damage_force)
 	src.damage_type = initial(src.damage_type)
+	set_light(FALSE)
 	update_appearance()
 
 /obj/item/flashlight/flare/attack_self(mob/user, datum/event_args/actor/actor)

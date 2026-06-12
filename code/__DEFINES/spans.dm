@@ -47,6 +47,7 @@
 #define SPAN_CULTITALIC(str) ("<span class='cultitalic'>[str]</span>")
 #define SPAN_CULTLARGE(str) ("<span class='cultlarge'>[str]</span>")
 #define SPAN_DANGER(str) ("<span class='danger'>[str]</span>")
+#define SPAN_DANGER_CONST(str) ("<span class='danger'>" + str + "</span>")
 #define SPAN_DEADSAY(str) ("<span class='deadsay'>[str]</span>")
 #define SPAN_DEBUG(str) ("<span class='debug_debug'>[str]</span>")
 #define SPAN_DEBUGERROR(str) ("<span class='debug_error'>[str]</span>")
@@ -57,6 +58,7 @@
 #define SPAN_DRONE(str) ("<span class='drone'>[str]</span>")
 #define SPAN_ENGRADIO(str) ("<span class='engradio'>[str]</span>")
 #define SPAN_EXTREMELYBIG(str) ("<span class='extremelybig'>[str]</span>")
+#define SPAN_EMOTE(str) ("<span class='emote'>[str]</span>")
 #define SPAN_EXPRADIO(str) ("<span class='expradio'>[str]</span>")
 #define SPAN_ENTRADIO(str) ("<span class='entradio'>[str]</span>")
 #define SPAN_GANGRADIO(str) ("<span class='gangradio'>[str]</span>")
@@ -81,6 +83,7 @@
 #define SPAN_INFO(str) ("<span class='info'>[str]</span>")
 #define SPAN_INFOPLAIN(str) ("<span class='infoplain'>[str]</span>")
 #define SPAN_INTERFACE(str) ("<span class='interface'>[str]</span>")
+#define SPAN_ITALICS(str) ("<span class='italics'>" + str + "</span>")
 #define SPAN_LINKIFY(str) ("<span class='linkify'>[str]</span>")
 #define SPAN_LOOC(str) ("<span class='looc'>[str]</span>")
 #define SPAN_MEDAL(str) ("<span class='medal'>[str]</span>")
@@ -153,7 +156,13 @@
  * Spans that use embedded tgui components:
  * Sorted alphabetically
  */
-#define SPAN_TOOLTIP(tip, str) ("<span data-component=\"Tooltip\" data-content=\"[tip]\" class=\"tooltip\">[str]</span>")
+
+/// Displays a tooltip. Tooltip is text-only, and HTML will be ignored.
+/// * SPAN_LINKIFY doesn't work here.
+#define SPAN_TOOLTIP(tip, str) ("<span data-component=\"Tooltip\" data-content=\"[html_encode(tip)]\" class=\"tooltip\">[str]</span>")
+/// Displays a tooltip. Accepts HTML. For the love of all that is holy, ensure input is trusted.
+/// * SPAN_LINKIFY doesn't work here.
+#define SPAN_TOOLTIP_DANGEROUS_HTML(tip, str) ("<span data-component=\"TooltipHTML\" data-html=\"[html_encode(tip)]\" class=\"tooltip\">[str]</span>")
 
 /**
  * Special Macros

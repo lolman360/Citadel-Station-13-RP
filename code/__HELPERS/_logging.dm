@@ -6,15 +6,9 @@
 #define SEND_TEXT(target, text) DIRECT_OUTPUT(target, text)
 #define WRITE_FILE(file, text) DIRECT_OUTPUT(file, text)
 #define READ_FILE(file, text) DIRECT_INPUT(file, text)
-#ifdef EXTOOLS_LOGGING
-// proc hooked, so we can just put in standard TRUE and FALSE
-#define WRITE_LOG(log, text) extools_log_write(log,text,TRUE)
-#define WRITE_LOG_NO_FORMAT(log, text) extools_log_write(log,text,FALSE)
-#else
 // This is an external call, "true" and "false" are how rust parses out booleans
 #define WRITE_LOG(log, text) rustg_log_write(log, text, "true")
 #define WRITE_LOG_NO_FORMAT(log, text) rustg_log_write(log, text, "false")
-#endif
 // Print a warning message to world.log
 #define WARNING(MSG) warning("[MSG] in [__FILE__] at line [__LINE__] src: [UNLINT(src)] usr: [usr].")
 /proc/warning(msg)
@@ -56,7 +50,7 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 #define testing_profile_local_output(NAME) testing_profile_output(NAME, _timer_system)
 #define testing_profile_local_output_all testing_profile_output_all(_timer_system)
 
-#if defined(UNIT_TESTS) || defined(SPACEMAN_DMM) || defined(INCLUDE_UNIT_TESTS)
+#if defined(UNIT_TESTS) || defined(SPACEMAN_DMM) || defined(COMPILE_UNIT_TESTS)
 /proc/log_test(text)
 	WRITE_LOG(GLOB.test_log, text)
 	SEND_TEXT(world.log, text)
@@ -251,8 +245,18 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
 	WRITE_LOG(GLOB.config_error_log, text)
 	SEND_TEXT(world.log, text)
 
-/proc/log_mapping(text)
+/// Logging for mapping errors
+/proc/log_mapping(text, skip_world_log)
+#ifdef UNIT_TESTS
+	GLOB.unit_test_mapping_logs += text
+#endif
+#ifdef MAP_TEST
+	message_admins("Mapping: [text]")
+#endif
 	WRITE_LOG(GLOB.world_map_error_log, text)
+	if(skip_world_log)
+		return
+	SEND_TEXT(world.log, text)
 
 /**
  * For logging round startup.
@@ -298,11 +302,8 @@ GLOBAL_LIST_INIT(testing_global_profiler, list("_PROFILE_NAME" = "Global"))
  * This should be called as late as possible, and no logging should hapen after.
  */
 /proc/shutdown_logging()
-#ifdef EXTOOLS_LOGGING
-	extools_finalize_logging()
-#else
 	rustg_log_close_all()
-#endif
+	global.event_logger.shutdown_logger()
 
 /**
  * Helper procs for building detailed log lines

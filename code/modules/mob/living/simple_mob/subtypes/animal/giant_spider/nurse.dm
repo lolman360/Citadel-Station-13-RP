@@ -33,12 +33,14 @@
 	maxHealth = 40
 	health = 40
 
-	movement_cooldown = 5	// A bit faster so that they can inject the eggs easier.
+	movement_base_speed = 10 / 5	// A bit faster so that they can inject the eggs easier.
 
 	legacy_melee_damage_lower = 5	// Doesn't do a lot of damage, since the goal is to make more spiders with egg attacks.
 	legacy_melee_damage_upper = 10
 	poison_per_bite = 5
 	poison_type = "stoxin"
+
+	exotic_type = /obj/item/reagent_containers/glass/venomgland/spider/s_toxin
 
 	player_msg = "You can spin webs on an adjacent tile, or cocoon an object by clicking on it.<br>\
 	You can also cocoon a dying or dead entity by clicking on them, and you will gain charges for egg-laying.<br>\
@@ -48,8 +50,8 @@
 	var/fed = 0 // Counter for how many egg laying 'charges' the spider has.
 	var/laying_eggs = FALSE	// Only allow one set of eggs to be laid at once.
 	var/egg_inject_chance = 25 // One in four chance to get eggs.
-	var/egg_type = /obj/effect/spider/eggcluster/small
-	var/web_type = /obj/effect/spider/stickyweb/dark
+	var/egg_type = /obj/structure/spider/eggcluster/small
+	var/web_type = /obj/structure/spider/stickyweb/dark
 
 /datum/ai_holder/polaris/simple_mob/melee/nurse_spider
 	mauling = TRUE		// The nurse puts mobs into webs by attacking, so it needs to attack in crit
@@ -62,7 +64,7 @@
 		var/obj/item/organ/external/O = H.get_organ(target_zone)
 		if(O)
 			var/eggcount = 0
-			for(var/obj/effect/spider/eggcluster/E in O.implants)
+			for(var/obj/structure/spider/eggcluster/E in O.implants)
 				eggcount++
 			if(!eggcount)
 				var/eggs = new egg_type(O, src)
@@ -119,7 +121,7 @@
 		return FALSE
 
 	// Finally done with the checks.
-	var/obj/effect/spider/cocoon/C = new(AM.loc)
+	var/obj/structure/spider/cocoon/C = new(AM.loc)
 	var/large_cocoon = FALSE
 	for(var/mob/living/L in C.loc)
 		if(istype(L, /mob/living/simple_mob/animal/giant_spider)) // Cannibalism is bad.
@@ -157,7 +159,7 @@
 	if(!istype(T))
 		return FALSE
 
-	var/obj/effect/spider/stickyweb/W = locate() in T
+	var/obj/structure/spider/stickyweb/W = locate() in T
 	if(W)
 		return FALSE // Already got webs here.
 
@@ -186,7 +188,7 @@
 	if(!fed)
 		return FALSE
 
-	var/obj/effect/spider/eggcluster/E = locate() in T
+	var/obj/structure/spider/eggcluster/E = locate() in T
 	if(E)
 		return FALSE // Already got eggs here.
 
@@ -211,10 +213,17 @@
 	laying_eggs = FALSE
 	return TRUE
 
+/obj/item/reagent_containers/glass/venomgland/spider/sophoric
+	name = "Drowsy Venom Gland"
+	desc = "A sac full of venom. It makes you feel drowsy."
+
+/obj/item/reagent_containers/glass/venomgland/spider/sophoric/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("stoxin", 15)
 
 // Variant that 'blocks' light (by being a negative light source).
 // This is done to make webbed rooms scary and allow for spiders on the other side of webs to see prey.
-/obj/effect/spider/stickyweb/dark
+/obj/structure/spider/stickyweb/dark
 	name = "dense web"
 	desc = "It's sticky, and blocks a lot of light."
 	light_color = "#FFFFFF"

@@ -144,8 +144,8 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/flashlight/glowstick/red,
 		/obj/item/flashlight/glowstick/yellow,
 		/obj/item/flashlight/pen,
-		/obj/item/cell,
-		/obj/item/cell/device,
+		/obj/item/cell/basic/tier_1/weapon,
+		/obj/item/cell/basic/tier_1/medium,
 		/obj/item/clothing/mask/gas,
 		/obj/item/clothing/mask/gas/half,
 		/obj/item/clothing/mask/breath,
@@ -369,10 +369,11 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stock_parts/subspace/treatment,
 		/obj/item/frame,
 		/obj/item/broken_device/random,
-		/obj/item/borg/upgrade/restart,
-		/obj/item/cell,
-		/obj/item/cell/high,
-		/obj/item/cell/device,
+		/obj/item/robot_upgrade/restart,
+		/obj/item/cell/basic/tier_2/weapon,
+		/obj/item/cell/basic/tier_2/medium,
+		/obj/item/cell/basic/tier_2/small,
+		/obj/item/cell/basic/tier_2/large,
 		/obj/item/circuitboard/broken,
 		/obj/item/circuitboard/arcade,
 		/obj/item/circuitboard/machine/lathe/autolathe,
@@ -398,13 +399,13 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/tool/screwdriver,
 		/obj/item/tool/wirecutters,
 		/obj/item/multitool,
-		/obj/item/mecha_parts/mecha_equipment/generator,
-		/obj/item/mecha_parts/mecha_equipment/tool/cable_layer,
-		/obj/item/mecha_parts/mecha_equipment/tool/drill,
-		/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp,
-		/obj/item/mecha_parts/mecha_equipment/tool/passenger,
-		/obj/item/mecha_parts/mecha_equipment/tool/sleeper,
-		/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun,
+		/obj/item/vehicle_module/generator,
+		/obj/item/vehicle_module/tool/cable_layer,
+		/obj/item/vehicle_module/tool/drill,
+		/obj/item/vehicle_module/tool/hydraulic_clamp,
+		/obj/item/vehicle_module/tool/passenger,
+		/obj/item/vehicle_module/tool/sleeper,
+		/obj/item/vehicle_module/tool/syringe_gun,
 		/obj/item/robot_parts/robot_component/binary_communication_device,
 		/obj/item/robot_parts/robot_component/armour,
 		/obj/item/robot_parts/robot_component/actuator,
@@ -414,8 +415,9 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 	)
 
 	uncommon_loot = list(
-		/obj/item/cell/super,
-		/obj/item/cell/device/weapon,
+		/obj/item/cell/basic/tier_3/medium,
+		/obj/item/cell/basic/tier_3/weapon,
+		/obj/item/cell/basic/tier_3/large,
 		/obj/item/circuitboard/security,
 		/obj/item/circuitboard/crew,
 		/obj/item/aiModule/reset,
@@ -426,12 +428,11 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/tvcamera,
 		/obj/item/universal_translator,
 		/obj/item/aicard,
-		/obj/item/borg/upgrade/jetpack,
-		/obj/item/borg/upgrade/advhealth,
-		/obj/item/borg/upgrade/vtec,
-		/obj/item/borg/upgrade/tasercooler,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/riggedlaser,
-		/obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill,
+		/obj/item/robot_upgrade/jetpack,
+		/obj/item/robot_upgrade/advhealth,
+		/obj/item/robot_upgrade/vtec,
+		/obj/item/vehicle_module/weapon/energy/riggedlaser,
+		/obj/item/vehicle_module/tool/drill/diamonddrill,
 		/obj/item/hardsuit_module/device/drill,
 		/obj/item/hardsuit_module/device/plasmacutter,
 		/obj/item/hardsuit_module/device/healthscanner,
@@ -446,13 +447,13 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 	)
 
 	very_rare_loot = list(
-		/obj/item/cell/hyper,
+		/obj/item/cell/basic/tier_4/medium,
 		/obj/item/aiModule/freeform,
 		/obj/item/aiModule/asimov,
 		/obj/item/aiModule/paladin,
 		/obj/item/aiModule/safeguard,
 		/obj/item/disposable_teleporter,
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay
+		/obj/item/vehicle_module/tesla_energy_relay
 	)
 
 
@@ -509,13 +510,13 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 // May contain powercells or alien weaponry.
 /obj/structure/loot_pile/surface/alien/security
 	uncommon_loot = list(
-		/obj/item/cell/device/weapon/recharge/alien,
+		/obj/item/cell/regen/fractal/weapon,
 		/obj/item/clothing/suit/armor/alien,
 		/obj/item/clothing/head/helmet/alien
 	)
 	rare_loot = list(
 		/obj/item/clothing/suit/armor/alien/tank,
-		/obj/item/gun/energy/alien
+		/obj/item/gun/projectile/energy/alien
 	)
 
 // The pile found at the very end, and as such has the best loot.
@@ -539,10 +540,10 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/surgical/retractor/alien,
 		/obj/item/surgical/scalpel/alien,
 		/obj/item/surgical/surgicaldrill/alien,
-		/obj/item/cell/device/weapon/recharge/alien,
+		/obj/item/cell/regen/fractal/weapon,
 		/obj/item/clothing/suit/armor/alien,
 		/obj/item/clothing/head/helmet/alien,
-		/obj/item/gun/energy/alien
+		/obj/item/gun/projectile/energy/alien
 	)
 	uncommon_loot = list(
 		/obj/item/storage/belt/medical/alien,
@@ -592,8 +593,8 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
     )
     rare_loot = list(
         /obj/item/storage/belt/utility/alien/full,
-        /obj/item/gun/ballistic/revolver,
-        /obj/item/gun/ballistic/sec,
+        /obj/item/gun/projectile/ballistic/revolver,
+        /obj/item/gun/projectile/ballistic/sec,
         /obj/item/gun/launcher/crossbow
     )
 
@@ -629,17 +630,17 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/taser,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/riggedlaser,
-		/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp,
-		/obj/item/mecha_parts/mecha_equipment/tool/drill,
-		/obj/item/mecha_parts/mecha_equipment/generator
+		/obj/item/vehicle_module/weapon/energy/taser,
+		/obj/item/vehicle_module/weapon/energy/riggedlaser,
+		/obj/item/vehicle_module/tool/hydraulic_clamp,
+		/obj/item/vehicle_module/tool/drill,
+		/obj/item/vehicle_module/generator
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser,
-		/obj/item/mecha_parts/mecha_equipment/generator/nuclear,
-		/obj/item/mecha_parts/mecha_equipment/tool/jetpack
+		/obj/item/vehicle_module/weapon/energy/laser,
+		/obj/item/vehicle_module/generator/nuclear,
+		/obj/item/vehicle_module/tool/jetpack
 		)
 
 //Stuff you may find attached to a ripley.
@@ -656,28 +657,28 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/mecha_parts/chassis/ripley,
-		/obj/item/mecha_parts/part/ripley_torso,
-		/obj/item/mecha_parts/part/ripley_left_arm,
-		/obj/item/mecha_parts/part/ripley_right_arm,
-		/obj/item/mecha_parts/part/ripley_left_leg,
-		/obj/item/mecha_parts/part/ripley_right_leg,
+		/obj/item/vehicle_chassis/ripley,
+		/obj/item/vehicle_part/ripley_torso,
+		/obj/item/vehicle_part/ripley_left_arm,
+		/obj/item/vehicle_part/ripley_right_arm,
+		/obj/item/vehicle_part/ripley_left_leg,
+		/obj/item/vehicle_part/ripley_right_leg,
 		/obj/item/kit/paint/ripley,
 		/obj/item/kit/paint/ripley/flames_red,
 		/obj/item/kit/paint/ripley/flames_blue
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tool/hydraulic_clamp,
-		/obj/item/mecha_parts/mecha_equipment/tool/drill/diamonddrill,
-		/obj/item/mecha_parts/mecha_equipment/antiproj_armor_booster,
-		/obj/item/mecha_parts/mecha_equipment/tool/extinguisher,
+		/obj/item/vehicle_module/tool/hydraulic_clamp,
+		/obj/item/vehicle_module/tool/drill/diamonddrill,
+		/obj/item/vehicle_module/antiproj_armor_booster,
+		/obj/item/vehicle_module/tool/extinguisher,
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/gravcatapult,
-		/obj/item/mecha_parts/mecha_equipment/tool/rcd,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/flamer/rigged
+		/obj/item/vehicle_module/gravcatapult,
+		/obj/item/vehicle_module/tool/rcd,
+		/obj/item/vehicle_module/weapon/energy/flamer/rigged
 		)
 
 /obj/structure/loot_pile/mecha/ripley/firefighter
@@ -702,26 +703,26 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 40},
 		/obj/item/stack/material/glass{amount = 20},
 		/obj/item/stack/material/plasteel{amount = 10},
-		/obj/item/mecha_parts/chassis/ripley,
-		/obj/item/mecha_parts/part/ripley_torso,
-		/obj/item/mecha_parts/part/ripley_left_arm,
-		/obj/item/mecha_parts/part/ripley_right_arm,
-		/obj/item/mecha_parts/part/ripley_left_leg,
-		/obj/item/mecha_parts/part/ripley_right_leg,
+		/obj/item/vehicle_chassis/ripley,
+		/obj/item/vehicle_part/ripley_torso,
+		/obj/item/vehicle_part/ripley_left_arm,
+		/obj/item/vehicle_part/ripley_right_arm,
+		/obj/item/vehicle_part/ripley_left_leg,
+		/obj/item/vehicle_part/ripley_right_leg,
 		/obj/random/paintkit,
 		/obj/random/paintkit
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/riggedlaser,
-		/obj/item/mecha_parts/mecha_equipment/repair_droid,
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay
+		/obj/item/vehicle_module/weapon/energy/riggedlaser,
+		/obj/item/vehicle_module/repair_droid,
+		/obj/item/vehicle_module/tesla_energy_relay
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tool/rcd,
-		/obj/item/mecha_parts/mecha_equipment/wormhole_generator,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/flamer/rigged
+		/obj/item/vehicle_module/tool/rcd,
+		/obj/item/vehicle_module/wormhole_generator,
+		/obj/item/vehicle_module/weapon/energy/flamer/rigged
 		)
 
 /obj/structure/loot_pile/mecha/odysseus
@@ -737,26 +738,26 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/mecha_parts/chassis/odysseus,
-		/obj/item/mecha_parts/part/odysseus_head,
-		/obj/item/mecha_parts/part/odysseus_torso,
-		/obj/item/mecha_parts/part/odysseus_left_arm,
-		/obj/item/mecha_parts/part/odysseus_right_arm,
-		/obj/item/mecha_parts/part/odysseus_left_leg,
-		/obj/item/mecha_parts/part/odysseus_right_leg
+		/obj/item/vehicle_chassis/odysseus,
+		/obj/item/vehicle_part/odysseus_head,
+		/obj/item/vehicle_part/odysseus_torso,
+		/obj/item/vehicle_part/odysseus_left_arm,
+		/obj/item/vehicle_part/odysseus_right_arm,
+		/obj/item/vehicle_part/odysseus_left_leg,
+		/obj/item/vehicle_part/odysseus_right_leg
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tool/sleeper,
-		/obj/item/mecha_parts/mecha_equipment/tool/syringe_gun,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/flare,
-		/obj/item/mecha_parts/mecha_equipment/tool/extinguisher,
+		/obj/item/vehicle_module/tool/sleeper,
+		/obj/item/vehicle_module/tool/syringe_gun,
+		/obj/item/vehicle_module/weapon/ballistic/missile_rack/flare,
+		/obj/item/vehicle_module/tool/extinguisher,
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/gravcatapult,
-		/obj/item/mecha_parts/mecha_equipment/anticcw_armor_booster,
-		/obj/item/mecha_parts/mecha_equipment/shocker
+		/obj/item/vehicle_module/gravcatapult,
+		/obj/item/vehicle_module/anticcw_armor_booster,
+		/obj/item/vehicle_module/shocker
 		)
 
 /obj/structure/loot_pile/mecha/odysseus/murdysseus
@@ -780,30 +781,30 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/mecha_parts/chassis/gygax,
-		/obj/item/mecha_parts/part/gygax_head,
-		/obj/item/mecha_parts/part/gygax_torso,
-		/obj/item/mecha_parts/part/gygax_left_arm,
-		/obj/item/mecha_parts/part/gygax_right_arm,
-		/obj/item/mecha_parts/part/gygax_left_leg,
-		/obj/item/mecha_parts/part/gygax_right_leg,
-		/obj/item/mecha_parts/part/gygax_armour
+		/obj/item/vehicle_chassis/gygax,
+		/obj/item/vehicle_part/gygax_head,
+		/obj/item/vehicle_part/gygax_torso,
+		/obj/item/vehicle_part/gygax_left_arm,
+		/obj/item/vehicle_part/gygax_right_arm,
+		/obj/item/vehicle_part/gygax_left_leg,
+		/obj/item/vehicle_part/gygax_right_leg,
+		/obj/item/vehicle_part/gygax_armour
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/shocker,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/grenade,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/taser,
+		/obj/item/vehicle_module/shocker,
+		/obj/item/vehicle_module/weapon/ballistic/missile_rack/grenade,
+		/obj/item/vehicle_module/weapon/energy/laser,
+		/obj/item/vehicle_module/weapon/energy/taser,
 		/obj/random/paintkit/gygax,
 		/obj/random/paintkit/gygax
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg,
-		/obj/item/mecha_parts/mecha_equipment/repair_droid,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser/heavy
+		/obj/item/vehicle_module/tesla_energy_relay,
+		/obj/item/vehicle_module/weapon/ballistic/lmg,
+		/obj/item/vehicle_module/repair_droid,
+		/obj/item/vehicle_module/weapon/energy/laser/heavy
 		)
 
 /obj/structure/loot_pile/mecha/gygax/dark
@@ -835,30 +836,30 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/mecha_parts/chassis/durand,
-		/obj/item/mecha_parts/part/durand_head,
-		/obj/item/mecha_parts/part/durand_torso,
-		/obj/item/mecha_parts/part/durand_left_arm,
-		/obj/item/mecha_parts/part/durand_right_arm,
-		/obj/item/mecha_parts/part/durand_left_leg,
-		/obj/item/mecha_parts/part/durand_right_leg,
-		/obj/item/mecha_parts/part/durand_armour
+		/obj/item/vehicle_chassis/durand,
+		/obj/item/vehicle_part/durand_head,
+		/obj/item/vehicle_part/durand_torso,
+		/obj/item/vehicle_part/durand_left_arm,
+		/obj/item/vehicle_part/durand_right_arm,
+		/obj/item/vehicle_part/durand_left_leg,
+		/obj/item/vehicle_part/durand_right_leg,
+		/obj/item/vehicle_part/durand_armour
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/shocker,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/grenade,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser,
-		/obj/item/mecha_parts/mecha_equipment/antiproj_armor_booster,
+		/obj/item/vehicle_module/shocker,
+		/obj/item/vehicle_module/weapon/ballistic/missile_rack/grenade,
+		/obj/item/vehicle_module/weapon/energy/laser,
+		/obj/item/vehicle_module/antiproj_armor_booster,
 		/obj/random/paintkit/durand,
 		/obj/random/paintkit/durand
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/scattershot,
-		/obj/item/mecha_parts/mecha_equipment/repair_droid,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser/heavy
+		/obj/item/vehicle_module/tesla_energy_relay,
+		/obj/item/vehicle_module/weapon/ballistic/scattershot,
+		/obj/item/vehicle_module/repair_droid,
+		/obj/item/vehicle_module/weapon/energy/laser/heavy
 		)
 
 /obj/structure/loot_pile/mecha/marauder
@@ -886,27 +887,27 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/storage/toolbox/syndicate/powertools,
 		/obj/item/stack/material/plasteel{amount = 20},
 		/obj/item/stack/material/durasteel{amount = 10},
-		/obj/item/mecha_parts/chassis/phazon,
-		/obj/item/mecha_parts/part/phazon_head,
-		/obj/item/mecha_parts/part/phazon_torso,
-		/obj/item/mecha_parts/part/phazon_left_arm,
-		/obj/item/mecha_parts/part/phazon_right_arm,
-		/obj/item/mecha_parts/part/phazon_left_leg,
-		/obj/item/mecha_parts/part/phazon_right_leg
+		/obj/item/vehicle_chassis/phazon,
+		/obj/item/vehicle_part/phazon_head,
+		/obj/item/vehicle_part/phazon_torso,
+		/obj/item/vehicle_part/phazon_left_arm,
+		/obj/item/vehicle_part/phazon_right_arm,
+		/obj/item/vehicle_part/phazon_left_leg,
+		/obj/item/vehicle_part/phazon_right_leg
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/shocker,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/flamer/rigged,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser/heavy,
-		/obj/item/mecha_parts/mecha_equipment/antiproj_armor_booster
+		/obj/item/vehicle_module/shocker,
+		/obj/item/vehicle_module/weapon/energy/flamer/rigged,
+		/obj/item/vehicle_module/weapon/energy/laser/heavy,
+		/obj/item/vehicle_module/antiproj_armor_booster
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay,
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/ion,
-		/obj/item/mecha_parts/mecha_equipment/repair_droid,
-		/obj/item/mecha_parts/mecha_equipment/teleporter
+		/obj/item/vehicle_module/tesla_energy_relay,
+		/obj/item/vehicle_module/weapon/energy/ion,
+		/obj/item/vehicle_module/repair_droid,
+		/obj/item/vehicle_module/teleporter
 		)
 
 /obj/structure/loot_pile/mecha/honker
@@ -923,24 +924,24 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
 		/obj/item/bikehorn,
-		/obj/item/mecha_parts/chassis/honker,
-		/obj/item/mecha_parts/part/honker_head,
-		/obj/item/mecha_parts/part/honker_torso,
-		/obj/item/mecha_parts/part/honker_left_arm,
-		/obj/item/mecha_parts/part/honker_right_arm,
-		/obj/item/mecha_parts/part/honker_left_leg,
-		/obj/item/mecha_parts/part/honker_right_leg
+		/obj/item/vehicle_chassis/honker,
+		/obj/item/vehicle_part/honker_head,
+		/obj/item/vehicle_part/honker_torso,
+		/obj/item/vehicle_part/honker_left_arm,
+		/obj/item/vehicle_part/honker_right_arm,
+		/obj/item/vehicle_part/honker_left_leg,
+		/obj/item/vehicle_part/honker_right_leg
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/grenade/banana,
-		/obj/item/mecha_parts/mecha_equipment/weapon/honker,
-		/obj/item/mecha_parts/part/honker_armour
+		/obj/item/vehicle_module/weapon/ballistic/missile_rack/grenade/banana,
+		/obj/item/vehicle_module/weapon/honker,
+		/obj/item/vehicle_part/honker_armour
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/tesla_energy_relay,
-		/obj/item/mecha_parts/mecha_equipment/repair_droid
+		/obj/item/vehicle_module/tesla_energy_relay,
+		/obj/item/vehicle_module/repair_droid
 		)
 
 /obj/structure/loot_pile/mecha/honker/cluwne
@@ -961,24 +962,24 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/mecha_parts/chassis/reticent,
-		/obj/item/mecha_parts/part/reticent_head,
-		/obj/item/mecha_parts/part/reticent_torso,
-		/obj/item/mecha_parts/part/reticent_left_arm,
-		/obj/item/mecha_parts/part/reticent_right_arm,
-		/obj/item/mecha_parts/part/reticent_left_leg,
-		/obj/item/mecha_parts/part/reticent_right_leg
+		/obj/item/vehicle_chassis/reticent,
+		/obj/item/vehicle_part/reticent_head,
+		/obj/item/vehicle_part/reticent_torso,
+		/obj/item/vehicle_part/reticent_left_arm,
+		/obj/item/vehicle_part/reticent_right_arm,
+		/obj/item/vehicle_part/reticent_left_leg,
+		/obj/item/vehicle_part/reticent_right_leg
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/whisperblade,
-		/obj/item/mecha_parts/mecha_equipment/weapon/infernoblade,
-		/obj/item/mecha_parts/part/reticent_armour
+		/obj/item/vehicle_module/weapon/whisperblade,
+		/obj/item/vehicle_module/weapon/infernoblade,
+		/obj/item/vehicle_part/reticent_armour
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/combat_shield/reticent,
-		/obj/item/mecha_parts/mecha_equipment/cloak
+		/obj/item/vehicle_module/combat_shield/reticent,
+		/obj/item/vehicle_module/cloak
 		)
 
 /obj/structure/loot_pile/mecha/reticent/reticence
@@ -1013,13 +1014,13 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg/rigged,
-		/obj/item/mecha_parts/mecha_equipment/generator
+		/obj/item/vehicle_module/weapon/ballistic/lmg/rigged,
+		/obj/item/vehicle_module/generator
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/lmg,
-		/obj/item/mecha_parts/mecha_equipment/generator/nuclear
+		/obj/item/vehicle_module/weapon/ballistic/lmg,
+		/obj/item/vehicle_module/generator/nuclear
 		)
 
 /obj/structure/loot_pile/mecha/mouse_tank/livewire
@@ -1048,13 +1049,13 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		)
 
 	uncommon_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/flamer/rigged,
-		/obj/item/mecha_parts/mecha_equipment/tool/extinguisher
+		/obj/item/vehicle_module/weapon/energy/flamer/rigged,
+		/obj/item/vehicle_module/tool/extinguisher
 		)
 
 	rare_loot = list(
-		/obj/item/mecha_parts/mecha_equipment/weapon/energy/flamer,
-		/obj/item/mecha_parts/mecha_equipment/generator
+		/obj/item/vehicle_module/weapon/energy/flamer,
+		/obj/item/vehicle_module/generator
 		)
 
 /obj/structure/loot_pile/mecha/mouse_tank/eraticator
@@ -1085,12 +1086,12 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 
 	uncommon_loot = list(
 		/obj/item/ammo_magazine/a75,
-		/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/mortar
+		/obj/item/vehicle_module/weapon/ballistic/mortar
 		)
 
 	rare_loot = list(
-		/obj/item/gun/ballistic/gyropistol,
-		/obj/item/mecha_parts/mecha_equipment/generator/nuclear
+		/obj/item/gun/projectile/ballistic/gyropistol,
+		/obj/item/vehicle_module/generator/nuclear
 		)
 
 //Drone loot
@@ -1110,12 +1111,14 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		/obj/item/stack/material/steel{amount = 25},
 		/obj/item/stack/material/glass{amount = 10},
 		/obj/item/stack/material/plasteel{amount = 5},
-		/obj/item/cell,
+		/obj/item/cell/basic/tier_3/large,
+		/obj/item/cell/basic/tier_2/large,
+		/obj/item/cell/basic/tier_4/medium,
 		/obj/item/material/shard
 		)
 
 	uncommon_loot = list(
-		/obj/item/cell/high,
+		/obj/item/cell/basic/tier_2/medium,
 		/obj/item/robot_parts/robot_component/actuator,
 		/obj/item/robot_parts/robot_component/armour,
 		/obj/item/robot_parts/robot_component/binary_communication_device,
@@ -1125,12 +1128,11 @@ Loot piles can be depleted, if loot_depleted is turned on.  Note that players wh
 		)
 
 	rare_loot = list(
-		/obj/item/cell/super,
-		/obj/item/borg/upgrade/restart,
-		/obj/item/borg/upgrade/jetpack,
-		/obj/item/borg/upgrade/tasercooler,
-		/obj/item/borg/upgrade/syndicate,
-		/obj/item/borg/upgrade/vtec
+		/obj/item/cell/basic/tier_3/medium,
+		/obj/item/robot_upgrade/restart,
+		/obj/item/robot_upgrade/jetpack,
+		/obj/item/robot_upgrade/syndicate,
+		/obj/item/robot_upgrade/vtec
 		)
 
 // Contains old mediciation, most of it unidentified and has a good chance of being useless.

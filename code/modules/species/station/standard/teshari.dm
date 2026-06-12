@@ -58,7 +58,7 @@
 	meat_type   = /obj/item/reagent_containers/food/snacks/meat/chicken/teshari
 	move_trail = /obj/effect/debris/cleanable/blood/tracks/paw
 
-	slowdown          = -0.5
+	movement_base_speed = 6.66
 	snow_movement     = -1
 	item_slowdown_mod = 0.5
 
@@ -144,9 +144,9 @@
 	vision_organ = O_EYES
 
 	unarmed_types = list(
-		/datum/unarmed_attack/bite/sharp,
-		/datum/unarmed_attack/claws,
-		/datum/unarmed_attack/stomp/weak,
+		/datum/melee_attack/unarmed/bite/sharp,
+		/datum/melee_attack/unarmed/claws,
+		/datum/melee_attack/unarmed/stomp/weak,
 	)
 
 	inherent_verbs = list(
@@ -180,7 +180,7 @@
 
 /datum/species/teshari/apply_racial_gear(mob/living/carbon/for_target, list/into_box, list/into_inv)
 	var/footwear_type = /obj/item/clothing/shoes/sandal
-	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes))
+	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes::id))
 		var/obj/item/footwear_instance = new footwear_type
 		if(!for_target.inventory.equip_to_slot_if_possible(footwear_instance, /datum/inventory_slot/inventory/shoes))
 			into_inv += footwear_instance

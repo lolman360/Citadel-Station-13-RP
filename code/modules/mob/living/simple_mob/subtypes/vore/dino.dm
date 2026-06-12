@@ -18,7 +18,7 @@
 	response_help = "pets"
 	response_disarm = "gently pushes aside"
 	response_harm = "hits"
-	movement_cooldown = 4
+	movement_base_speed = 10 / 4
 	harm_intent_damage = 5
 	legacy_melee_damage_lower = 5
 	legacy_melee_damage_upper = 12
@@ -40,9 +40,5 @@
 	min_n2 = 0
 	max_n2 = 0
 	minbodytemp = 0
-
-// Activate Noms!
-/mob/living/simple_mob/vore/aggressive/dino
-	swallowTime = 1 SECOND // Hungry little bastards.
 
 /mob/living/simple_mob/vore/aggressive/dino/virgo3b

@@ -127,7 +127,7 @@
 /datum/component/riding_handler/proc/signal_hook_pre_buckle_mob(atom/movable/source, mob/M, flags, mob/user, semantic)
 	SIGNAL_HANDLER_DOES_SLEEP
 	if(!check_rider(M, semantic, TRUE, user = user))
-		return SIGNAL_RAISE_BLOCK_BUCKLE_OPERATION
+		return SIGNAL_RETURN_BLOCK_BUCKLE_OPERATION
 
 /datum/component/riding_handler/proc/signal_hook_pixel_offset_changed(atom/movable/source)
 	full_update_riders(null, TRUE)
@@ -189,8 +189,17 @@
 	if(_last_dir == dir && !force)
 		return
 	_last_dir = dir
-	var/ppx = AM.get_centering_pixel_x_offset(dir)
-	var/ppy = AM.get_centering_pixel_y_offset(dir)
+	// the ridden mob is assumed to be centered in their icon dimensions!
+	var/self_center_px = AM.get_centering_pixel_x_offset(dir)
+	var/self_center_py = AM.get_centering_pixel_y_offset(dir)
+	var/resizeX = 1
+	var/resizeY = 1
+	if(isliving(AM))
+		var/mob/living/mounted = AM
+		resizeX *= mounted.size_multiplier * mounted.icon_scale_x
+		resizeY *= mounted.size_multiplier * mounted.icon_scale_y
+		self_center_px = 2*mounted.shift_pixel_x - self_center_px //Jank to negate the offset, while following the shift
+		self_center_py = 2*mounted.shift_pixel_y - self_center_py
 	var/list/offsets
 	var/i
 	var/mob/M
@@ -208,8 +217,12 @@
 					M.setDir(offsets[4])
 				M.reset_pixel_shifting()
 				M.set_base_layer(offsets[3] + AM.layer)
-				M.pixel_x = ppx + M.get_standard_pixel_x_offset() - M.get_centering_pixel_x_offset(dir) + offsets[1]
-				M.pixel_y = ppy + M.get_standard_pixel_y_offset() - M.get_centering_pixel_y_offset(dir) + offsets[2]
+				// riders are assumed centered to their icon dim x/y's
+				// we still take into account managed pixel x/y for whatever reason, mostly because
+				// we assume things like taur / up/down shifting is in there
+				// maybe we should look into this
+				M.pixel_x = self_center_px + M.get_managed_pixel_x() + M.get_centering_pixel_x_offset() + resizeX * offsets[1]
+				M.pixel_y = self_center_py + M.get_managed_pixel_y() + M.get_centering_pixel_y_offset() + resizeY * offsets[2]
 		if(CF_RIDING_OFFSETS_DIRECTIONAL)
 			var/list/relevant
 			switch(dir)
@@ -230,8 +243,12 @@
 					M.setDir(offsets[4])
 				M.reset_pixel_shifting()
 				M.set_base_layer(offsets[3] + AM.layer)
-				M.pixel_x = ppx + M.get_standard_pixel_x_offset() - M.get_centering_pixel_x_offset(dir) + offsets[1]
-				M.pixel_y = ppy + M.get_standard_pixel_y_offset() - M.get_centering_pixel_y_offset(dir) + offsets[2]
+				// riders are assumed centered to their icon dim x/y's
+				// we still take into account managed pixel x/y for whatever reason, mostly because
+				// we assume things like taur / up/down shifting is in there
+				// maybe we should look into this
+				M.pixel_x = self_center_px + M.get_managed_pixel_x() + M.get_centering_pixel_x_offset() + resizeX * offsets[1]
+				M.pixel_y = self_center_py + M.get_managed_pixel_y() + M.get_centering_pixel_y_offset() + resizeY * offsets[2]
 		if(CF_RIDING_OFFSETS_ENUMERATED)
 			var/list/relevant
 			var/rider_offsets_len = length(rider_offsets)
@@ -254,16 +271,21 @@
 					M.setDir(offsets[4])
 				M.reset_pixel_shifting()
 				M.set_base_layer(offsets[3] + AM.layer)
-				M.pixel_x = ppx + M.get_standard_pixel_x_offset() - M.get_centering_pixel_x_offset(dir) + offsets[1]
-				M.pixel_y = ppy + M.get_standard_pixel_y_offset() - M.get_centering_pixel_y_offset(dir) + offsets[2]
+				// riders are assumed centered to their icon dim x/y's
+				// we still take into account managed pixel x/y for whatever reason, mostly because
+				// we assume things like taur / up/down shifting is in there
+				// maybe we should look into this
+				M.pixel_x = self_center_px + M.get_managed_pixel_x() + M.get_centering_pixel_x_offset() + resizeX * offsets[1]
+				M.pixel_y = self_center_py + M.get_managed_pixel_y() + M.get_centering_pixel_y_offset() + resizeY * offsets[2]
 
 /**
  * returns transformed rider offset list
  *
  * DO NOT CHANGE DEFAULT FOR THE LOVE OF GOD, COPY IT IF YOU ARE CHANGING IT!!
+ * You just need to call the parent to get it, even.
  */
 /datum/component/riding_handler/proc/rider_offsets(mob/rider, pos, semantic, list/default, dir)
-	return default
+	return default.Copy()
 
 /datum/component/riding_handler/proc/signal_hook_handle_relaymove(datum/source, mob/M, dir)
 	attempt_drive(M, dir)
@@ -475,5 +497,4 @@
 
 /datum/component/riding_handler/proc/process_spacemove()
 	var/atom/movable/AM = parent
-	// todo: process_spacemove() on atom movable instead of hasgrav.
-	return (riding_handler_flags & CF_RIDING_HANDLER_FORCED_SPACEMOVE) || AM.has_gravity()
+	return (riding_handler_flags & CF_RIDING_HANDLER_FORCED_SPACEMOVE) || AM.Process_Spacemove()

@@ -57,16 +57,25 @@
 	pixel_x = -offset; \
 }
 
+//* Individual bits for storing common directions. Unlike BYOND bits, this can store northeast apart from north.     *//
+//* These should **not** be considered safe for serialization; these can change at any time as they sync to BYOND's. *//
+
 // each dir plus diagonals in its own bit
 #define NORTH_BIT		NORTH
 #define SOUTH_BIT		SOUTH
 #define EAST_BIT		EAST
 #define WEST_BIT		WEST
-#define NORTHEAST_BIT	(1<<4)
-#define NORTHWEST_BIT	(1<<5)
-#define SOUTHEAST_BIT	(1<<6)
-#define SOUTHWEST_BIT	(1<<7)
-#define ALL_DIRECTION_BITS		(NORTH_BIT | SOUTH_BIT | NORTHEAST_BIT | NORTHWEST_BIT | SOUTHEAST_BIT | SOUTHWEST_BIT | WEST_BIT | EAST_BIT)
+/// Not included in cardinal/diagonal direction bits.
+#define UP_BIT          UP
+/// Not included in cardinal/diagonal direction bits.
+#define DOWN_BIT        DOWN
+#define NORTHEAST_BIT	(1<<6)
+#define NORTHWEST_BIT	(1<<7)
+#define SOUTHEAST_BIT	(1<<8)
+#define SOUTHWEST_BIT	(1<<9)
+/// Not included in cardinal/diagonal direction bits.
+#define ONTOP_BIT       (1<<10)
+#define CARDINAL_DIAGONAL_DIRECTION_BITS	(NORTH_BIT | SOUTH_BIT | NORTHEAST_BIT | NORTHWEST_BIT | SOUTHEAST_BIT | SOUTHWEST_BIT | WEST_BIT | EAST_BIT)
 #define CARDINAL_DIRECTION_BITS	(NORTH_BIT | SOUTH_BIT | EAST_BIT | WEST_BIT)
 #define DIAGONAL_DIRECTION_BITS	(NORTHEAST_BIT | NORTHWEST_BIT | SOUTHEAST_BIT | SOUTHWEST_BIT)
 
@@ -78,3 +87,6 @@
 #define CONICAL_NORTHWEST_BITS	(NORTH_BIT	|	WEST_BIT		|	NORTHWEST_BIT	)
 #define CONICAL_SOUTHWEST_BITS	(SOUTH_BIT	|	SOUTHWEST_BIT	|	WEST_BIT		)
 #define CONICAL_SOUTHEAST_BITS	(SOUTH_BIT	|	SOUTHEAST_BIT	|	EAST_BIT		)
+
+/// Inverse direction, taking into account UP|DOWN if necessary.
+#define REVERSE_DIR(dir) ( ((dir & 85) << 1) | ((dir & 170) >> 1) )

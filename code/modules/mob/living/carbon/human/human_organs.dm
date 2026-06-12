@@ -112,8 +112,9 @@
 	// standing is poor
 	if(stance_damage >= 4 || (stance_damage >= 2 && prob(5)))
 		if(!(lying || resting) && !buckled && !isbelly(loc))
-			if(limb_pain)
-				emote("scream")
+			if(limb_pain && can_feel_pain())
+				emote_nosleep("scream")
+				adjustHalLoss(10) //Attempting to use a broken bone hurts.
 			custom_emote(1, "collapses!")
 		afflict_paralyze(20 * 5) //can't emote while weakened, apparently.
 
@@ -130,7 +131,8 @@
 			continue
 		if(((hand.is_broken() || hand.is_dislocated()) && !hand.splinted) || ((arm.is_broken() || arm.is_dislocated()) && !arm.splinted))
 			var/emote_scream = pick("screams in pain and ", "lets out a sharp cry and ", "cries out and ")
-			emote("me", 1, "[(can_feel_pain()) ? "" : emote_scream ]drops what they were holding in their [hand.name]!")
+			emote("me", 1, "[(can_feel_pain()) ? emote_scream : ""]drops what they were holding in their [hand.name]!")
+			adjustHalLoss(10) //Attempting to use a broken bone hurts.
 			drop_item_to_ground(held, INV_OP_FORCE)
 			continue
 		else if(hand.is_malfunctioning())
@@ -153,7 +155,7 @@
 //Handles chem traces
 /mob/living/carbon/human/proc/handle_trace_chems()
 	//New are added for reagents to random organs.
-	for(var/datum/reagent/A in reagents.reagent_list)
+	for(var/datum/reagent/A in reagents.get_reagent_datums())
 		var/obj/item/organ/O = pick(organs)
 		O.trace_chemicals[A.name] = 100
 
@@ -161,4 +163,4 @@
 	var/list/all_bits = internal_organs|organs
 	for(var/obj/item/organ/O in all_bits)
 		O.set_dna(dna)
-	fixblood()		// make sure we have the right DNA since blood is an ""organ"" (scientists say it is!!)
+	reset_blood_to_species()		// make sure we have the right DNA since blood is an ""organ"" (scientists say it is!!)

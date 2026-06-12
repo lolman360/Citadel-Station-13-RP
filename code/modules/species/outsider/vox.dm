@@ -30,8 +30,6 @@
 
 //	taste_sensitivity = TASTE_DULL
 
-	slowdown = -0.5
-
 	speech_sounds = list('sound/voice/shriek1.ogg')
 	speech_chance = 20
 
@@ -50,6 +48,7 @@
 	cold_level_2 = 50
 	cold_level_3 = 0
 
+	movement_base_speed = 6.66
 	gluttonous = 0
 
 	breath_type = GAS_ID_PHORON
@@ -94,10 +93,10 @@
 	vision_organ = O_EYES
 
 	unarmed_types = list(
-		/datum/unarmed_attack/stomp,
-		/datum/unarmed_attack/kick,
-		/datum/unarmed_attack/claws/strong,
-		/datum/unarmed_attack/bite/strong,
+		/datum/melee_attack/unarmed/stomp,
+		/datum/melee_attack/unarmed/kick,
+		/datum/melee_attack/unarmed/claws/strong,
+		/datum/melee_attack/unarmed/bite/strong,
 	)
 
 	genders = list(NEUTER)
@@ -123,7 +122,7 @@
 	// ensure they have a valid mask
 	var/mask_type = /obj/item/clothing/mask/breath
 	if(for_target)
-		var/obj/item/existing_mask = for_target.inventory.get_slot_single(/datum/inventory_slot/inventory/mask)
+		var/obj/item/existing_mask = for_target.inventory.get_slot_single(/datum/inventory_slot/inventory/mask::id)
 		if(existing_mask?.clothing_flags & ALLOWINTERNALS)
 		else
 			if(for_target.temporarily_remove_from_inventory(existing_mask, INV_OP_FORCE | INV_OP_SILENT))

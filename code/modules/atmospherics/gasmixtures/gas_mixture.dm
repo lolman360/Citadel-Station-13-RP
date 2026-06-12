@@ -50,7 +50,7 @@
 	volume = vol
 	gas = list()
 
-/datum/gas_mixture/clone(include_contents)
+/datum/gas_mixture/clone()
 	var/datum/gas_mixture/mixture = new(volume)
 	mixture.gas = gas.Copy()
 	mixture.temperature = temperature
@@ -186,7 +186,9 @@
 	debug_gas_archive = gas?.Copy()
 	#endif
 
-//Copies gas and temperature from another gas_mixture.
+/**
+ * Copies gas / temperature from another gas mixture. Assumes we are the same size as them.
+ */
 /datum/gas_mixture/proc/copy_from(const/datum/gas_mixture/sample)
 	gas = sample.gas.Copy()
 	temperature = sample.temperature
@@ -373,6 +375,7 @@
 
 /**
   * Adds from a specially formatted gas string, taking on its gas values as our own as well as their temperature.
+  * todo: handle no-temperature?
   */
 /datum/gas_mixture/proc/merge_gas_string(gas_string)
 	var/datum/gas_mixture/temp = new(volume)

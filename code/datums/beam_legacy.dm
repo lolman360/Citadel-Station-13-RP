@@ -108,7 +108,7 @@
 	var/origin_py = isnull(override_origin_pixel_y) ? origin.pixel_y : override_origin_pixel_y
 	var/target_px = isnull(override_target_pixel_x) ? target.pixel_x : override_target_pixel_x
 	var/target_py = isnull(override_target_pixel_y) ? target.pixel_y : override_target_pixel_y
-	var/Angle = get_visual_angle_raw(origin.x, origin.y, origin_px, origin_py, target.x , target.y, target_px, target_py)
+	var/Angle = get_visual_angle_raw(origin.x, origin.y, target.x, target.y, origin_px, origin_py, target_px, target_py)
 	///var/Angle = round(get_visual_angle(origin,target))
 	var/matrix/rot_matrix = matrix()
 	var/turf/origin_turf = get_turf(origin)
@@ -224,7 +224,7 @@
 /obj/effect/ebeam/reactive/electric/on_contact(atom/movable/AM)
 	if(isliving(AM))
 		var/mob/living/L = AM
-		L.inflict_shock_damage(shock_amount)
+		L.inflict_shock_damage_legacy(shock_amount)
 
 /**
  * This is what you use to start a beam. Example: origin.Beam(target, args). **Store the return of this proc if you don't set maxdist or time, you need it to delete the beam.**

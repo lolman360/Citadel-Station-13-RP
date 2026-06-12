@@ -204,10 +204,10 @@
 	product_ads = "Stunning!;Take justice in your own hands!;LEADearship!"
 	icon_state = "weapon"
 	products = list(/obj/item/flash = 6,
-/obj/item/reagent_containers/spray/pepper = 6, /obj/item/gun/ballistic/olivaw = 5, /obj/item/gun/ballistic/giskard = 5, /obj/item/ammo_magazine/mg/cl32/rubber = 20)
+/obj/item/reagent_containers/spray/pepper = 6, /obj/item/gun/projectile/ballistic/olivaw = 5, /obj/item/gun/projectile/ballistic/giskard = 5, /obj/item/ammo_magazine/mg/cl32/rubber = 20)
 	contraband = list(/obj/item/reagent_containers/food/snacks/syndicake = 6)
 	prices = list(/obj/item/flash = 600,
-/obj/item/reagent_containers/spray/pepper = 800,  /obj/item/gun/ballistic/olivaw = 1600, /obj/item/gun/ballistic/giskard = 1200, /obj/item/ammo_magazine/mg/cl32/rubber = 200)
+/obj/item/reagent_containers/spray/pepper = 800,  /obj/item/gun/projectile/ballistic/olivaw = 1600, /obj/item/gun/projectile/ballistic/giskard = 1200, /obj/item/ammo_magazine/mg/cl32/rubber = 200)
 */
 
 /obj/machinery/vending/glukoz
@@ -295,7 +295,7 @@
 	)
 
 	contraband = list(
-		/obj/item/gun/ballistic/shotgun/doublebarrel = 2,
+		/obj/item/gun/projectile/ballistic/shotgun/doublebarrel = 2,
 		/obj/item/storage/box/shotgunshells = 2,
 	)
 
@@ -325,16 +325,16 @@
 	products = list(
 		/obj/item/clothing/suit/space/emergency = 5,
 		/obj/item/clothing/head/helmet/space/emergency = 5,
-		/obj/item/clothing/suit/space/syndicate = 2,
-		/obj/item/clothing/suit/space/syndicate/blue = 2,
-		/obj/item/clothing/suit/space/syndicate/green/dark = 2,
-		/obj/item/clothing/suit/space/syndicate/green = 2,
-		/obj/item/clothing/suit/space/syndicate/black = 2,
-		/obj/item/clothing/head/helmet/space/syndicate = 2,
-		/obj/item/clothing/head/helmet/space/syndicate/blue = 2,
-		/obj/item/clothing/head/helmet/space/syndicate/green/dark = 2,
-		/obj/item/clothing/head/helmet/space/syndicate/green = 2,
-		/obj/item/clothing/head/helmet/space/syndicate/black = 2,
+		/obj/item/clothing/suit/space/traveler = 2,
+		/obj/item/clothing/suit/space/traveler/blue = 2,
+		/obj/item/clothing/suit/space/traveler/green/dark = 2,
+		/obj/item/clothing/suit/space/traveler/green = 2,
+		/obj/item/clothing/suit/space/traveler/black = 2,
+		/obj/item/clothing/head/helmet/space/traveler = 2,
+		/obj/item/clothing/head/helmet/space/traveler/blue = 2,
+		/obj/item/clothing/head/helmet/space/traveler/green/dark = 2,
+		/obj/item/clothing/head/helmet/space/traveler/green = 2,
+		/obj/item/clothing/head/helmet/space/traveler/black = 2,
 		/obj/item/clothing/head/helmet/space/void/explorer = 3,
 		/obj/item/clothing/suit/space/void/explorer = 3,
 		/obj/item/tank/emergency/oxygen = 10,
@@ -345,18 +345,18 @@
 	prices = list(
 		/obj/item/clothing/suit/space/emergency = 10,
 		/obj/item/clothing/head/helmet/space/emergency = 10,
-		/obj/item/clothing/suit/space/syndicate = 15,
-		/obj/item/clothing/suit/space/syndicate/blue = 15,
-		/obj/item/clothing/suit/space/syndicate/green/dark = 15,
-		/obj/item/clothing/suit/space/syndicate/green = 15,
-		/obj/item/clothing/suit/space/syndicate/black = 15,
-		/obj/item/clothing/head/helmet/space/syndicate = 15,
-		/obj/item/clothing/head/helmet/space/syndicate/blue = 15,
-		/obj/item/clothing/head/helmet/space/syndicate/green/dark = 15,
-		/obj/item/clothing/head/helmet/space/syndicate/green = 15,
-		/obj/item/clothing/head/helmet/space/syndicate/black = 15,
-		/obj/item/clothing/head/helmet/space/void/explorer = 20,
-		/obj/item/clothing/suit/space/void/explorer = 20,
+		/obj/item/clothing/suit/space/traveler = 150,
+		/obj/item/clothing/suit/space/traveler/blue = 150,
+		/obj/item/clothing/suit/space/traveler/green/dark = 150,
+		/obj/item/clothing/suit/space/traveler/green = 150,
+		/obj/item/clothing/suit/space/traveler/black = 150,
+		/obj/item/clothing/head/helmet/space/traveler = 150,
+		/obj/item/clothing/head/helmet/space/traveler/blue = 150,
+		/obj/item/clothing/head/helmet/space/traveler/green/dark = 150,
+		/obj/item/clothing/head/helmet/space/traveler/green = 150,
+		/obj/item/clothing/head/helmet/space/traveler/black = 150,
+		/obj/item/clothing/head/helmet/space/void/explorer = 125,
+		/obj/item/clothing/suit/space/void/explorer = 125,
 		/obj/item/tank/emergency/oxygen = 5,
 		/obj/item/tank/emergency/oxygen/double = 30,
 		/obj/item/clothing/mask/gas/clear = 5,
@@ -403,11 +403,11 @@
 		/obj/item/storage/toolbox/lunchbox/survival = 4,
 		/obj/item/survivalcapsule = 2,
 		/obj/item/gps/survival = 10,
-		/obj/item/gun/ballistic/shotgun/flare = 8,
+		/obj/item/gun/projectile/ballistic/shotgun/flare = 8,
 		/obj/item/clothing/accessory/holster/machete/occupied = 2,
 		/obj/item/clothing/accessory/holster/machete/occupied/deluxe = 1,
 		/obj/item/material/knife/machete/hatchet = 4,
-		/obj/item/gun/ballistic/pistol = 4,
+		/obj/item/gun/projectile/ballistic/pistol = 4,
 		/obj/item/storage/box/flare = 10,
 		/obj/item/storage/box/handcuffs = 5,
 		/obj/item/storage/box/beanbags = 6,
@@ -427,11 +427,11 @@
 		/obj/item/storage/toolbox/lunchbox/survival = 5,
 		/obj/item/survivalcapsule = 100,
 		/obj/item/gps/survival = 10,
-		/obj/item/gun/ballistic/shotgun/flare = 100,
+		/obj/item/gun/projectile/ballistic/shotgun/flare = 100,
 		/obj/item/clothing/accessory/holster/machete/occupied = 100,
 		/obj/item/clothing/accessory/holster/machete/occupied/deluxe = 150,
 		/obj/item/material/knife/machete/hatchet = 120,
-		/obj/item/gun/ballistic/pistol = 300,
+		/obj/item/gun/projectile/ballistic/pistol = 300,
 		/obj/item/storage/box/flare = 50,
 		/obj/item/storage/box/handcuffs = 80,
 		/obj/item/storage/box/beanbags = 80,

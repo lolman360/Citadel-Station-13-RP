@@ -121,13 +121,6 @@
 	if(admin_notify)
 		msg_admin_attack("[key_name_admin(user)] vs [target_str]: [what_done]")
 
-//checks whether this item is a module of the robot it is located in.
-/proc/is_robot_module(obj/item/thing)
-	if (!thing || !istype(thing.loc, /mob/living/silicon/robot))
-		return 0
-	var/mob/living/silicon/robot/R = thing.loc
-	return (thing in R.module.modules)
-
 /proc/get_exposed_defense_zone(atom/movable/target)
 	var/obj/item/grab/G = locate() in target
 	if(G && G.state >= GRAB_NECK) //works because mobs are currently not allowed to upgrade to NECK if they are grabbing two people.
@@ -164,3 +157,13 @@
 /// Gets the client of the mob, allowing for mocking of the client.
 /// You only need to use this if you know you're going to be mocking clients somewhere else.
 #define GET_CLIENT(mob) (##mob.client || ##mob.mock_client)
+
+///Makes a call in the context of a different usr. Use sparingly
+/world/proc/push_usr(mob/user_mob, datum/callback/invoked_callback, ...)
+	var/temp = usr
+	usr = user_mob
+	if (length(args) > 2)
+		. = invoked_callback.Invoke(arglist(args.Copy(3)))
+	else
+		. = invoked_callback.Invoke()
+	usr = temp

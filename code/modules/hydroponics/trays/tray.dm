@@ -1,3 +1,5 @@
+// todo: use something like /datum/component/atmos_connector_attach
+// todo: /obj/machinery/hydroponics_tray or /obj/machinery/portable_atmospherics/hydroponics_tray
 /obj/machinery/portable_atmospherics/hydroponics
 	name = "hydroponics tray"
 	icon = 'icons/obj/hydroponics_machines.dmi'
@@ -69,6 +71,7 @@
 		"diethylamine" =    2,
 		"nutriment" =       1,
 		"adminordrazine" =  1,
+		"fertilizer" =      2,
 		"eznutrient" =      1,
 		"robustharvest" =   1,
 		"left4zed" =        1,
@@ -88,7 +91,8 @@
 	var/global/list/pestkiller_reagents = list(
 		"sugar" =           2,
 		"diethylamine" =   -2,
-		"adminordrazine" = -5
+		"adminordrazine" = -5,
+		"ash" =			   -1
 		)
 	var/global/list/water_reagents = list(
 		"water" =           1,
@@ -233,15 +237,15 @@
 
 //Process reagents being input into the tray.
 /obj/machinery/portable_atmospherics/hydroponics/proc/process_reagents()
-
-	if(!reagents) return
+	if(!reagents)
+		return
 
 	if(reagents.total_volume <= 0)
 		return
 
 	reagents.trans_to_obj(temp_chem_holder, min(reagents.total_volume,rand(1,3)))
 
-	for(var/datum/reagent/R in temp_chem_holder.reagents.reagent_list)
+	for(var/datum/reagent/R in temp_chem_holder.reagents.get_reagent_datums())
 
 		var/reagent_total = temp_chem_holder.reagents.get_reagent_amount(R.id)
 
@@ -562,7 +566,7 @@
 		return
 
 	else if(O.damage_force && seed)
-		user.setClickCooldown(user.get_attack_speed(O))
+		user.setClickCooldownLegacy(user.get_attack_speed_legacy(O))
 		user.visible_message("<span class='danger'>\The [seed.display_name] has been attacked by [user] with \the [O]!</span>")
 		if(!dead)
 			health -= O.damage_force

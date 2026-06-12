@@ -1,5 +1,5 @@
 //* This file is explicitly licensed under the MIT license. *//
-//* Copyright (c) 2024 silicons                             *//
+//* Copyright (c) 2024 Citadel Station Developers           *//
 
 /**
  * persistence allowed storage system
@@ -50,15 +50,13 @@
 	return ..()
 
 /obj/machinery/sheet_silo/proc/take_sheets(obj/item/stack/material/sheets)
-	if(sheets.uses_charge)
-		return 0
 	var/mat_id = sheets.material.id
 	var/mat_amount = sheets.amount
 	. = mat_amount
 	sheets.use(mat_amount)
 	sheets_by_material[mat_id] += mat_amount
 
-/obj/machinery/sheet_silo/clone(atom/location, include_contents)
+/obj/machinery/sheet_silo/clone(atom/location)
 	var/obj/machinery/sheet_silo/clone = ..()
 	clone.sheets_by_material = sheets_by_material.Copy()
 	return clone
@@ -98,7 +96,7 @@
 		ui = new(user, src, "SheetSilo")
 		ui.open()
 
-/obj/machinery/sheet_silo/ui_act(action, list/params, datum/tgui/ui)
+/obj/machinery/sheet_silo/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return
@@ -122,8 +120,7 @@
 			sheets_by_material[id] -= amount
 			if(sheets_by_material[id] <= 0)
 				sheets_by_material -= id
-			var/obj/item/stack/material/dropped = dropping.place_sheet(get_turf(src), amount)
-			if(usr)
-				usr.put_in_hands(dropped)
-				usr.visible_message(SPAN_NOTICE("[usr] retrieves [amount] sheets of [dropping] from [src]."), range = MESSAGE_RANGE_INVENTORY_SOFT)
+			var/obj/item/stack/material/dropped = dropping.place_sheet(null, amount)
+			usr.put_in_hands_or_drop(dropped)
+			usr.visible_message(SPAN_NOTICE("[usr] retrieves [amount] sheets of [dropping] from [src]."), range = MESSAGE_RANGE_INVENTORY_SOFT)
 			return TRUE

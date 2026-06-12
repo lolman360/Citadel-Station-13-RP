@@ -228,7 +228,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/lobby)
 "aE" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/electrochromic/firelocks,
 /obj/map_helper/electrochromatic_linker{
 	id = "senior_physician"
 	},
@@ -771,7 +771,7 @@
 /turf/simulated/floor/tiled/kafel_full/green,
 /area/admin_planet/andromeda/medward_storage)
 "cu" = (
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_xenobio_storage)
@@ -794,7 +794,7 @@
 /area/admin_planet/andromeda/eastern_maints)
 "cA" = (
 /obj/overmap/entity/visitable/sector/admin/andromeda_haven,
-/turf/space/basic,
+/turf/space,
 /area/space)
 "cB" = (
 /obj/structure/table/rack/shelf,
@@ -836,7 +836,7 @@
 /turf/simulated/floor/tiled/old_tile/purple,
 /area/admin_planet/andromeda/rnd_lobby)
 "cG" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -1193,10 +1193,10 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "dP" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/yellow,
 /area/admin_planet/andromeda/supply_office)
@@ -1396,7 +1396,7 @@
 	id = "checkpoint1";
 	pixel_x = 5
 	},
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/kafel_full/red,
 /area/admin_planet/andromeda/checkpoint_2)
@@ -1653,7 +1653,7 @@
 /obj/structure/railing{
 	dir = 1
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "fb" = (
 /obj/structure/table/steel_reinforced,
@@ -1853,7 +1853,7 @@
 /obj/effect/floor_decal/industrial/warning{
 	dir = 1
 	},
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/closet/secure_closet/robotics,
 /obj/structure/cable{
 	dir = 8
@@ -1900,7 +1900,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_equipment)
 "ga" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full{
+/obj/spawner/window/low_wall/reinforced/electrochromic{
 	spawn_grille = 0;
 	id = "surgical suite"
 	},
@@ -1913,7 +1913,7 @@
 	},
 /area/admin_planet/andromeda/medward_surgical_a)
 "gb" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -2050,7 +2050,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_equipment)
 "gE" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -2373,11 +2373,11 @@
 /turf/simulated/floor/tiled/kafel_full/purple,
 /area/admin_planet/andromeda/rnd_nexus)
 "hD" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/atmospherics/pipe/simple/visible{
 	dir = 9
 	},
-/obj/effect/paint_stripe/sun,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "hE" = (
@@ -2694,7 +2694,7 @@
 	},
 /area/admin_planet/andromeda/engi_monitoring)
 "il" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -2911,7 +2911,7 @@
 /turf/simulated/floor/tiled/kafel_full/red,
 /area/admin_planet/andromeda/sec_lockers)
 "iF" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -3146,7 +3146,7 @@
 /area/admin_planet/andromeda/eastern_maints)
 "jm" = (
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction,
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "jn" = (
 /obj/machinery/artifact_harvester{
@@ -3256,7 +3256,7 @@
 /turf/simulated/floor/carpet/bcarpet,
 /area/admin_planet/andromeda/rnd_lobby)
 "jH" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/kafel_full/red,
 /area/admin_planet/andromeda/sec_office)
@@ -3286,7 +3286,7 @@
 /turf/simulated/floor/tiled/steel_grid,
 /area/admin_planet/andromeda/rnd_xenobotany)
 "jO" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	dir = 1
 	},
@@ -3610,7 +3610,7 @@
 /turf/simulated/floor/tiled/yellow,
 /area/admin_planet/andromeda/supply_office)
 "kO" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -3709,7 +3709,7 @@
 /turf/simulated/floor/tiled/monotile,
 /area/admin_planet/andromeda/janitorial)
 "lc" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -3744,7 +3744,7 @@
 /obj/effect/floor_decal/carpet/blue{
 	dir = 5
 	},
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	dir = 8
 	},
@@ -3832,7 +3832,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_chem_research)
 "lw" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full{
+/obj/spawner/window/low_wall/reinforced/electrochromic{
 	spawn_grille = 0;
 	id = "surgical suite-2"
 	},
@@ -3914,7 +3914,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_equipment)
 "lE" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/electrochromic/firelocks,
 /obj/map_helper/electrochromatic_linker{
 	id = "rd"
 	},
@@ -4124,7 +4124,7 @@
 /turf/simulated/floor/reinforced/airless,
 /area/admin_planet/andromeda/engi_workroom)
 "mk" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/yellow,
 /area/admin_planet/andromeda/supply_prep)
 "mn" = (
@@ -4255,11 +4255,11 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_lobby)
 "mI" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/atmospherics/pipe/manifold/hidden/supply{
 	dir = 4
 	},
-/obj/effect/paint_stripe/sun,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "mN" = (
@@ -4301,7 +4301,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/northern_lobby)
 "mU" = (
-/obj/machinery/mecha_part_fabricator/pros,
+/obj/machinery/lathe/mecha_part_fabricator/pros,
 /turf/simulated/floor/tiled/dark{
 	color = "#A9A9A9"
 	},
@@ -4327,7 +4327,7 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 9
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "nc" = (
 /turf/simulated/floor/tiled/steel_grid,
@@ -4385,7 +4385,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/northern_lobby)
 "nm" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -4586,7 +4586,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_chem_research)
 "nU" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -4622,7 +4622,7 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 5
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "oa" = (
 /obj/effect/floor_decal/industrial/outline/yellow,
@@ -4977,45 +4977,45 @@
 /area/admin_planet/andromeda/engi_lobby)
 "pa" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 6;
 	pixel_y = -4
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -8;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -4;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 4;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 8;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -8;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -4;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 4;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 8;
 	pixel_y = 3
 	},
@@ -5154,7 +5154,7 @@
 	pixel_y = -8;
 	pixel_x = -15
 	},
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	dir = 8
 	},
@@ -5341,7 +5341,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_chem_research)
 "qi" = (
-/obj/machinery/r_n_d/circuit_imprinter,
+/obj/machinery/lathe/r_n_d/circuit_imprinter,
 /obj/item/reagent_containers/glass/beaker/sulphuric,
 /turf/simulated/floor/tiled/dark{
 	color = "#A9A9A9"
@@ -5410,7 +5410,7 @@
 	},
 /area/admin_planet/andromeda/lobby)
 "qs" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -5590,7 +5590,7 @@
 	},
 /area/admin_planet/andromeda/medward_storage)
 "qS" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/checkpoint_1)
 "qT" = (
@@ -5746,7 +5746,7 @@
 /turf/simulated/floor/tiled/old_tile/purple,
 /area/admin_planet/andromeda/rnd_lobby)
 "ru" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -5900,7 +5900,7 @@
 /turf/simulated/floor/tiled/steel,
 /area/admin_planet/andromeda/engi_workroom)
 "rU" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -5927,7 +5927,7 @@
 	},
 /area/admin_planet/andromeda/lobby)
 "sd" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -5996,43 +5996,26 @@
 /area/admin_planet/andromeda/sec_holding_cell)
 "sn" = (
 /obj/structure/table/reinforced,
-/obj/item/cell/high{
-	maxcharge = 15000;
-	pixel_y = 7
-	},
-/obj/item/cell/high{
-	maxcharge = 15000;
-	pixel_y = -3
-	},
-/obj/item/cell/high{
-	maxcharge = 15000;
-	pixel_y = 2
-	},
-/obj/item/cell/high{
-	maxcharge = 15000
-	},
-/obj/item/cell/high{
-	maxcharge = 15000;
-	pixel_y = 7
-	},
-/obj/item/cell/high{
-	maxcharge = 15000;
-	pixel_y = -3
-	},
-/obj/item/cell/device,
-/obj/item/cell/device,
-/obj/item/cell/device,
-/obj/item/cell/device,
-/obj/item/cell/device,
-/obj/item/cell/device,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_4/medium,
+/obj/item/cell/basic/tier_3/small,
+/obj/item/cell/basic/tier_3/small,
+/obj/item/cell/basic/tier_3/small,
+/obj/item/cell/basic/tier_3/small,
+/obj/item/cell/basic/tier_3/small,
+/obj/item/cell/basic/tier_3/small,
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_equipment)
 "so" = (
 /obj/machinery/atmospherics/pipe/simple/hidden/supply{
 	dir = 5
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/steel,
 /area/admin_planet/andromeda/engi_workroom)
 "sr" = (
@@ -6295,7 +6278,7 @@
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "tg" = (
-/obj/machinery/r_n_d/circuit_imprinter,
+/obj/machinery/lathe/r_n_d/circuit_imprinter,
 /obj/structure/reagent_dispensers/acid{
 	pixel_x = 29
 	},
@@ -6361,7 +6344,7 @@
 /turf/simulated/floor/tiled/kafel_full/gray,
 /area/admin_planet/andromeda/supply_lobby)
 "tr" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	dir = 1
 	},
@@ -6380,8 +6363,8 @@
 /obj/machinery/atmospherics/pipe/manifold/hidden/green{
 	dir = 4
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "tz" = (
@@ -6608,7 +6591,7 @@
 /turf/simulated/floor/bmarble,
 /area/admin_planet/andromeda/rnd_rd_office)
 "um" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -6641,7 +6624,7 @@
 /turf/simulated/floor/tiled/yellow,
 /area/admin_planet/andromeda/supply_office)
 "uv" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/kafel_full/yellow,
 /area/admin_planet/andromeda/supply_warehouse)
 "uw" = (
@@ -6694,7 +6677,7 @@
 /turf/simulated/floor/tiled/kafel_full/beige,
 /area/admin_planet/andromeda/medward_lobby)
 "uD" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/electrochromic/firelocks,
 /obj/map_helper/electrochromatic_linker{
 	id = "senior_engineer"
 	},
@@ -6708,11 +6691,11 @@
 /area/admin_planet/andromeda/checkpoint_2)
 "uH" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/ballistic/automatic/wt550{
+/obj/item/gun/projectile/ballistic/automatic/wt550{
 	pixel_y = 7
 	},
-/obj/item/gun/ballistic/automatic/wt550,
-/obj/item/gun/ballistic/automatic/wt550{
+/obj/item/gun/projectile/ballistic/automatic/wt550,
+/obj/item/gun/projectile/ballistic/automatic/wt550{
 	pixel_y = -6
 	},
 /obj/structure/window/phoronreinforced,
@@ -7055,8 +7038,8 @@
 /obj/machinery/atmospherics/pipe/manifold/hidden/green{
 	dir = 1
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "vP" = (
@@ -7236,7 +7219,7 @@
 /turf/simulated/floor/tiled/kafel_full/gray,
 /area/admin_planet/andromeda/supply_lobby)
 "ww" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -7328,7 +7311,7 @@
 /turf/simulated/floor/plating,
 /area/admin_planet/andromeda/western_maints)
 "wP" = (
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -7502,7 +7485,7 @@
 /turf/simulated/floor/tiled/steel,
 /area/admin_planet/andromeda/rnd_lab)
 "xn" = (
-/obj/machinery/mecha_part_fabricator,
+/obj/machinery/lathe/mecha_part_fabricator,
 /turf/simulated/floor/tiled/dark{
 	color = "#A9A9A9"
 	},
@@ -7514,11 +7497,11 @@
 /area/admin_planet/andromeda/supply_lobby)
 "xp" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/ballistic/automatic/c20r{
+/obj/item/gun/projectile/ballistic/automatic/c20r{
 	pixel_y = -6
 	},
-/obj/item/gun/ballistic/automatic/c20r,
-/obj/item/gun/ballistic/automatic/c20r{
+/obj/item/gun/projectile/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r{
 	pixel_y = 6
 	},
 /obj/machinery/door/window/brigdoor/northright{
@@ -7562,7 +7545,7 @@
 /turf/simulated/floor/tiled/kafel_full/yellow,
 /area/admin_planet/andromeda/medward_chemistry)
 "xs" = (
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable{
 	dir = 8
 	},
@@ -7990,7 +7973,7 @@
 	},
 /area/admin_planet/andromeda/lobby)
 "yB" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -8005,7 +7988,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/checkpoint_1)
 "yE" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /obj/structure/cable{
 	icon_state = "4-8"
 	},
@@ -8400,7 +8383,7 @@
 /turf/simulated/floor/tiled/techfloor/monogrid,
 /area/admin_planet/andromeda/engi_prep)
 "zT" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -8445,7 +8428,7 @@
 /turf/simulated/floor/plating,
 /area/admin_planet/andromeda/rnd_lobby)
 "Af" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -8606,10 +8589,10 @@
 /area/admin_planet/andromeda/rnd_lobby)
 "AI" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/energy/sniperrifle{
+/obj/item/gun/projectile/energy/sniperrifle{
 	pixel_y = 7
 	},
-/obj/item/gun/energy/sniperrifle{
+/obj/item/gun/projectile/energy/sniperrifle{
 	pixel_y = -6
 	},
 /obj/structure/window/phoronreinforced,
@@ -8676,7 +8659,7 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging/junction{
 	dir = 4
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "AW" = (
 /obj/structure/bed/chair/office/dark{
@@ -8685,7 +8668,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_monitoring)
 "AY" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/kafel_full/yellow,
 /area/admin_planet/andromeda/medward_chemistry)
 "AZ" = (
@@ -8892,7 +8875,7 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 10
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "BA" = (
 /obj/structure/table/steel,
@@ -8985,10 +8968,10 @@
 /area/admin_planet/andromeda/rnd_lobby)
 "BN" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/energy/gun/burst{
+/obj/item/gun/projectile/energy/gun/burst{
 	pixel_y = 9
 	},
-/obj/item/gun/energy/gun/burst{
+/obj/item/gun/projectile/energy/gun/burst{
 	pixel_y = -4
 	},
 /obj/machinery/door/window/brigdoor/northright{
@@ -9002,8 +8985,8 @@
 /obj/machinery/atmospherics/pipe/simple/visible/cyan{
 	dir = 6
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "BP" = (
@@ -9094,7 +9077,7 @@
 /turf/simulated/floor/tiled/steel,
 /area/admin_planet/andromeda/rnd_lockers)
 "Ca" = (
-/obj/spawner/window/low_wall/reinforced/electrochromic/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/electrochromic/firelocks,
 /turf/simulated/floor/tiled/steel_dirty/dark,
 /area/admin_planet/andromeda/sec_warden_office)
 "Cb" = (
@@ -9146,7 +9129,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_xenobio_storage)
 "Co" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/techmaint{
 	color = "#A9A9A9"
 	},
@@ -9160,7 +9143,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/rnd_xenobio)
 "Cr" = (
-/turf/space/basic,
+/turf/space,
 /area/space)
 "Cu" = (
 /obj/structure/table/borosilicate,
@@ -9204,7 +9187,7 @@
 /turf/simulated/floor/tiled/kafel_full/gray,
 /area/admin_planet/andromeda/rnd_circuitry)
 "Cx" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -9221,7 +9204,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_senior_engineer)
 "Cz" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_xenobio_storage)
 "CC" = (
@@ -9267,7 +9250,7 @@
 	pixel_x = -2;
 	pixel_y = -2
 	},
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -9349,7 +9332,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/rnd_xenobio)
 "CW" = (
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable/orange,
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_monitoring)
@@ -9633,7 +9616,7 @@
 	id = "checkpoint1";
 	pixel_x = -6
 	},
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/kafel_full/red,
 /area/admin_planet/andromeda/checkpoint_1)
@@ -9713,14 +9696,14 @@
 /turf/simulated/floor/grass,
 /area/admin_planet/andromeda/rnd_xenobotany)
 "Ej" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/wall/r_wall/prepainted/medical{
 	integrity_flags = 1;
 	integrity_enabled = 0
 	},
 /area/admin_planet/andromeda/medward_chemistry)
 "Ek" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -9782,7 +9765,7 @@
 /turf/simulated/floor/tiled/kafel_full/gray,
 /area/admin_planet/andromeda/rnd_tool_storage)
 "Ez" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -9923,7 +9906,7 @@
 /turf/simulated/floor/tiled/steel,
 /area/admin_planet/andromeda/rnd_lockers)
 "EW" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -10309,10 +10292,10 @@
 /obj/item/ammo_magazine/a7_62mm,
 /obj/item/ammo_magazine/a7_62mm,
 /obj/item/ammo_magazine/a7_62mm,
-/obj/item/gun/ballistic/automatic/z8{
+/obj/item/gun/projectile/ballistic/automatic/z8{
 	pixel_y = 8
 	},
-/obj/item/gun/ballistic/automatic/z8{
+/obj/item/gun/projectile/ballistic/automatic/z8{
 	pixel_y = -5
 	},
 /obj/machinery/light/small/emergency{
@@ -10326,7 +10309,7 @@
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/sec_heavy_armory)
 "Gf" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -10447,10 +10430,10 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 6
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "GC" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	dir = 1
 	},
@@ -10743,7 +10726,7 @@
 /obj/machinery/light/flamp{
 	pixel_x = 14
 	},
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -11248,8 +11231,8 @@
 /area/admin_planet/andromeda/lounge)
 "IT" = (
 /obj/machinery/atmospherics/pipe/manifold4w/visible/cyan,
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "IU" = (
@@ -11674,7 +11657,7 @@
 /area/admin_planet/andromeda/engi_lobby)
 "JU" = (
 /obj/structure/closet/excavation,
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -11729,11 +11712,11 @@
 /area/admin_planet/andromeda/lobby)
 "Kg" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/energy/laser{
+/obj/item/gun/projectile/energy/laser{
 	pixel_y = -8
 	},
-/obj/item/gun/energy/laser,
-/obj/item/gun/energy/laser{
+/obj/item/gun/projectile/energy/laser,
+/obj/item/gun/projectile/energy/laser{
 	pixel_y = 6
 	},
 /obj/structure/window/phoronreinforced,
@@ -11953,7 +11936,7 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "KS" = (
 /obj/machinery/atmospherics/component/unary/vent_scrubber/on{
@@ -12160,14 +12143,14 @@
 /area/admin_planet/andromeda/rnd_xenobio)
 "LA" = (
 /obj/machinery/door/firedoor/glass,
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
 /turf/simulated/floor/tiled/kafel_full/purple,
 /area/admin_planet/andromeda/rnd_nexus)
 "LB" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -12198,7 +12181,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_lobby)
 "LF" = (
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -12288,7 +12271,7 @@
 /turf/simulated/floor/tiled/kafel_full/green,
 /area/admin_planet/andromeda/medward_treatment)
 "Ma" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -12410,7 +12393,7 @@
 /turf/simulated/floor/tiled/yellow,
 /area/admin_planet/andromeda/supply_lobby)
 "Mu" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -12502,7 +12485,7 @@
 /turf/simulated/floor/plating,
 /area/admin_planet/andromeda/northern_lobby)
 "MH" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -12534,7 +12517,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/medward_cryo_morgue)
 "MK" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/dark{
 	color = "#A9A9A9"
 	},
@@ -12640,7 +12623,7 @@
 /area/admin_planet/andromeda/rnd_lockers)
 "Ng" = (
 /obj/structure/cable,
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "1-8"
 	},
@@ -12753,7 +12736,7 @@
 /area/admin_planet/andromeda/northern_maints)
 "Ny" = (
 /obj/structure/table/marble,
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -12808,7 +12791,7 @@
 /turf/simulated/floor/tiled/steel_grid,
 /area/admin_planet/andromeda/rnd_anomaly_lab)
 "NE" = (
-/obj/spawner/window/low_wall/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/reinforced/firelocks,
 /turf/simulated/floor/tiled/kafel_full/yellow,
 /area/admin_planet/andromeda/supply_office)
 "NG" = (
@@ -12923,7 +12906,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/engi_lobby)
 "Oe" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /turf/simulated/floor/reinforced,
 /area/admin_planet/andromeda/checkpoint_2)
 "Of" = (
@@ -13130,41 +13113,41 @@
 /area/admin_planet/andromeda/engi_lobby)
 "OR" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -8;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -4;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 4;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 8;
 	pixel_y = 3
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -8;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = -4;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 4;
 	pixel_y = -5
 	},
-/obj/item/cell/device/weapon{
+/obj/item/cell/basic/tier_1/weapon{
 	pixel_x = 8;
 	pixel_y = -5
 	},
@@ -13237,7 +13220,7 @@
 /turf/simulated/floor/tiled/kafel_full/green,
 /area/admin_planet/andromeda/medward_treatment)
 "Pf" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/dark{
 	color = "#A9A9A9"
@@ -13286,7 +13269,7 @@
 /turf/simulated/floor/tiled/kafel_full/beige,
 /area/admin_planet/andromeda/medward_storage)
 "Pl" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -13347,7 +13330,7 @@
 /turf/simulated/floor/tiled/kafel_full/beige,
 /area/admin_planet/andromeda/medward_treatment)
 "Pu" = (
-/obj/machinery/power/apc/hyper/west_mount,
+/obj/machinery/power/apc/large_cell/tier_3/west_mount,
 /obj/machinery/power/rtg/fake_gen,
 /obj/structure/cable{
 	icon_state = "0-8"
@@ -13539,7 +13522,7 @@
 /area/admin_planet/andromeda/rnd_xenobio)
 "Qj" = (
 /obj/structure/table/standard,
-/obj/item/gun/energy/taser/xeno,
+/obj/item/gun/projectile/energy/taser/xeno,
 /obj/item/melee/baton/slime/loaded,
 /obj/machinery/recharger/wallcharger{
 	pixel_x = 4;
@@ -13719,17 +13702,17 @@
 	layer = 5
 	},
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/ballistic/fiveseven{
+/obj/item/gun/projectile/ballistic/fiveseven{
 	pixel_y = 10
 	},
-/obj/item/gun/ballistic/fiveseven{
+/obj/item/gun/projectile/ballistic/fiveseven{
 	pixel_y = 6
 	},
-/obj/item/gun/ballistic/fiveseven{
+/obj/item/gun/projectile/ballistic/fiveseven{
 	pixel_y = 2
 	},
-/obj/item/gun/ballistic/fiveseven,
-/obj/item/gun/ballistic/fiveseven{
+/obj/item/gun/projectile/ballistic/fiveseven,
+/obj/item/gun/projectile/ballistic/fiveseven{
 	pixel_y = -2
 	},
 /obj/machinery/camera/network/talon{
@@ -13792,7 +13775,7 @@
 /turf/simulated/floor/tiled/kafel_full/purple,
 /area/admin_planet/andromeda/rnd_lobby)
 "QZ" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -13920,14 +13903,14 @@
 /area/admin_planet/andromeda/medward_chemistry)
 "Rs" = (
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging,
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "Ru" = (
 /obj/machinery/atmospherics/pipe/manifold/visible/cyan{
 	dir = 8
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "Rv" = (
@@ -13949,8 +13932,8 @@
 	},
 /area/admin_planet/andromeda/northern_lobby)
 "Rz" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "RB" = (
@@ -13959,7 +13942,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/medward_cryo_morgue)
 "RD" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -14376,7 +14359,7 @@
 /area/admin_planet/andromeda/sec_lockers)
 "SS" = (
 /obj/effect/floor_decal/industrial/outline/yellow,
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	dir = 1
 	},
@@ -14423,7 +14406,7 @@
 /turf/simulated/floor/reinforced/airless,
 /area/admin_planet/andromeda/engi_workroom)
 "Tb" = (
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "Td" = (
 /obj/machinery/camera/network/talon{
@@ -14467,7 +14450,7 @@
 /turf/simulated/floor/tiled/kafel_full/beige,
 /area/admin_planet/andromeda/medward_storage)
 "Tk" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -14615,7 +14598,7 @@
 /turf/simulated/floor/bmarble,
 /area/admin_planet/andromeda/rnd_rd_office)
 "TE" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /turf/simulated/floor/tiled/techfloor,
 /area/admin_planet/andromeda/rnd_chem_research)
 "TF" = (
@@ -14628,7 +14611,7 @@
 	},
 /area/admin_planet/andromeda/lobby)
 "TG" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -14716,7 +14699,7 @@
 /turf/simulated/wall/r_wall/prepainted,
 /area/admin_planet/andromeda/eastern_maints)
 "TY" = (
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -14735,7 +14718,7 @@
 	},
 /area/admin_planet/andromeda/NEXUS_Hallway)
 "Ua" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable,
 /obj/structure/cable{
 	icon_state = "1-8"
@@ -14832,7 +14815,7 @@
 /area/admin_planet/andromeda/western_maints)
 "Uv" = (
 /obj/structure/table/standard,
-/obj/item/gun/energy/taser/xeno,
+/obj/item/gun/projectile/energy/taser/xeno,
 /obj/item/melee/baton/slime/loaded,
 /obj/machinery/recharger/wallcharger{
 	pixel_x = 4;
@@ -14946,7 +14929,7 @@
 /area/admin_planet/andromeda/engi_workroom)
 "UN" = (
 /obj/machinery/light/spot,
-/obj/machinery/power/apc/high/south_mount,
+/obj/machinery/power/apc/large_cell/south_mount,
 /obj/structure/cable,
 /turf/simulated/floor/tiled/steel_dirty/dark,
 /area/admin_planet/andromeda/sec_warden_office)
@@ -14983,7 +14966,7 @@
 /turf/simulated/floor/wood,
 /area/admin_planet/andromeda/lounge)
 "UU" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -15063,22 +15046,22 @@
 /area/admin_planet/andromeda/rnd_lobby)
 "Ve" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/energy/gun{
+/obj/item/gun/projectile/energy/gun{
 	pixel_y = -4
 	},
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun{
+/obj/item/gun/projectile/energy/gun,
+/obj/item/gun/projectile/energy/gun{
 	pixel_y = 4
 	},
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun{
+/obj/item/gun/projectile/energy/gun,
+/obj/item/gun/projectile/energy/gun{
 	pixel_y = -4
 	},
-/obj/item/gun/energy/gun{
+/obj/item/gun/projectile/energy/gun{
 	pixel_y = 4
 	},
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun{
+/obj/item/gun/projectile/energy/gun,
+/obj/item/gun/projectile/energy/gun{
 	pixel_y = -4
 	},
 /turf/simulated/floor/tiled/monodark{
@@ -15351,7 +15334,7 @@
 /turf/simulated/floor/tiled/steel_grid,
 /area/admin_planet/andromeda/rnd_xenobotany)
 "VO" = (
-/obj/machinery/power/apc/hyper/east_mount,
+/obj/machinery/power/apc/large_cell/tier_3/east_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -15807,11 +15790,11 @@
 /area/admin_planet/andromeda/lobby)
 "Xh" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/ballistic/shotgun/pump/combat{
+/obj/item/gun/projectile/ballistic/shotgun/pump/combat{
 	pixel_y = 6
 	},
-/obj/item/gun/ballistic/shotgun/pump/combat,
-/obj/item/gun/ballistic/shotgun/pump/combat{
+/obj/item/gun/projectile/ballistic/shotgun/pump/combat,
+/obj/item/gun/projectile/ballistic/shotgun/pump/combat{
 	pixel_y = -6
 	},
 /obj/structure/window/phoronreinforced,
@@ -15842,7 +15825,7 @@
 /turf/simulated/floor/tiled/steel_grid,
 /area/admin_planet/andromeda/rnd_anomaly_lab)
 "Xn" = (
-/obj/machinery/power/apc/hyper/north_mount,
+/obj/machinery/power/apc/large_cell/tier_3/north_mount,
 /obj/machinery/power/rtg/fake_gen,
 /obj/structure/cable,
 /turf/simulated/floor/plating,
@@ -15851,12 +15834,12 @@
 /obj/machinery/atmospherics/pipe/simple/visible/cyan{
 	dir = 5
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "Xp" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	dir = 1
 	},
@@ -15943,7 +15926,7 @@
 	},
 /obj/machinery/disposal,
 /obj/structure/disposalpipe/trunk,
-/obj/machinery/power/apc/super/east_mount,
+/obj/machinery/power/apc/large_cell/tier_2/east_mount,
 /obj/machinery/door/firedoor/glass,
 /obj/structure/cable{
 	icon_state = "0-8"
@@ -15985,7 +15968,7 @@
 /obj/machinery/atmospherics/pipe/simple/heat_exchanging{
 	dir = 4
 	},
-/turf/space/basic,
+/turf/space,
 /area/admin_planet/andromeda/engi_workroom)
 "XI" = (
 /obj/machinery/artifact_analyser{
@@ -16039,8 +16022,8 @@
 /obj/machinery/atmospherics/pipe/simple/visible/green{
 	dir = 6
 	},
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
-/obj/effect/paint_stripe/sun,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
+/obj/map_helper/paint_stripe/sun,
 /turf/simulated/floor/tiled/techfloor/grid,
 /area/admin_planet/andromeda/engi_workroom)
 "XW" = (
@@ -16210,7 +16193,7 @@
 /turf/simulated/floor/tiled/red,
 /area/admin_planet/andromeda/sec_lobby)
 "Yz" = (
-/obj/spawner/window/low_wall/borosillicate/reinforced/full/firelocks,
+/obj/spawner/window/low_wall/borosillicate/reinforced/firelocks,
 /obj/machinery/door/blast/regular{
 	density = 0;
 	icon_state = "pdoor0";
@@ -16370,9 +16353,9 @@
 /area/admin_planet/andromeda/engi_equipment)
 "YT" = (
 /obj/structure/closet/crate,
-/obj/item/grenade/chem_grenade,
-/obj/item/grenade/chem_grenade,
-/obj/item/grenade/chem_grenade,
+/obj/item/grenade/simple/chemical,
+/obj/item/grenade/simple/chemical,
+/obj/item/grenade/simple/chemical,
 /obj/item/assembly/timer,
 /obj/item/assembly/timer,
 /obj/item/assembly/timer,
@@ -16429,7 +16412,7 @@
 	},
 /area/admin_planet/andromeda/rnd_lobby)
 "Zc" = (
-/obj/machinery/power/apc/high/east_mount,
+/obj/machinery/power/apc/large_cell/east_mount,
 /obj/structure/cable{
 	icon_state = "0-8"
 	},
@@ -16514,7 +16497,7 @@
 	pixel_y = 9;
 	layer = 3
 	},
-/obj/machinery/power/apc/high/west_mount,
+/obj/machinery/power/apc/large_cell/west_mount,
 /obj/structure/cable{
 	icon_state = "0-4"
 	},
@@ -16692,7 +16675,7 @@
 	},
 /area/admin_planet/andromeda/engi_lobby)
 "ZT" = (
-/obj/machinery/power/apc/high/north_mount,
+/obj/machinery/power/apc/large_cell/north_mount,
 /obj/structure/cable{
 	icon_state = "0-2"
 	},
@@ -16700,28 +16683,28 @@
 /area/admin_planet/andromeda/sec_lockers)
 "ZV" = (
 /obj/structure/table/rack/shelf/steel,
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = -4
 	},
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = -4
 	},
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = -2
 	},
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = -2
 	},
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = 2
 	},
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = 2
 	},
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser{
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser{
 	pixel_y = -4
 	},
 /obj/machinery/light/spot{

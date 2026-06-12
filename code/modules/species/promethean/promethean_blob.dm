@@ -8,7 +8,7 @@
 	unity = TRUE
 	water_resist = 1 // Lets not kill the prommies
 	cores = 0
-	movement_cooldown = 3
+	movement_base_speed = 10 / 3
 	//species_appearance_flags = RADIATION_GLOWS
 	shock_resist = 0 // Lets not be immune to zaps.
 	friendly = list("nuzzles", "glomps", "snuggles", "cuddles", "squishes") // lets be cute :3
@@ -79,14 +79,13 @@
 	return
 
 //Constructor allows passing the human to sync damages
-/mob/living/simple_mob/slime/promethean/New(var/newloc, var/mob/living/carbon/human/H)
-	..()
+/mob/living/simple_mob/slime/promethean/Initialize(mapload, mob/living/carbon/human/H)
+	. = ..()
 	if(H)
 		humanform = H
 		update_health()
-
 	else
-		qdel(src)
+		return INITIALIZE_HINT_QDEL
 
 /mob/living/simple_mob/slime/promethean/update_health()
 	if(!humanform)

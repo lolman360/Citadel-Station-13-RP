@@ -1,3 +1,26 @@
+/mob/living
+	emote_class = EMOTE_CLASS_IS_BODY
+
+	//* mobility *//
+	/// are we resting either by will or by force
+	var/resting = FALSE
+	/// are we intentionally resting?
+	var/resting_intentionally = FALSE
+	/// are we resisting out of a resting state?
+	var/getting_up = FALSE
+	/// last loc while getting up - used by resist_a_rest
+	var/atom/getting_up_loc
+	/// last penalize time while getting up - used by resist_a_rest
+	var/getting_up_penalized
+	/// last delay before modifications while getting up - used by resist_a_rest, so reducing damage / whatever doesn't leave you with the same delay
+	var/getting_up_original
+
+	//* movement *//
+	/// current depth on turf in pixels
+	var/depth_current = 0
+	/// set during move: staged depth; on successful move, we update depth_current if it's different.
+	var/tmp/depth_staged = 0
+
 TYPE_REGISTER_SPATIAL_GRID(/mob/living, SSspatial_grids.living)
 /mob/living/Initialize(mapload)
 	. = ..()
@@ -10,7 +33,25 @@ TYPE_REGISTER_SPATIAL_GRID(/mob/living, SSspatial_grids.living)
 
 	selected_image = image(icon = 'icons/mob/screen1.dmi', loc = src, icon_state = "centermarker")
 
+	//* ~~~~~~~VORE~~~~~~~ *//
+	add_verb(src, /mob/living/proc/escapeOOC)
+	add_verb(src, /mob/living/proc/lick)
+	add_verb(src, /mob/living/proc/smell)
+	add_verb(src, /mob/living/proc/switch_scaling)
+	if(!no_vore) //If the mob isn't supposed to have a stomach, let's not give it an insidepanel so it can make one for itself, or a stomach.
+		add_verb(src, /mob/living/proc/insidePanel)
+		//Tries to load prefs if a client is present otherwise gives freebie stomach
+		spawn(2 SECONDS)
+			if(!QDELING(src))
+				init_vore()
+	//*        END         *//
+
 /mob/living/Destroy()
+	if(source_spawner)
+		if(istype(source_spawner))
+			if(source_spawner.spawned_mobs)
+				source_spawner.spawned_mobs -= src
+		source_spawner = null
 	if(nest) //Ew.
 		if(istype(nest, /obj/structure/prop/nest))
 			var/obj/structure/prop/nest/N = nest
@@ -23,6 +64,8 @@ TYPE_REGISTER_SPATIAL_GRID(/mob/living, SSspatial_grids.living)
 		buckled.unbuckle_mob(src, TRUE)
 	if(selected_image)
 		QDEL_NULL(selected_image)
+	aimed = null
+	QDEL_NULL(aiming)
 
 	// this all needs to be Cut and not null
 	// TODO: fix whatever is accessing these lists after qdel
@@ -39,6 +82,10 @@ TYPE_REGISTER_SPATIAL_GRID(/mob/living, SSspatial_grids.living)
 	internal_organs.Cut()
 	profile = null
 
+	QDEL_LIST(vore_organs)
+	if(length(vore_organs) || vore_selected)
+		stack_trace("vore is being very stupid and not gcing again ([length(vore_organs)] VO-L [vore_selected] ([REF(vore_selected)]) SEL)")
+
 	return ..()
 
 //mob verbs are faster than object verbs. See mob/verb/examine.
@@ -50,16 +97,19 @@ TYPE_REGISTER_SPATIAL_GRID(/mob/living, SSspatial_grids.living)
 		start_pulling(AM)
 
 //mob verbs are faster than object verbs. See above.
-/mob/living/pointed(atom/A as mob|obj|turf in view())
+/mob/living/pointed(atom/A as mob|obj|turf in view(client.view, src))
 	if(src.stat || src.restrained())
-		return 0
+		return FALSE
 	if(src.status_flags & STATUS_FAKEDEATH)
-		return 0
-	if(!..())
-		return 0
+		return FALSE
 
-	usr.visible_message("<b>[src]</b> points to [A]")
-	return 1
+	return ..()
+
+/mob/living/_pointed(atom/pointing_at)
+	if(!..())
+		return FALSE
+	log_emote("POINTED --> at [pointing_at] ([COORD(pointing_at)]).", src)
+	visible_message(SPAN_INFOPLAIN("[SPAN_NAME("[src]")] points at [pointing_at]."), SPAN_NOTICE("You point at [pointing_at]."))
 
 /*one proc, four uses
 swapping: if it's 1, the mobs are trying to switch, if 0, non-passive is pushing passive
@@ -369,8 +419,8 @@ default behaviour is:
 		adjustFireLoss(amount)
 
 // and one for electricity because why not
-/mob/living/proc/inflict_shock_damage(amount)
-	electrocute_act(amount, null, 1 - get_shock_protection(), pick(BP_HEAD, BP_TORSO, BP_GROIN))
+/mob/living/proc/inflict_shock_damage_legacy(amount)
+	electrocute(0, amount, 0, NONE, pick(BP_TORSO, BP_HEAD, BP_GROIN))
 
 // also one for water (most things resist it entirely, except for slimes)
 /mob/living/proc/inflict_water_damage(amount)
@@ -703,7 +753,7 @@ default behaviour is:
 /mob/living/get_centering_pixel_y_offset(dir)
 	. = ..()
 	// since we're shifted up by transforms..
-	. -= ((size_multiplier * icon_scale_y) - 1) * 16
+	. -= (size_multiplier * icon_scale_y - 1) * 16
 
 /mob/living/get_managed_pixel_y()
 	. = ..()
@@ -714,7 +764,7 @@ default behaviour is:
  * Allows an observer to take control of the mob at any time. Must use the "existing" ghostrole subtype.
  * R: the ghostrole datum to use
  */
-/mob/living/proc/add_ghostrole(datum/role/ghostrole/existing/R = /datum/role/ghostrole/existing/)
+/mob/living/proc/add_ghostrole(datum/prototype/role/ghostrole/existing/R = /datum/prototype/role/ghostrole/existing/)
 	var/list/L = list()
 	L["mob"] += src
 	return AddComponent(/datum/component/ghostrole_spawnpoint, R, 1, L)
@@ -725,3 +775,18 @@ default behaviour is:
 
 /mob/living/proc/remove_ghostrole()
 	return DelComponent(/datum/component/ghostrole_spawnpoint)
+
+/mob/living/vv_get_header()
+	. = ..()
+	var/refid = REF(src)
+	. += {"
+		<br><font size='1'>[ckey || "no ckey"] / [VV_HREF_TARGETREF_1V(refid, VV_HK_BASIC_EDIT, "[real_name || "no real name"]", NAMEOF(src, real_name))]</font>
+		<br><font size='1'>
+			BRUTE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brute' id='brute'>[getBruteLoss()]</a>
+			FIRE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=fire' id='fire'>[getFireLoss()]</a>
+			TOXIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=toxin' id='toxin'>[getToxLoss()]</a>
+			OXY:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=oxygen' id='oxygen'>[getOxyLoss()]</a>
+			CLONE:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=clone' id='clone'>[getCloneLoss()]</a>
+			BRAIN:<font size='1'><a href='byond://?_src_=vars;[HrefToken()];mobToDamage=[refid];adjustDamage=brain' id='brain'>[getBrainLoss()]</a>
+		</font>
+	"}

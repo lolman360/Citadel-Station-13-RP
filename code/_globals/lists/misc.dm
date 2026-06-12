@@ -9,3 +9,5 @@ GLOBAL_LIST_EMPTY(wire_color_directory) // This is an associative list with the 
 
 // Reference list for disposal sort junctions. Filled up by sorting junction's New()
 GLOBAL_LIST_EMPTY(tagger_locations)
+
+GLOBAL_LIST_INIT(color_vars, list("color"))

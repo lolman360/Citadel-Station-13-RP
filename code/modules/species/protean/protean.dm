@@ -19,7 +19,7 @@
 	remains_type = /obj/effect/debris/cleanable/ash
 	mob_physiology_modifier = /datum/physiology_modifier/intrinsic/species/protean
 
-	unarmed_types = list(/datum/unarmed_attack/stomp, /datum/unarmed_attack/kick, /datum/unarmed_attack/punch, /datum/unarmed_attack/bite) // Regular human attack verbs are enough.
+	unarmed_types = list(/datum/melee_attack/unarmed/stomp, /datum/melee_attack/unarmed/kick, /datum/melee_attack/unarmed/punch, /datum/melee_attack/unarmed/bite) // Regular human attack verbs are enough.
 
 	blood_color = "#505050" //This is the same as the 80,80,80 below, but in hex
 	flesh_color = "#505050"
@@ -88,7 +88,7 @@
 		BP_R_FOOT = list("path" = /obj/item/organ/external/foot/right/unbreakable/nano)
 		)
 
-	//These verbs are hidden, for hotkey use only
+	//Some of these verbs are hidden, for hotkey use only
 	inherent_verbs = list(
 		/mob/living/carbon/human/proc/nano_regenerate, //These verbs are hidden so you can macro them,
 		/mob/living/carbon/human/proc/nano_partswap,
@@ -96,6 +96,7 @@
 		/mob/living/carbon/human/proc/nano_blobform,
 		/mob/living/carbon/human/proc/nano_set_size,
 		/mob/living/carbon/human/proc/nano_change_fitting, //These verbs are displayed normally,
+		/mob/living/carbon/human/proc/nano_copy_appearance,
 		/mob/living/carbon/human/proc/shapeshifter_select_hair,
 		/mob/living/carbon/human/proc/shapeshifter_select_hair_colors,
 		/mob/living/carbon/human/proc/shapeshifter_select_colour,
@@ -105,6 +106,7 @@
 		/mob/living/carbon/human/proc/shapeshifter_select_tail,
 		/mob/living/carbon/human/proc/shapeshifter_select_ears,
 		/mob/living/carbon/human/proc/shapeshifter_select_horns,
+		/mob/living/carbon/human/proc/nano_reset_to_slot,
 		/mob/living/proc/eat_trash,
 		/mob/living/carbon/human/proc/succubus_drain,
 		/mob/living/carbon/human/proc/succubus_drain_finalize,
@@ -159,9 +161,24 @@
 /datum/species/protean/get_worn_legacy_bodytype(mob/living/carbon/human/H)
 	return H?.impersonate_bodytype_legacy || ..()
 
+/datum/species/protean/get_icobase(mob/living/carbon/human/H, get_deform)
+	// TODO: rework this entire thing in bodysets update this is godawful
+	if(H && !isnull(H.impersonate_species_for_iconbase) && !istype(H.impersonate_species_for_iconbase, /datum/species/protean))
+		return H.impersonate_species_for_iconbase.get_icobase(H, get_deform)
+	return ..()
+
 /datum/species/protean/create_organs(mob/living/carbon/human/H)
 	H.synth_color = TRUE
 	. = ..()
+	for(var/obj/item/organ/external/external_organ in H.get_external_organs())
+		if(external_organ.robotic < ORGAN_ROBOT)
+			external_organ.robotize()
+		if(!external_organ.model)
+			// let's not play this game
+			// :trol:
+			external_organ.model = GLOB.all_robolimbs[1]
+	// LEGACY: make sure their synthetic-ness is sticky by calling isSynthetic
+	H.isSynthetic()
 
 	// todo: this is utter shitcode and will break if we CHECK_TICK in SSticker, and should probably be part of postspawn or something
 	spawn(5) //Let their real nif load if they have one
@@ -197,7 +214,7 @@
 		to_chat(B, deathmsg)
 	else if(!gibbed)
 		to_chat(H, deathmsg)
-	ASYNC
+	spawn(0)
 		if(!QDELETED(H))
 			H.gib()
 
@@ -226,19 +243,19 @@
 	. = ..()
 	var/obj/item/organ/internal/nano/refactory/refactory = H.nano_get_refactory()
 	if(refactory && !(refactory.status & ORGAN_DEAD))
-		STATPANEL_DATA_LINE("- -- --- Refactory Metal Storage --- -- -")
+		INJECT_STATPANEL_DATA_LINE(., "- -- --- Refactory Metal Storage --- -- -")
 		var/max = refactory.max_storage
 		for(var/material in refactory.stored_materials)
 			var/amount = refactory.get_stored_material(material)
-			STATPANEL_DATA_ENTRY("[capitalize(material)]", "[amount]/[max]")
+			INJECT_STATPANEL_DATA_ENTRY(., "[capitalize(material)]", "[amount]/[max]")
 	else
-		STATPANEL_DATA_LINE("- -- --- REFACTORY ERROR! --- -- -")
+		INJECT_STATPANEL_DATA_LINE(., "- -- --- REFACTORY ERROR! --- -- -")
 
-	STATPANEL_DATA_LINE("- -- --- Abilities (Shift+LMB Examines) --- -- -")
+	INJECT_STATPANEL_DATA_LINE(., "- -- --- Abilities (Shift+LMB Examines) --- -- -")
 	for(var/ability in protean_abilities)
 		var/obj/effect/protean_ability/A = ability
 		A.atom_button_text()
-		STATPANEL_DATA_CLICK("[icon2html(A, C)] [A.ability_name]", "[A.name]", "\ref[A]")
+		INJECT_STATPANEL_DATA_CLICK(., "[icon2html(A, C)] [A.ability_name]", "[A.name]", "\ref[A]")
 
 // Various modifiers
 /datum/modifier/protean
@@ -319,7 +336,7 @@
 	owner = 1
 	if(new_name)
 		src.name += " ([new_name])"
-		desc += "\nVALID THROUGH END OF: [time2text(world.timeofday, "Month") +" "+ num2text(text2num(time2text(world.timeofday, "YYYY"))+544)]\nREGISTRANT: [new_name]"
+		desc += "\nVALID THROUGH END OF: [time2text(world.timeofday, "Month")] [CURRENT_STATION_YEAR]\nREGISTRANT: [new_name]"
 
 /mob/living/carbon/human/proc/rig_transform()
 	set name = "Modify Form - Hardsuit"
@@ -332,6 +349,21 @@
 		prig.forceMove(src)
 		return
 
+	if(istype(loc, /obj/item/holder))
+		var/obj/item/holder/blobholder = loc
+		if(istype(blobholder.loc, /mob/living/carbon/human))
+			var/mob/living/carbon/human/H = blobholder.loc
+			var/back = FALSE
+			if(blobholder == H.item_by_slot_id(SLOT_ID_BACK))
+				back = TRUE
+			var/obj/item/hardsuit/protean/prig = locate() in contents
+			if(prig)
+				prig.forceMove(get_turf(src))
+				forceMove(prig)
+				blobholder.update_state()
+				if(back)
+					H.equip_to_slot_if_possible(prig,SLOT_ID_BACK, INV_OP_FORCE | INV_OP_DIRECTLY_EQUIPPING | INV_OP_SHOULD_NOT_INTERCEPT | INV_OP_SILENT)
+				return
 	if(isturf(loc))
 		var/obj/item/hardsuit/protean/prig = locate() in contents
 		if(prig)

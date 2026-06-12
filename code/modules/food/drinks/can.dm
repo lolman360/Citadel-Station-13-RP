@@ -1,4 +1,7 @@
 /obj/item/reagent_containers/food/drinks/cans
+	name = "empty can"
+	desc = "You feel like there should be something to drink in here."
+	icon_state = "empty"
 	volume = 40 //just over one and a half cups
 	amount_per_transfer_from_this = 5
 	atom_flags = NONE //starts closed
@@ -14,6 +17,10 @@
 			var/turf/T = get_turf(src)
 			new modified_type(T)
 			qdel(src)
+
+/obj/item/reagent_containers/food/drinks/cans/empty
+	name = "sealable can"
+	desc = "A special can that can be filled then sealed. For when you want to make your own canned drinks."
 
 //DRINKS
 
@@ -191,6 +198,16 @@
 	. = ..()
 	reagents.add_reagent("grapejuice", 30)
 
+/obj/item/reagent_containers/food/drinks/cans/pineapple_juice
+	name = "\improper Pineapple Juice"
+	desc = "You can almost hear the waves crashing already! Almost!"
+	icon_state = "pineapple_can"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/pineapple_juice/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("pineapplejuice", 30)
+
 /obj/item/reagent_containers/food/drinks/cans/tonic
 	name = "\improper T-Borg's Tonic Water"
 	desc = "Quinine tastes funny, but at least it'll keep that Space Malaria away."
@@ -346,3 +363,85 @@
 	. = ..()
 	reagents.add_reagent("diethylamine", 20)
 	reagents.add_reagent("water", 10)
+
+//Tajara Drinks
+/obj/item/reagent_containers/food/drinks/cans/evapmilk
+	name = "Evaporated Milk"
+	desc = "Milk that has been boiled to make it more shelf stable. A common practice among poorer and less advanced regions of space."
+	icon_state = "evapmilk"
+
+/obj/item/reagent_containers/food/drinks/cans/evapmilk/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("evapmilk", 30)
+
+/obj/item/reagent_containers/food/drinks/cans/kompot_taj
+	name = "Ashomarr'darr"
+	desc = "A traditional Tajara beverage similar to Kompot. It is made by boiling Ashomarr berries in water."
+	icon_state = "kompot_taj"
+
+/obj/item/reagent_containers/food/drinks/cans/kompot_taj/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("kompot_taj", 30)
+
+/obj/item/reagent_containers/food/drinks/cans/watercan
+	name = "Can of Water"
+	desc = "Probably contains less microplastics then bottled water."
+	icon_state = "watercan"
+
+/obj/item/reagent_containers/food/drinks/cans/watercan/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("water", 40) //Important for Crafting Recipes Also means Colonists don't need station/hotsprings for water.
+
+// Seasonals - Xmas
+
+/obj/item/reagent_containers/food/drinks/cans/cola_cinnamon
+	name = "\improper Space Cola Cinnamon"
+	desc = "The classic taste of Space Cola with a hint of warm cinnamon flavor. Happy Holidays!"
+	icon_state = "cinnamoncola"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/cola_cinnamon/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("cinnamoncola", 30)
+
+/obj/item/reagent_containers/food/drinks/cans/space_upcranberry
+	name = "\improper Space-Up Cranberry"
+	desc = "Space-Up with a cranberry and spice twist. Happy Holidays!"
+	icon_state = "space-upcranberry"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/space_upcranberry/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("space_upcranberry", 30)
+
+/obj/item/reagent_containers/food/drinks/cans/robustexpresspeppermint
+	name = "\improper Robust Express Peppermint Mocha"
+	desc = "Delicious caffeine infused with creamy vanilla and peppermint flavor. It's pleasantly warm to the touch."
+	icon_state = "robustexpresspeppermint"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/robustexpresspeppermint/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("peppermint_mocha", 30)
+
+// Seasonals - Halloween
+
+/obj/item/reagent_containers/food/drinks/cans/cola_licorice
+	name = "\improper Space Cola Licorice"
+	desc = "The classic taste of Space Cola infused with red and black licorice mix. Happy Halloween!"
+	icon_state = "licoricecola"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/cola_licorice/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("licoricecola", 30)
+
+/obj/item/reagent_containers/food/drinks/cans/dr_gibb_mystery
+	name = "\improper Dr. Gibb Mystery"
+	desc = "A mysterious seasonal variant of Dr. Gibb. Happy Halloween!"
+	icon_state = "dr_gibbmystery"
+	center_of_mass = list("x"=16, "y"=10)
+
+/obj/item/reagent_containers/food/drinks/cans/dr_gibb_mystery/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("dr_gibbmystery", 30)

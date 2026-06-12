@@ -54,10 +54,9 @@
 /obj/structure/cable/orange{
 	icon_state = "0-4"
 	},
-/obj/machinery/power/apc/hyper/west_mount{
+/obj/machinery/power/apc/large_cell/tier_3/west_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - West";
-	pixel_x = -24
+	name = "Merc APC - West"
 	},
 /obj/machinery/air_alarm/alarms_hidden{
 	dir = 1;
@@ -168,24 +167,24 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/hallways_port)
 "aS" = (
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /obj/structure/table/steel_reinforced,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
@@ -223,17 +222,17 @@
 /area/ship/manta/armoury_st)
 "aZ" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/sizegun,
-/obj/item/gun/energy/sizegun,
-/obj/item/gun/energy/sizegun,
-/obj/item/gun/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "bc" = (
@@ -582,10 +581,9 @@
 /obj/structure/cable/orange{
 	icon_state = "0-2"
 	},
-/obj/machinery/power/apc/hyper/north_mount{
+/obj/machinery/power/apc/large_cell/tier_3/north_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - North";
-	pixel_y = 24
+	name = "Merc APC - North"
 	},
 /obj/structure/table/steel_reinforced,
 /obj/effect/floor_decal/techfloor{
@@ -629,10 +627,9 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 1
 	},
-/obj/machinery/power/apc/hyper/north_mount{
+/obj/machinery/power/apc/large_cell/tier_3/north_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - North";
-	pixel_y = 24
+	name = "Merc APC - North"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-4"
@@ -1130,7 +1127,7 @@
 /area/ship/manta/hangar)
 "fK" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/revolver/consul,
+/obj/item/gun/projectile/ballistic/revolver/consul,
 /obj/item/ammo_magazine/a44/speedloader,
 /obj/item/ammo_magazine/a44/speedloader,
 /obj/item/ammo_magazine/a44/speedloader,
@@ -1546,8 +1543,8 @@
 /area/ship/manta/hallways_aft)
 "hU" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/automatic/c20r,
-/obj/item/gun/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
@@ -1558,7 +1555,7 @@
 /obj/machinery/light{
 	dir = 8
 	},
-/obj/item/gun/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
 /turf/simulated/floor/tiled/techfloor,
@@ -1602,8 +1599,8 @@
 /area/ship/manta/armoury_st)
 "ih" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/silenced,
-/obj/item/gun/ballistic/silenced,
+/obj/item/gun/projectile/ballistic/silenced,
+/obj/item/gun/projectile/ballistic/silenced,
 /obj/item/ammo_magazine/a45/doublestack,
 /obj/item/ammo_magazine/a45/doublestack,
 /obj/item/ammo_magazine/a45/doublestack/ap,
@@ -1612,8 +1609,8 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 5
 	},
-/obj/item/gun/ballistic/sec/wood,
-/obj/item/gun/ballistic/sec/wood,
+/obj/item/gun/projectile/ballistic/sec/wood,
+/obj/item/gun/projectile/ballistic/sec/wood,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "ik" = (
@@ -1805,10 +1802,9 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/bridge)
 "iQ" = (
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/bed/chair/comfy/black{
 	dir = 8
@@ -1888,10 +1884,9 @@
 /turf/simulated/wall/rshull,
 /area/shuttle/manta_ship_boat)
 "jg" = (
-/obj/machinery/power/apc/hyper/north_mount{
+/obj/machinery/power/apc/large_cell/tier_3/north_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - North";
-	pixel_y = 24
+	name = "Merc APC - North"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-2"
@@ -2265,8 +2260,8 @@
 /area/ship/manta/hallways_aft)
 "lj" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/automatic/c20r,
-/obj/item/gun/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
@@ -2274,7 +2269,7 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
-/obj/item/gun/ballistic/automatic/c20r,
+/obj/item/gun/projectile/ballistic/automatic/c20r,
 /obj/item/ammo_magazine/a10mm,
 /obj/item/ammo_magazine/a10mm,
 /turf/simulated/floor/tiled/techfloor,
@@ -2293,8 +2288,8 @@
 	dir = 4
 	},
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/automatic/sts35,
-/obj/item/gun/ballistic/automatic/sts35,
+/obj/item/gun/projectile/ballistic/automatic/sts35,
+/obj/item/gun/projectile/ballistic/automatic/sts35,
 /obj/item/ammo_magazine/a5_56mm,
 /obj/item/ammo_magazine/a5_56mm,
 /obj/item/ammo_magazine/a5_56mm,
@@ -2385,12 +2380,12 @@
 "lO" = (
 /obj/item/melee/baton/loaded,
 /obj/item/melee/baton/loaded,
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /obj/effect/floor_decal/techfloor,
 /obj/structure/table/steel_reinforced,
 /turf/simulated/floor/tiled/dark,
@@ -2431,10 +2426,9 @@
 	name = "Syndicate-Spawn"
 	},
 /obj/item/bedsheet/hos,
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-2"
@@ -2682,10 +2676,9 @@
 /obj/structure/railing{
 	dir = 8
 	},
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-2"
@@ -2954,10 +2947,9 @@
 /turf/simulated/floor/plating,
 /area/ship/manta/radiator_port)
 "ov" = (
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-8"
@@ -2982,15 +2974,15 @@
 /area/ship/manta/radiator_port)
 "oD" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/laser,
-/obj/item/gun/energy/laser,
+/obj/item/gun/projectile/energy/laser,
+/obj/item/gun/projectile/energy/laser,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "oE" = (
@@ -3029,8 +3021,8 @@
 /area/space)
 "oO" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/silenced,
-/obj/item/gun/ballistic/silenced,
+/obj/item/gun/projectile/ballistic/silenced,
+/obj/item/gun/projectile/ballistic/silenced,
 /obj/item/ammo_magazine/a45/doublestack,
 /obj/item/ammo_magazine/a45/doublestack,
 /obj/item/ammo_magazine/a45/doublestack/ap,
@@ -3043,8 +3035,8 @@
 	dir = 8;
 	pixel_x = 26
 	},
-/obj/item/gun/ballistic/sec/wood,
-/obj/item/gun/ballistic/sec/wood,
+/obj/item/gun/projectile/ballistic/sec/wood,
+/obj/item/gun/projectile/ballistic/sec/wood,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "oP" = (
@@ -3208,10 +3200,9 @@
 /obj/machinery/atmospherics/pipe/simple/visible{
 	dir = 10
 	},
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/effect/catwalk_plated/dark,
 /obj/structure/cable/orange{
@@ -3429,7 +3420,7 @@
 /turf/simulated/floor/tiled/white,
 /area/ship/manta/med)
 "rl" = (
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -4166,8 +4157,8 @@
 /area/ship/manta/engineering)
 "ve" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/anticcw_armor_booster,
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/mortar,
+/obj/item/vehicle_module/anticcw_armor_booster,
+/obj/item/vehicle_module/weapon/ballistic/mortar,
 /obj/effect/floor_decal/techfloor{
 	dir = 9
 	},
@@ -4195,9 +4186,9 @@
 /area/ship/manta/mech_bay)
 "vt" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/explosive,
-/obj/item/mecha_parts/mecha_equipment/omni_shield,
-/obj/item/mecha_parts/mecha_equipment/repair_droid,
+/obj/item/vehicle_module/weapon/ballistic/missile_rack/explosive,
+/obj/item/vehicle_module/omni_shield,
+/obj/item/vehicle_module/repair_droid,
 /obj/effect/floor_decal/techfloor{
 	dir = 5
 	},
@@ -4215,7 +4206,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/recreation)
 "vw" = (
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -4712,10 +4703,9 @@
 /turf/simulated/floor/plating,
 /area/ship/manta/engine)
 "xv" = (
-/obj/machinery/power/apc/hyper/west_mount{
+/obj/machinery/power/apc/large_cell/tier_3/west_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - West";
-	pixel_x = -24
+	name = "Merc APC - West"
 	},
 /obj/structure/cable/orange,
 /turf/simulated/floor/plating,
@@ -5233,7 +5223,7 @@
 /area/ship/manta/engineering)
 "zv" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/plasmastun,
+/obj/item/gun/projectile/energy/plasmastun,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
@@ -5241,21 +5231,21 @@
 	dir = 4;
 	pixel_x = -23
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/gun/energy/netgun,
-/obj/item/gun/energy/netgun,
-/obj/item/gun/energy/plasmastun,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/gun/projectile/energy/netgun,
+/obj/item/gun/projectile/energy/netgun,
+/obj/item/gun/projectile/energy/plasmastun,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "zx" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/stunrevolver,
-/obj/item/gun/energy/stunrevolver,
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser,
+/obj/item/gun/projectile/energy/stunrevolver,
+/obj/item/gun/projectile/energy/stunrevolver,
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser,
 /obj/item/melee/baton/loaded,
 /obj/item/melee/baton/loaded,
 /obj/item/melee/baton/loaded,
@@ -5263,10 +5253,10 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "zy" = (
@@ -5544,10 +5534,9 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/recreation)
 "Bk" = (
-/obj/machinery/power/apc/hyper/west_mount{
+/obj/machinery/power/apc/large_cell/tier_3/west_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - West";
-	pixel_x = -24
+	name = "Merc APC - West"
 	},
 /obj/structure/cable{
 	icon_state = "0-4"
@@ -5688,7 +5677,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/mech_bay)
 "Cn" = (
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -5832,8 +5821,8 @@
 /area/ship/manta/recreation)
 "CT" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/plasmastun,
-/obj/item/gun/energy/plasmastun,
+/obj/item/gun/projectile/energy/plasmastun,
+/obj/item/gun/projectile/energy/plasmastun,
 /obj/effect/floor_decal/techfloor{
 	dir = 10
 	},
@@ -5966,7 +5955,7 @@
 "Dq" = (
 /obj/structure/table/rack,
 /obj/item/storage/box/sniperammo,
-/obj/item/gun/ballistic/heavysniper,
+/obj/item/gun/projectile/ballistic/heavysniper,
 /obj/effect/floor_decal/techfloor{
 	dir = 5
 	},
@@ -5990,10 +5979,10 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "Dw" = (
@@ -6028,10 +6017,10 @@
 /area/ship/manta/armoury_st)
 "Dz" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/stunrevolver,
-/obj/item/gun/energy/stunrevolver,
-/obj/item/gun/energy/taser,
-/obj/item/gun/energy/taser,
+/obj/item/gun/projectile/energy/stunrevolver,
+/obj/item/gun/projectile/energy/stunrevolver,
+/obj/item/gun/projectile/energy/taser,
+/obj/item/gun/projectile/energy/taser,
 /obj/item/melee/baton/loaded,
 /obj/item/melee/baton/loaded,
 /obj/item/melee/baton/loaded,
@@ -6040,10 +6029,10 @@
 	dir = 4
 	},
 /obj/machinery/fire_alarm/alarms_hidden/east_mount,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "DB" = (
@@ -6360,14 +6349,14 @@
 /area/ship/manta/barracks)
 "Fx" = (
 /obj/structure/table/rack,
-/obj/item/gun/ballistic/rocket,
+/obj/item/gun/projectile/ballistic/rocket,
 /obj/item/ammo_casing/rocket,
 /obj/item/ammo_casing/rocket,
 /obj/item/ammo_casing/rocket,
 /obj/effect/floor_decal/techfloor{
 	dir = 6
 	},
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -6604,8 +6593,8 @@
 /area/ship/manta/dock_port)
 "Hg" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/antiproj_armor_booster,
-/obj/item/mecha_parts/mecha_equipment/weapon/ballistic/missile_rack/grenade/frag,
+/obj/item/vehicle_module/antiproj_armor_booster,
+/obj/item/vehicle_module/weapon/ballistic/missile_rack/grenade/frag,
 /obj/effect/floor_decal/techfloor{
 	dir = 10
 	},
@@ -6616,7 +6605,7 @@
 /area/ship/manta/engine)
 "Hl" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/weapon/energy/ion,
+/obj/item/vehicle_module/weapon/energy/ion,
 /obj/effect/floor_decal/techfloor,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/mech_bay)
@@ -6636,9 +6625,9 @@
 /area/ship/manta/barracks)
 "Hr" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/shocker,
+/obj/item/vehicle_module/shocker,
 /obj/effect/floor_decal/techfloor,
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -6663,8 +6652,8 @@
 /area/ship/manta/hallways_aft)
 "Hz" = (
 /obj/structure/table/rack,
-/obj/item/mecha_parts/mecha_equipment/tool/jetpack,
-/obj/item/mecha_parts/mecha_equipment/weapon/energy/laser/xray,
+/obj/item/vehicle_module/tool/jetpack,
+/obj/item/vehicle_module/weapon/energy/laser/xray,
 /obj/effect/floor_decal/techfloor{
 	dir = 6
 	},
@@ -6718,7 +6707,7 @@
 /obj/item/ammo_magazine/a44/speedloader,
 /obj/item/ammo_magazine/a44/speedloader,
 /obj/item/ammo_magazine/a44/speedloader,
-/obj/item/gun/ballistic/revolver/consul,
+/obj/item/gun/projectile/ballistic/revolver/consul,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
@@ -6820,8 +6809,8 @@
 /area/ship/manta/teleporter)
 "Iq" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/xray,
-/obj/item/gun/energy/xray,
+/obj/item/gun/projectile/energy/xray,
+/obj/item/gun/projectile/energy/xray,
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
@@ -6876,13 +6865,13 @@
 /area/ship/manta/hallways_aft)
 "IJ" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun,
+/obj/item/gun/projectile/energy/gun,
+/obj/item/gun/projectile/energy/gun,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "IK" = (
@@ -6921,13 +6910,13 @@
 /area/ship/manta/commander)
 "Jb" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/ionrifle,
-/obj/item/gun/energy/ionrifle/pistol,
+/obj/item/gun/projectile/energy/ionrifle,
+/obj/item/gun/projectile/energy/ionrifle/pistol,
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "Jd" = (
@@ -7409,7 +7398,7 @@
 /area/ship/manta/dock_star)
 "LC" = (
 /obj/effect/floor_decal/techfloor,
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -7701,8 +7690,8 @@
 /obj/structure/table/rack,
 /obj/item/storage/box/shotgunshells/large,
 /obj/item/storage/box/shotgunammo/large,
-/obj/item/gun/ballistic/shotgun/pump/combat,
-/obj/item/gun/ballistic/shotgun/pump/combat,
+/obj/item/gun/projectile/ballistic/shotgun/pump/combat,
+/obj/item/gun/projectile/ballistic/shotgun/pump/combat,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
@@ -7741,8 +7730,8 @@
 /area/ship/manta/barracks)
 "Nq" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/sniperrifle,
-/obj/item/gun/energy/sniperrifle,
+/obj/item/gun/projectile/energy/sniperrifle,
+/obj/item/gun/projectile/energy/sniperrifle,
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
@@ -7781,16 +7770,16 @@
 /area/ship/manta/dock_port)
 "Ny" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/gun,
-/obj/item/gun/energy/gun,
+/obj/item/gun/projectile/energy/gun,
+/obj/item/gun/projectile/energy/gun,
 /obj/effect/floor_decal/techfloor{
 	dir = 10
 	},
 /obj/machinery/light{
 	dir = 8
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "NA" = (
@@ -7809,16 +7798,16 @@
 /area/ship/manta/armoury_st)
 "NE" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/ionrifle,
-/obj/item/gun/energy/ionrifle/pistol,
+/obj/item/gun/projectile/energy/ionrifle,
+/obj/item/gun/projectile/energy/ionrifle/pistol,
 /obj/effect/floor_decal/techfloor{
 	dir = 6
 	},
 /obj/machinery/light{
 	dir = 4
 	},
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_st)
 "NH" = (
@@ -8273,10 +8262,9 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 1
 	},
-/obj/machinery/power/apc/hyper/north_mount{
+/obj/machinery/power/apc/large_cell/tier_3/north_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - North";
-	pixel_y = 24
+	name = "Merc APC - North"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-4"
@@ -8292,10 +8280,9 @@
 /obj/structure/railing{
 	dir = 4
 	},
-/obj/machinery/power/apc/hyper/west_mount{
+/obj/machinery/power/apc/large_cell/tier_3/west_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - West";
-	pixel_x = -24
+	name = "Merc APC - West"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-2"
@@ -8457,8 +8444,8 @@
 /obj/item/ammo_magazine/a9mm,
 /obj/item/ammo_magazine/a9mm,
 /obj/item/ammo_magazine/a9mm,
-/obj/item/gun/ballistic/luger,
-/obj/item/gun/ballistic/luger/brown,
+/obj/item/gun/projectile/ballistic/luger,
+/obj/item/gun/projectile/ballistic/luger/brown,
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
@@ -8535,12 +8522,12 @@
 /area/ship/manta/holding)
 "RM" = (
 /obj/structure/table/rack,
-/obj/item/gun/energy/lasercannon,
-/obj/item/gun/energy/lasercannon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
-/obj/item/cell/device/weapon,
+/obj/item/gun/projectile/energy/lasercannon,
+/obj/item/gun/projectile/energy/lasercannon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
+/obj/item/cell/basic/tier_4/weapon,
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
@@ -8784,10 +8771,9 @@
 	name = "Syndicate-Spawn"
 	},
 /obj/item/bedsheet/hos,
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-2"
@@ -9008,8 +8994,8 @@
 /turf/simulated/floor/plating,
 /area/ship/manta/radiator_port)
 "TY" = (
-/obj/item/gun/energy/sizegun,
-/obj/item/gun/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
+/obj/item/gun/projectile/energy/sizegun,
 /obj/effect/floor_decal/rust,
 /obj/effect/floor_decal/techfloor{
 	dir = 1
@@ -9247,8 +9233,8 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 8
 	},
-/obj/item/gun/energy/darkmatter,
-/obj/item/gun/energy/darkmatter,
+/obj/item/gun/projectile/energy/darkmatter,
+/obj/item/gun/projectile/energy/darkmatter,
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/armoury_as)
 "Vk" = (
@@ -9271,10 +9257,10 @@
 /obj/effect/floor_decal/techfloor{
 	dir = 4
 	},
-/obj/item/gun/ballistic/automatic/bullpup,
-/obj/item/gun/ballistic/automatic/bullpup,
-/obj/item/gun/ballistic/automatic/bullpup,
-/obj/item/gun/ballistic/automatic/bullpup,
+/obj/item/gun/projectile/ballistic/automatic/bullpup,
+/obj/item/gun/projectile/ballistic/automatic/bullpup,
+/obj/item/gun/projectile/ballistic/automatic/bullpup,
+/obj/item/gun/projectile/ballistic/automatic/bullpup,
 /obj/item/ammo_magazine/a7_62mm,
 /obj/item/ammo_magazine/a7_62mm,
 /obj/item/ammo_magazine/a7_62mm,
@@ -9474,7 +9460,7 @@
 /turf/simulated/floor/tiled/techfloor,
 /area/ship/manta/hangar)
 "Ww" = (
-/obj/machinery/power/apc/hyper/south_mount{
+/obj/machinery/power/apc/large_cell/tier_3/south_mount{
 	alarms_hidden = 1;
 	name = "Merc APC - South"
 	},
@@ -9916,10 +9902,9 @@
 /obj/machinery/atmospherics/pipe/simple/hidden/fuel{
 	dir = 8
 	},
-/obj/machinery/power/apc/hyper/north_mount{
+/obj/machinery/power/apc/large_cell/tier_3/north_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - North";
-	pixel_y = 24
+	name = "Merc APC - North"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-4"
@@ -10106,10 +10091,9 @@
 	pixel_x = 12;
 	pixel_y = 8
 	},
-/obj/machinery/power/apc/hyper/east_mount{
+/obj/machinery/power/apc/large_cell/tier_3/east_mount{
 	alarms_hidden = 1;
-	name = "Merc APC - East";
-	pixel_x = 24
+	name = "Merc APC - East"
 	},
 /obj/structure/cable/orange{
 	icon_state = "0-8"

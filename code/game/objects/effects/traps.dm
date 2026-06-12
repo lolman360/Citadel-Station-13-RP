@@ -184,6 +184,8 @@ Add those other swinging traps you mentioned above!
 
 	else if(istype(AM, /mob/living))
 		var/mob/living/M = AM
+		if(M.is_avoiding_ground())
+			return
 		var/damage = rand(min_damage, max_damage)
 		M.apply_damage(damage, DAMAGE_TYPE_BRUTE)
 		M.visible_message("<span class='danger'>[M] falls onto a punji stake!</span>", \
@@ -222,6 +224,9 @@ Add those other swinging traps you mentioned above!
 		return
 
 	else if(istype(AM, /mob/living))
+		var/mob/living/M = AM
+		if(M.is_avoiding_ground())
+			return
 		break_legs(AM)
 		AM.visible_message("<span class='danger'>[AM] falls into the path of the piston!</span>", \
 						"<span class='userdanger'>Your leg is crushed by the piston!</span>")
@@ -282,6 +287,8 @@ Add those other swinging traps you mentioned above!
 
 	else if(istype(AM, /mob/living))
 		var/mob/living/M = AM
+		if(M.is_avoiding_ground())
+			return
 		var/damage = rand(min_damage, max_damage)
 		M.apply_damage(damage, DAMAGE_TYPE_TOX)
 		M.set_stunned(20 * 15)
@@ -334,10 +341,9 @@ Add those other swinging traps you mentioned above!
 
 	//This needs to check dirs, projectiles, accuracy, reload/recharge. It's kinda gonna suck. Consult Turret code.
 
-/obj/effect/trap/launcher/Initialize(mapload)
-	. = ..()
-	simple_network_register(id)
-	START_PROCESSING(SSobj, src)
+/obj/effect/trap/launcher/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/effect/trap/launcher/fire()
 	update_icon()
@@ -549,8 +555,7 @@ Add those other swinging traps you mentioned above!
 		var/list/target_limbs = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 		var/selected = pick(target_limbs)
 		var/obj/item/organ/external/target = M.get_organ(selected)
-		M.apply_damage(damage, DAMAGE_TYPE_BRUTE)
-		target.droplimb()
+		target.inflict_bodypart_damage(damage, 0, DAMAGE_MODE_SHARP | DAMAGE_MODE_SHRED, "spinning saw blade")
 		M.visible_message("<span class='danger'>[M] is slashed by the spinning blades!</span>", \
 						"<span class='userdanger'>You are slashed by the spinning blades!</span>")
 
@@ -605,8 +610,7 @@ if (istype(AM, /mob/living))
 		var/list/target_limbs = list(BP_L_LEG, BP_R_LEG, BP_L_FOOT, BP_R_FOOT)
 		var/selected = pick(target_limbs)
 		var/obj/item/organ/external/target = M.get_organ(selected)
-		M.apply_damage(damage, DAMAGE_TYPE_BRUTE)
-		target.droplimb()
+		target.inflict_bodypart_damage(damage, 0, DAMAGE_MODE_SHARP | DAMAGE_MODE_SHRED, "spinning saw blade")
 		M.visible_message("<span class='danger'>[M] is ripped by the whirling sawblades!</span>", \
 						"<span class='userdanger'>You are ripped open by the whirling sawblades!</span>")
 

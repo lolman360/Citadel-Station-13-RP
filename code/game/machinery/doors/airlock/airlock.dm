@@ -117,6 +117,77 @@ GLOBAL_REAL_VAR(airlock_typecache) = typecacheof(list(
 	var/tinted
 	var/id_tint
 
+/obj/machinery/door/airlock/Initialize(mapload, obj/structure/door_assembly/assembly)
+	//if assembly is given, create the new door from the assembly
+	if (assembly && istype(assembly))
+		assembly_type = assembly.type
+
+		electronics = assembly.electronics
+		electronics.loc = src
+
+		//update the door's access to match the electronics'
+		secured_wires = electronics.secure
+		req_one_access = electronics.conf_req_one_access?.Copy()
+		req_access = electronics.conf_req_access?.Copy()
+
+		//get the name from the assembly
+		if(assembly.created_name)
+			name = assembly.created_name
+		else
+			name = "[istext(assembly.glass) ? "[assembly.glass] airlock" : assembly.base_name]"
+
+		//get the dir from the assembly
+		setDir(assembly.dir)
+
+	//wires
+	var/turf/T = get_turf(loc)
+	if(T && (T.z in (LEGACY_MAP_DATUM).admin_levels))
+		secured_wires = 1
+	if (secured_wires)
+		wires = new/datum/wires/airlock/secure(src)
+	else
+		wires = new/datum/wires/airlock(src)
+
+	if(src.closeOtherId != null)
+		for (var/obj/machinery/door/airlock/A in GLOB.machines)
+			if(A.closeOtherId == src.closeOtherId && A != src)
+				src.closeOther = A
+				break
+	name = "\improper [name]"
+	if(autoset_dir)
+		for (var/cardinal in GLOB.cardinal) //No list copy please good sir
+			var/turf/step_turf = get_step(src, cardinal)
+			if(step_turf)
+				for(var/atom/thing as anything in step_turf)
+					if(thing.type in airlock_typecache)
+						switch(cardinal)
+							if(EAST)
+								setDir(SOUTH)
+							if(WEST)
+								setDir(SOUTH)
+							if(NORTH)
+								setDir(WEST)
+							if(SOUTH)
+								setDir(WEST)
+						break
+				if (step_turf.density == TRUE)
+					switch(cardinal)
+						if(EAST)
+							setDir(SOUTH)
+						if(WEST)
+							setDir(SOUTH)
+						if(NORTH)
+							setDir(WEST)
+						if(SOUTH)
+							setDir(WEST)
+					break
+	update_icon(AIRLOCK_CLOSED)
+	. = ..()
+
+/obj/machinery/door/airlock/Destroy()
+	QDEL_NULL(wires)
+	return ..()
+
 /obj/machinery/door/airlock/proc/set_airlock_overlays(state)
 	var/icon/color_overlay
 	var/icon/filling_overlay
@@ -556,10 +627,6 @@ About the new airlock wires panel:
 /obj/machinery/door/airlock/attack_ai(mob/user as mob)
 	ui_interact(user)
 
-/obj/machinery/door/airlock/attack_ghost(mob/user)
-	. = ..()
-	ui_interact(user)
-
 /obj/machinery/door/airlock/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
@@ -681,7 +748,7 @@ About the new airlock wires panel:
 		..(user)
 	return
 
-/obj/machinery/door/airlock/ui_act(action, list/params, datum/tgui/ui)
+/obj/machinery/door/airlock/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return TRUE
 	if(!user_allowed(usr))
@@ -857,11 +924,6 @@ About the new airlock wires panel:
 			if(locked)
 				to_chat(user, "<span class='notice'>The airlock's bolts prevent it from being forced.</span>")
 			else if( !welded && !operating )
-				if(istype(C, /obj/item/material/twohanded/fireaxe)) // If this is a fireaxe, make sure it's held in two hands.
-					var/obj/item/material/twohanded/fireaxe/F = C
-					if(!F.wielded)
-						to_chat(user, "<span class='warning'>You need to be wielding \the [F] to do that.</span>")
-						return
 				// At this point, it's an armblade or a fireaxe that passed the wielded test, let's try to open it.
 				if(density)
 					spawn(0)
@@ -873,7 +935,6 @@ About the new airlock wires panel:
 			..()
 	else
 		..()
-	return
 
 /obj/machinery/door/airlock/phoron/attackby(C as obj, mob/user as mob)
 	if(C)
@@ -1020,7 +1081,7 @@ About the new airlock wires panel:
 /mob/living/carbon/airlock_crush(var/crush_damage)
 	. = ..()
 	if(can_feel_pain())
-		emote("scream")
+		emote_nosleep("scream")
 
 /mob/living/silicon/robot/airlock_crush(var/crush_damage)
 	adjustBruteLoss(crush_damage)
@@ -1063,77 +1124,6 @@ About the new airlock wires panel:
 
 /obj/machinery/door/airlock/can_pathfinding_pass(atom/movable/actor, datum/pathfinding/search)
 	return ..() || (has_access(req_access, req_one_access, search.ss13_with_access) && !locked && !inoperable())
-
-/obj/machinery/door/airlock/Initialize(mapload, obj/structure/door_assembly/assembly)
-	//if assembly is given, create the new door from the assembly
-	if (assembly && istype(assembly))
-		assembly_type = assembly.type
-
-		electronics = assembly.electronics
-		electronics.loc = src
-
-		//update the door's access to match the electronics'
-		secured_wires = electronics.secure
-		req_one_access = electronics.conf_req_one_access?.Copy()
-		req_access = electronics.conf_req_access?.Copy()
-
-		//get the name from the assembly
-		if(assembly.created_name)
-			name = assembly.created_name
-		else
-			name = "[istext(assembly.glass) ? "[assembly.glass] airlock" : assembly.base_name]"
-
-		//get the dir from the assembly
-		setDir(assembly.dir)
-
-	//wires
-	var/turf/T = get_turf(loc)
-	if(T && (T.z in (LEGACY_MAP_DATUM).admin_levels))
-		secured_wires = 1
-	if (secured_wires)
-		wires = new/datum/wires/airlock/secure(src)
-	else
-		wires = new/datum/wires/airlock(src)
-
-	if(src.closeOtherId != null)
-		for (var/obj/machinery/door/airlock/A in GLOB.machines)
-			if(A.closeOtherId == src.closeOtherId && A != src)
-				src.closeOther = A
-				break
-	name = "\improper [name]"
-	if(autoset_dir)
-		for (var/cardinal in GLOB.cardinal) //No list copy please good sir
-			var/turf/step_turf = get_step(src, cardinal)
-			for(var/atom/thing as anything in step_turf)
-				if(thing.type in airlock_typecache)
-					switch(cardinal)
-						if(EAST)
-							setDir(SOUTH)
-						if(WEST)
-							setDir(SOUTH)
-						if(NORTH)
-							setDir(WEST)
-						if(SOUTH)
-							setDir(WEST)
-					break
-			if (step_turf.density == TRUE)
-				switch(cardinal)
-					if(EAST)
-						setDir(SOUTH)
-					if(WEST)
-						setDir(SOUTH)
-					if(NORTH)
-						setDir(WEST)
-					if(SOUTH)
-						setDir(WEST)
-				break
-	update_icon(AIRLOCK_CLOSED)
-	. = ..()
-
-/obj/machinery/door/airlock/Destroy()
-	qdel(wires)
-	wires = null
-	return ..()
 
 // Most doors will never be deconstructed over the course of a round,
 // so as an optimization defer the creation of electronics until

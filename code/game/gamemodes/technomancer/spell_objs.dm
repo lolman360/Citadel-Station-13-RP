@@ -130,7 +130,7 @@
 // Parameters: 0
 // Description: Nulls object references so it can qdel() cleanly.
 /obj/item/spell/Destroy()
-	owner.unref_spell(src)
+	owner?.unref_spell(src)
 	owner = null
 	core = null
 	return ..()
@@ -248,7 +248,7 @@
 			on_ranged_cast(target, user)
 	if(cooldown)
 		var/effective_cooldown = round(cooldown * core.cooldown_modifier, 5)
-		user.setClickCooldown(effective_cooldown)
+		user.setClickCooldownLegacy(effective_cooldown)
 		flick("cooldown_[effective_cooldown]",src)
 
 // Proc: place_spell_in_hand()

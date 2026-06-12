@@ -111,15 +111,16 @@
 		null,
 		flattened = flatten,
 	)
+	var/alpha_to_use = species.species_appearance_flags & HAS_HAIR_ALPHA ? hair_alpha : head_organ.hair_opacity
 	// todo: this is awful
 	if(islist(rendered))
 		for(var/image/I as anything in rendered)
 			I.pixel_y += head_spriteacc_offset
-			I.alpha = head_organ.hair_opacity
+			I.alpha = alpha_to_use
 	else
 		var/image/I = rendered
 		I.pixel_y += head_spriteacc_offset
-		I.alpha = head_organ.hair_opacity
+		I.alpha = alpha_to_use
 
 	. = rendered
 	set_standing_overlay(HUMAN_OVERLAY_FACEHAIR, rendered)
@@ -151,15 +152,16 @@
 		null,
 		flattened = flatten,
 	)
+	var/alpha_to_use = species.species_appearance_flags & HAS_HAIR_ALPHA ? hair_alpha : head_organ.hair_opacity
 	// todo: this is awful
 	if(islist(rendered))
 		for(var/image/I as anything in rendered)
 			I.pixel_y += head_spriteacc_offset
-			I.alpha = head_organ.hair_opacity
+			I.alpha = alpha_to_use
 	else
 		var/image/I = rendered
 		I.pixel_y += head_spriteacc_offset
-		I.alpha = head_organ.hair_opacity
+		I.alpha = alpha_to_use
 
 	. = rendered
 	set_standing_overlay(HUMAN_OVERLAY_HAIR, rendered)
@@ -195,6 +197,9 @@
 /mob/living/carbon/human/proc/render_spriteacc_tail(flatten)
 	var/datum/sprite_accessory/tail/rendering = get_sprite_accessory(SPRITE_ACCESSORY_SLOT_TAIL)
 	if(isnull(rendering))
+		remove_standing_overlay(HUMAN_OVERLAY_TAIL)
+		return
+	if(wear_suit?.inv_hide_flags & HIDETAIL)
 		remove_standing_overlay(HUMAN_OVERLAY_TAIL)
 		return
 	if(hiding_tail && rendering.can_be_hidden)
@@ -459,6 +464,11 @@
 
 //BASE MOB SPRITE
 /mob/living/carbon/human/update_icons_body()
+	var/obj/item/organ/external/chest = get_organ(BP_TORSO)
+	if(!chest)
+		// can happen during deletion sometimes
+		return
+
 	var/husk_color_mod = rgb(96,88,80)
 	var/hulk_color_mod = rgb(48,224,40)
 
@@ -506,7 +516,7 @@
 			continue
 		if(part)
 			icon_key += "[part.name]"
-			icon_key += "[part.species.get_race_key(part.owner)]"
+			icon_key += "[part.species.get_race_key(src)]"
 			icon_key += "[part.dna.GetUIState(DNA_UI_GENDER)]"
 			icon_key += "[part.s_tone]"
 			if(part.s_col && part.s_col.len >= 3)
@@ -543,11 +553,10 @@
 		base_icon = GLOB.human_icon_cache[icon_key]
 	else
 		//BEGIN CACHED ICON GENERATION.
-		var/obj/item/organ/external/chest = get_organ(BP_TORSO)
 		base_icon = chest.get_icon()
 
 		for(var/obj/item/organ/external/part in organs)
-			if(isnull(part) || part.is_stump() || part.is_hidden_by_tail())
+			if(part.is_stump() || part.is_hidden_by_tail())
 				continue
 			var/icon/temp = part.get_icon(skeleton)
 			//That part makes left and right legs drawn topmost and lowermost when human looks WEST or EAST
@@ -590,9 +599,14 @@
 
 		GLOB.human_icon_cache[icon_key] = base_icon
 
+
 	//END CACHED ICON GENERATION.
 	stand_icon.Blend(base_icon,ICON_OVERLAY)
-	icon = stand_icon
+
+	var/image/img = image(stand_icon, layer = HUMAN_LAYER_BODY)
+	if(species.species_appearance_flags & HAS_BODY_ALPHA)
+		img.alpha = body_alpha
+	set_standing_overlay(HUMAN_OVERLAY_BODY, img)
 
 	//tail
 	render_spriteacc_tail()
@@ -623,7 +637,6 @@
 		both.add_overlay(bloodsies)
 
 	set_standing_overlay(HUMAN_OVERLAY_BLOOD, both)
-
 
 //UNDERWEAR OVERLAY
 /mob/living/carbon/human/proc/update_underwear()

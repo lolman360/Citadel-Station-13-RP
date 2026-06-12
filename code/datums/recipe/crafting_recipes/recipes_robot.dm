@@ -8,7 +8,7 @@
 				/obj/item/robot_parts/r_leg = 1,
 				/obj/item/stack/material/steel = 1,
 				/obj/item/stack/cable_coil = 1,
-				/obj/item/gun/energy/taser = 1,
+				/obj/item/gun/projectile/energy/taser = 1,
 				/obj/item/cell = 1,
 				/obj/item/assembly/prox_sensor = 1)
 	tools = list(TOOL_WELDER, TOOL_SCREWDRIVER)
@@ -78,15 +78,15 @@
 	category = CAT_ROBOT
 */
 
-/datum/crafting_recipe/aitater
-	name = "intelliTater"
-	result = /obj/item/aicard/aitater
-	time = 30
-	tools = list(TOOL_WIRECUTTER)
-	reqs = list(/obj/item/aicard = 1,
-				/obj/item/cell/potato = 1,
-				/obj/item/stack/cable_coil = 5)
-	category = CAT_ROBOT
+// /datum/crafting_recipe/aitater
+// 	name = "intelliTater"
+// 	result = /obj/item/aicard/aitater
+// 	time = 30
+// 	tools = list(TOOL_WIRECUTTER)
+// 	reqs = list(/obj/item/aicard = 1,
+// 				/obj/item/cell/potato = 1,
+// 				/obj/item/stack/cable_coil = 5)
+// 	category = CAT_ROBOT
 
 /datum/crafting_recipe/aispook
 	name = "intelliLantern"

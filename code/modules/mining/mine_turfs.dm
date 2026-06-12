@@ -181,15 +181,6 @@ CREATE_STANDARD_TURFS(/turf/simulated/mineral/icerock/floor/ignore_cavegen)
 		QUEUE_SMOOTH_NEIGHBORS(src)
 	update_icon()
 
-/turf/simulated/mineral/Entered(atom/movable/M as mob|obj)
-	..()
-	if(istype(M,/mob/living/silicon/robot))
-		var/mob/living/silicon/robot/R = M
-		if(R.module)
-			for(var/obj/item/storage/bag/ore/O in list(R.module_state_1, R.module_state_2, R.module_state_3))
-				O.autoload(R)
-				return
-
 /turf/simulated/mineral/Initialize(mapload)
 	. = ..()
 	if(prob(20))
@@ -300,12 +291,13 @@ CREATE_STANDARD_TURFS(/turf/simulated/mineral/icerock/floor/ignore_cavegen)
 
 	else if(istype(AM,/mob/living/silicon/robot))
 		var/mob/living/silicon/robot/R = AM
-		if(istype(R.module_active,/obj/item/pickaxe))
-			attackby(R.module_active,R)
+		var/obj/item/pickaxe/maybe_pickaxe = R.get_held_item_of_type(/obj/item/pickaxe)
+		if(maybe_pickaxe)
+			maybe_pickaxe.melee_interaction_chain(src, R)
 
 	else if(istype(AM,/obj/vehicle/sealed/mecha))
 		var/obj/vehicle/sealed/mecha/M = AM
-		if(istype(M.selected,/obj/item/mecha_parts/mecha_equipment/tool/drill))
+		if(istype(M.selected,/obj/item/vehicle_module/tool/drill))
 			M.selected.action(src)
 
 /turf/simulated/mineral/proc/MineralSpread()
@@ -321,7 +313,7 @@ CREATE_STANDARD_TURFS(/turf/simulated/mineral/icerock/floor/ignore_cavegen)
 //Not even going to touch this pile of spaghetti
 /turf/simulated/mineral/attackby(obj/item/W as obj, mob/user as mob)
 
-	if (!(istype(usr, /mob/living/carbon/human) || SSticker) && SSticker.mode.name != "monkey")
+	if (!(user.IsAdvancedToolUser() || SSticker) && SSticker.mode.name != "monkey")
 		to_chat(user, "<span class='warning'>You don't have the dexterity to do this!</span>")
 		return
 
@@ -354,10 +346,10 @@ CREATE_STANDARD_TURFS(/turf/simulated/mineral/icerock/floor/ignore_cavegen)
 			if(sand_dug)
 				if(grave_digger)
 					var/grave_type = /obj/structure/closet/grave
-					do_after(user, 60)
-					to_chat(user, "<span class='warning'>You deepen the hole.</span>")
-					new grave_type(get_turf(src))
-					return
+					if(do_after(user, 60))
+						to_chat(user, "<span class='warning'>You deepen the hole.</span>")
+						new grave_type(get_turf(src))
+						return
 				else
 					to_chat(user, "<span class='warning'>This area has already been dug.</span>")
 					return

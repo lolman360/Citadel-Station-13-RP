@@ -1,5 +1,6 @@
 /turf/simulated
 	name = "station"
+	turf_spawn_flags = TURF_SPAWN_FLAGS_ALLOW_ALL
 	var/wet = 0
 	var/image/wet_overlay = null
 
@@ -34,6 +35,7 @@
 	return ..()
 
 // This is not great.
+// todo: this is shit, rework wet floors to be component, element, or just a goddamn cached datum at this point
 /turf/simulated/proc/wet_floor(var/wet_val = 1)
 	if(wet > 2)	//Can't mop up ice
 		return
@@ -43,9 +45,9 @@
 			cut_overlay(wet_overlay)
 		wet_overlay = image('icons/effects/water.dmi', icon_state = "wet_floor")
 		add_overlay(wet_overlay)
-		sleep(800)
+		sleep(1 MINUTES + 20 SECONDS)
 		if(wet == 2)
-			sleep(3200)
+			sleep(5 MINUTES + 20 SECONDS)
 		wet = 0
 		if(wet_overlay)
 			cut_overlay(wet_overlay)
@@ -129,7 +131,9 @@
 				bloodDNA = null
 
 		if(src.wet)
-			process_slip(M)
+			spawn(0)
+				if(AM.loc == src)
+					process_slip(M)
 
 /turf/simulated/proc/process_slip(mob/living/M)
 	if(M.buckled || (src.wet == 1 && M.m_intent == "walk"))
@@ -167,7 +171,7 @@
 				B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
 				B.virus2 = virus_copylist(M.virus2)
 			return 1 //we bloodied the floor
-		blood_splatter(src,M.get_blood(M.vessel),1)
+		blood_splatter_legacy(src, M.get_blood_mixture(), TRUE)
 		return 1 //we bloodied the floor
 	return 0
 

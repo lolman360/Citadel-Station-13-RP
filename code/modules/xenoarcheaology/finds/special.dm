@@ -76,7 +76,7 @@
 	//use up stored charges
 	if(charges >= 10)
 		charges -= 10
-		new /obj/effect/spider/eggcluster(pick(RANGE_TURFS(1, src)))
+		new /obj/structure/spider/eggcluster(pick(RANGE_TURFS(1, src)))
 
 	if(charges >= 3)
 		if(prob(5))
@@ -128,7 +128,7 @@
 		B.target_turf = pick(range(1, src))
 		B.blood_DNA = list()
 		B.blood_DNA[M.dna.unique_enzymes] = M.dna.b_type
-		M.vessel.remove_reagent("blood",rand(25,50))
+		M.erase_blood(rand(25, 50))
 
 //animated blood 2 SPOOKY
 /obj/effect/debris/cleanable/blood/splatter/animated
@@ -169,6 +169,10 @@
 /obj/effect/shadow_wight/Initialize(mapload)
 	. = ..()
 	START_PROCESSING(SSobj, src)
+
+/obj/effect/shadow_wight/Destroy()
+	STOP_PROCESSING(SSobj, src)
+	return ..()
 
 /obj/effect/shadow_wight/process(delta_time)
 	if(loc)

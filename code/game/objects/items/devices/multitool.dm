@@ -12,6 +12,7 @@
 	icon_state = "multitool"
 	damage_force = 5.0
 	w_class = WEIGHT_CLASS_SMALL
+	belt_storage_class = BELT_CLASS_SMALL
 	throw_force = 5.0
 	throw_range = 15
 	throw_speed = 3
@@ -26,13 +27,14 @@
 
 	origin_tech = list(TECH_MAGNET = 1, TECH_ENGINEERING = 1)
 	var/obj/machinery/telecomms/buffer // simple machine buffer for device linkage
-	var/obj/machinery/clonepod/connecting //same for cryopod linkage
+	var/obj/machinery/resleeving/body_printer/connecting //same for cryopod linkage
 	var/obj/machinery/connectable	//Used to connect machinery.
 	var/datum/weakref_wiring //Used to store weak references for integrated circuitry. This is now the Omnitool.
 	var/colorable = 1
 	var/color_overlay = null
 	tool_speed = 1
-	tool_behaviour = TOOL_MULTITOOL
+	tool_behavior = TOOL_MULTITOOL
+	tool_sound = 'sound/weapons/empty.ogg'
 
 /obj/item/multitool/Initialize(mapload)
 	. = ..()
@@ -68,6 +70,27 @@
 			mode_switch(user)
 
 	update_icon()
+
+/obj/item/multitool/using_as_item(atom/target, datum/event_args/actor/clickchain/clickchain, clickchain_flags)
+	if(is_holosphere_shell(target) && clickchain.using_intent == INTENT_HELP)
+		var/mob/living/simple_mob/holosphere_shell/shell = target
+		// can't revive them if they are not dead
+		if(shell.stat != DEAD)
+			to_chat(clickchain.performer, SPAN_NOTICE("[target] does not need to be rebooted!"))
+			return CLICKCHAIN_DID_SOMETHING
+		// can't revive them if they are not full hp
+		if(shell.health == shell.maxHealth)
+			to_chat(clickchain.performer, SPAN_NOTICE("You begin rebooting [target] using \the [src]"))
+			if(do_after(clickchain.performer, 10 SECONDS))
+				// make sure they're still dead and full hp
+				if(shell.stat != DEAD || shell.health != shell.maxHealth)
+					to_chat(clickchain.performer, SPAN_NOTICE("[target] is no longer in a condition where you can reboot them."))
+					return CLICKCHAIN_DID_SOMETHING
+				// revive the holosphere shell
+				visible_message(SPAN_NOTICE("[clickchain.performer] successfully reboots [target] using \the [src]."))
+				shell.revive(full_heal = TRUE, restore_nutrition = FALSE)
+				return CLICKCHAIN_DID_SOMETHING
+	return ..()
 
 /obj/item/multitool/is_multitool()
 	return TRUE

@@ -74,18 +74,10 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	light_range = 0
 	var/datum/legacy_announcement/announcement = new
 
-/obj/machinery/requests_console/power_change()
-	..()
-	update_icon()
+	/// Radio channel on which to announce incoming messages. Usually the channel belonging to its department. If unset, it will not broadcast any messages.
+	var/channel
+	var/obj/item/radio/radio
 
-/obj/machinery/requests_console/update_icon_state()
-	if(machine_stat & NOPOWER)
-		if(icon_state != "req_comp_off")
-			icon_state = "req_comp_off"
-	else
-		if(icon_state == "req_comp_off")
-			icon_state = "req_comp[newmessagepriority]"
-	return ..()
 
 /obj/machinery/requests_console/Initialize(mapload, newdir)
 	. = ..()
@@ -94,18 +86,34 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	announcement.newscast = 1
 
 	name = "[department] requests console"
-	allConsoles += src
-	if(departmentType & RC_ASSIST)
-		req_console_assistance |= department
-	if(departmentType & RC_SUPPLY)
-		req_console_supplies |= department
-	if(departmentType & RC_INFO)
-		req_console_information |= department
 
+	if(channel)
+		//Checking for duplicates. Only one console per department should be transmitting.
+		//Essentially, if we're the first console of this department to initialize that has a radio, we will be the one to transmit.
+		var/departmentAlreadyHasRadio = FALSE
+		for(var/obj/machinery/requests_console/Console in allConsoles)
+			if(Console.department == department && Console.channel == channel)
+				departmentAlreadyHasRadio = TRUE
+				break
+		if(!departmentAlreadyHasRadio)
+			radio = new /obj/item/radio/headset/nanotrasen(src) //Required for the radio to have the proper encryption key.
+			radio.icon = 'icons/obj/robot_component.dmi'
+			radio.icon_state = "radio"
+			radio.channels = list(channel)
+
+	allConsoles += src
+	if(departmentType)
+		if(departmentType & RC_ASSIST)
+			req_console_assistance |= department
+		if(departmentType & RC_SUPPLY)
+			req_console_supplies |= department
+		if(departmentType & RC_INFO)
+			req_console_information |= department
 	set_light(1)
 
 /obj/machinery/requests_console/Destroy()
 	allConsoles -= src
+	QDEL_NULL(announcement)
 	var/lastDeptRC = 1
 	for (var/obj/machinery/requests_console/Console in allConsoles)
 		if(Console.department == department)
@@ -118,6 +126,19 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 			req_console_supplies -= department
 		if(departmentType & RC_INFO)
 			req_console_information -= department
+	return ..()
+
+/obj/machinery/requests_console/power_change()
+	..()
+	update_icon()
+
+/obj/machinery/requests_console/update_icon_state()
+	if(machine_stat & NOPOWER)
+		if(icon_state != "req_comp_off")
+			icon_state = "req_comp_off"
+	else
+		if(icon_state == "req_comp_off")
+			icon_state = "req_comp[newmessagepriority]"
 	return ..()
 
 /obj/machinery/requests_console/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
@@ -306,7 +327,7 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 /obj/machinery/requests_console/preset
 	name = ""
 	department = ""
-	departmentType = ""
+	departmentType = NONE
 	announcementConsole = 0
 
 // Departments
@@ -314,42 +335,50 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	name = "Cargo RC"
 	department = "Cargo Bay"
 	departmentType = RC_SUPPLY
+	channel = "Cargo"
 
 /obj/machinery/requests_console/preset/security
 	name = "Security RC"
 	department = "Security"
 	departmentType = RC_ASSIST
+	channel = "Security"
 
 /obj/machinery/requests_console/preset/engineering
 	name = "Engineering RC"
 	department = "Engineering"
 	departmentType = RC_ASSIST|RC_SUPPLY
+	channel = "Engineering"
 
 /obj/machinery/requests_console/preset/atmos
 	name = "Atmospherics RC"
 	department = "Atmospherics"
 	departmentType = RC_ASSIST|RC_SUPPLY
+	channel = "Engineering"
 
 /obj/machinery/requests_console/preset/medical
 	name = "Medical RC"
 	department = "Medical Department"
 	departmentType = RC_ASSIST|RC_SUPPLY
+	channel = "Medical"
 
 /obj/machinery/requests_console/preset/research
 	name = "Research RC"
 	department = "Research Department"
 	departmentType = RC_ASSIST|RC_SUPPLY
+	channel = "Science"
 
 /obj/machinery/requests_console/preset/janitor
 	name = "Janitor RC"
 	department = "Janitorial"
 	departmentType = RC_ASSIST
+	channel = "Service"
 
 /obj/machinery/requests_console/preset/bridge
 	name = "Bridge RC"
 	department = "Bridge"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 // Heads
 
@@ -358,32 +387,38 @@ var/list/obj/machinery/requests_console/allConsoles = list()
 	department = "Chief Engineer's Desk"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 /obj/machinery/requests_console/preset/cmo
 	name = "Chief Medical Officer RC"
 	department = "Chief Medical Officer's Desk"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 /obj/machinery/requests_console/preset/hos
 	name = "Head of Security RC"
 	department = "Head of Security's Desk"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 /obj/machinery/requests_console/preset/rd
 	name = "Research Director RC"
 	department = "Research Director's Desk"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 /obj/machinery/requests_console/preset/captain
 	name = "Captain RC"
 	department = "Captain's Desk"
 	departmentType = RC_ASSIST|RC_INFO
 	announcementConsole = 1
+	channel = "Command"
 
 /obj/machinery/requests_console/preset/ai
 	name = "AI RC"
 	department = "AI"
 	departmentType = RC_ASSIST|RC_INFO
+	channel = "AI Private"

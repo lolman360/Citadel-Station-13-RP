@@ -138,7 +138,7 @@
 					dat += "<a href='byond://?src=\ref[src];spell_choice=[spell.name]'>Purchase</a> ([spell.cost])<br><br>"
 				else
 					dat += "<font color='red'><b>Cannot afford!</b></font><br><br>"
-			user << browse(dat, "window=radio")
+			user << browse(HTML_SKELETON(dat), "window=radio")
 			onclose(user, "radio")
 		if(1) //Equipment
 			var/dat = ""
@@ -156,7 +156,7 @@
 					dat += "<a href='byond://?src=\ref[src];item_choice=[E.name]'>Purchase</a> ([E.cost])<br><br>"
 				else
 					dat += "<font color='red'><b>Cannot afford!</b></font><br><br>"
-			user << browse(dat, "window=radio")
+			user << browse(HTML_SKELETON(dat), "window=radio")
 			onclose(user, "radio")
 		if(2) //Consumables
 			var/dat = ""
@@ -174,7 +174,7 @@
 					dat += "<a href='byond://?src=\ref[src];item_choice=[C.name]'>Purchase</a> ([C.cost])<br><br>"
 				else
 					dat += "<font color='red'><b>Cannot afford!</b></font><br><br>"
-			user << browse(dat, "window=radio")
+			user << browse(HTML_SKELETON(dat), "window=radio")
 			onclose(user, "radio")
 		if(3) //Assistance
 			var/dat = ""
@@ -192,7 +192,7 @@
 					dat += "<a href='byond://?src=\ref[src];item_choice=[A.name]'>Purchase</a> ([A.cost])<br><br>"
 				else
 					dat += "<font color='red'><b>Cannot afford!</b></font><br><br>"
-			user << browse(dat, "window=radio")
+			user << browse(HTML_SKELETON(dat), "window=radio")
 			onclose(user, "radio")
 		if(4) //Info
 			var/dat = ""
@@ -258,7 +258,7 @@
 			dat += "When a function refers to 'allies', it means you, your apprentices, currently controlled entities (with the \
 			Control function), and friendly simple-minded entities that you've summoned with the Scepter of Enhancement.<br>"
 			dat += "A meter is equal to one 'tile'.<br>"
-			user << browse(dat, "window=radio")
+			user << browse(HTML_SKELETON(dat), "window=radio")
 			onclose(user, "radio")
 
 // Proc: Topic()
@@ -330,7 +330,7 @@
 
 		if(href_list["refund_functions"])
 			var/turf/T = get_turf(H)
-			if(T.z in (LEGACY_MAP_DATUM).player_levels)
+			if(T.z in (LEGACY_MAP_DATUM).station_levels)
 				to_chat(H, "<span class='danger'>You can only refund at your base, it's too late now!</span>")
 				return
 			var/obj/item/technomancer_core/core = null
@@ -347,7 +347,7 @@
 
 /obj/item/technomancer_catalog/attackby(var/atom/movable/AM, var/mob/user)
 	var/turf/T = get_turf(user)
-	if(T.z in (LEGACY_MAP_DATUM).player_levels)
+	if(T.z in (LEGACY_MAP_DATUM).station_levels)
 		to_chat(user, "<span class='danger'>You can only refund at your base, it's too late now!</span>")
 		return
 	for(var/datum/technomancer/equipment/E in equipment_instances + assistance_instances)

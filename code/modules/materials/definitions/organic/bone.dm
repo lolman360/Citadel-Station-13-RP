@@ -9,7 +9,7 @@
 	sheet_singular_name = "fragment"
 	sheet_plural_name = "fragments"
 	explosion_resistance = 60
-	stack_origin_tech = list(TECH_MATERIAL = 8, TECH_PHORON = 4, TECH_BLUESPACE = 4, TECH_BIO = 7)
+	stack_origin_tech = list(TECH_MATERIAL = 2, TECH_BIO = 7)
 	door_icon_base = "stone"
 	table_icon_base = "stone"
 
@@ -24,6 +24,8 @@
 	refraction = MATERIAL_RESISTANCE_NONE
 	absorption = MATERIAL_RESISTANCE_MODERATE
 	nullification = MATERIAL_RESISTANCE_NONE
+
+	material_constraints = MATERIAL_CONSTRAINT_RIGID
 
 /datum/prototype/material/bone/generate_recipes()
 	. = ..()

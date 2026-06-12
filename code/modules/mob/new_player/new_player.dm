@@ -5,6 +5,7 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 	var/totalPlayers = 0		// Player counts for the Lobby tab
 	var/totalPlayersReady = 0
 	var/datum/browser/panel
+	interaction_flags_atom = parent_type::interaction_flags_atom | INTERACT_ATOM_MOUSEDROP_IGNORE_CHECKS
 	universal_speak = 1
 
 	invisibility = 101
@@ -17,17 +18,20 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 
 /mob/new_player/Initialize(mapload)
 	SHOULD_CALL_PARENT(FALSE)	// "yes i know what I'm doing"
-	mob_list_register(stat)
+	mob_list_register()
 	atom_flags |= ATOM_INITIALIZED
 	// we only need innate
 	actions_innate = new /datum/action_holder/mob_actor(src)
 	return INITIALIZE_HINT_NORMAL
 
-/mob/new_player/mob_list_register(for_stat)
+/mob/new_player/mob_list_register()
 	GLOB.mob_list += src
 
-/mob/new_player/mob_list_unregister(for_stat)
+/mob/new_player/mob_list_unregister()
 	GLOB.mob_list -= src
+
+/mob/new_player/mob_list_update_stat(old_stat, new_stat)
+	return
 
 /mob/new_player/verb/new_player_panel()
 	set src = usr
@@ -83,31 +87,29 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 	panel.set_window_options("can_close=0")
 	panel.set_content(output)
 	panel.open()
-	return
-
 
 /mob/new_player/statpanel_data(client/C)
 	. = ..()
 	if(C.statpanel_tab("Status"))
-		STATPANEL_DATA_LINE("")
+		INJECT_STATPANEL_DATA_LINE(., "")
 		if(SSticker.current_state == GAME_STATE_PREGAME)
 			if(SSticker.hide_mode)
-				STATPANEL_DATA_ENTRY("Game Mode:", "Secret")
+				INJECT_STATPANEL_DATA_ENTRY(., "Game Mode:", "Secret")
 			else
 				if(SSticker.hide_mode == 0)
-					STATPANEL_DATA_ENTRY("Game Mode:", "[config_legacy.mode_names[master_mode]]")	// Old setting for showing the game mode
+					INJECT_STATPANEL_DATA_ENTRY(., "Game Mode:", "[config_legacy.mode_names[master_mode]]")	// Old setting for showing the game mode
 			var/time_remaining = SSticker.GetTimeLeft()
 			if(time_remaining > 0)
-				STATPANEL_DATA_LINE("Time To Start: [round(time_remaining/10)]s")
+				INJECT_STATPANEL_DATA_LINE(., "Time To Start: [round(time_remaining/10)]s")
 			else if(time_remaining == -10)
-				STATPANEL_DATA_LINE("Time To Start: DELAYED")
+				INJECT_STATPANEL_DATA_LINE(., "Time To Start: DELAYED")
 			else
-				STATPANEL_DATA_LINE("Time To Start: SOON")
-			STATPANEL_DATA_ENTRY("Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
+				INJECT_STATPANEL_DATA_LINE(., "Time To Start: SOON")
+			INJECT_STATPANEL_DATA_ENTRY(., "Players: [totalPlayers]", "Players Ready: [totalPlayersReady]")
 			totalPlayers = 0
 			totalPlayersReady = 0
 			for(var/mob/new_player/player in GLOB.player_list)
-				STATPANEL_DATA_ENTRY("[player.key]", (player.ready)?("(Playing)"):(""))
+				INJECT_STATPANEL_DATA_ENTRY(., "[player.key]", (player.ready)?("(Playing)"):(""))
 				totalPlayers++
 				if(player.ready)totalPlayersReady++
 
@@ -166,6 +168,9 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 		new_player_panel_proc()
 
 	if(href_list["observe"])
+		if (SSticker.current_state <= GAME_STATE_INIT)
+			to_chat(src, SPAN_BOLDANNOUNCE("You may not observe until the server is initialized."))
+			return
 		// don't lose out if we join fast
 		SSplaytime.queue_playtimes(client)
 		if(!client.reject_age_unverified())
@@ -410,7 +415,7 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 		to_chat(usr, "<span class='notice'>There is an administrative lock on entering the game!</span>")
 		log_shadowban("[key_name(src)] latejoin as [rank] blocked.")
 		return 0
-	var/datum/role/job/J = SSjob.job_by_title(rank)
+	var/datum/prototype/role/job/J = RSroles.legacy_job_by_title(rank)
 	var/reason
 	if((reason = J.check_client_availability_one(client)) != ROLE_AVAILABLE)
 		to_chat(src, SPAN_WARNING("[rank] is not available: [J.get_availability_reason(client, reason)]"))
@@ -522,7 +527,7 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 
 	if(chosen_species && use_species_name)
 		// Have to recheck admin due to no usr at roundstart. Latejoins are fine though.
-		if(!(chosen_species.species_spawn_flags & SPECIES_SPAWN_WHITELISTED) || config.check_alien_whitelist(ckey(chosen_species.species_spawn_flags & SPECIES_SPAWN_WHITELIST_FLEXIBLE ? chosen_species.id : chosen_species.uid), ckey))
+		if(!(chosen_species.species_spawn_flags & SPECIES_SPAWN_WHITELISTED) || chosen_species.check_whitelist_for_ckey(ckey) || has_admin_rights())
 			new_character = new(T, use_species_name)
 
 	if(!new_character)
@@ -564,14 +569,11 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 		new_character.dna.SetSEState(DNABLOCK_GLASSES,1,0)
 		new_character.disabilities |= DISABILITY_NEARSIGHTED
 	if(client.prefs.mirror == TRUE)
-		if((client.prefs.organ_data[O_BRAIN] != null))
-			var/obj/item/implant/mirror/positronic/F = new /obj/item/implant/mirror/positronic(new_character)
-			F.handle_implant(new_character)
-			F.post_implant(new_character)
-		else
-			var/obj/item/implant/mirror/E = new /obj/item/implant/mirror(new_character)
-			E.handle_implant(new_character)
-			E.post_implant(new_character)
+		// Check API support. In the future, prefs should handle this and this should throw / warn
+		// if it's not there when prefs says it should be.
+		// When this is done, the user will be able to see in prefs if their species supports it.
+		if(new_character.resleeving_supports_mirrors())
+			new_character.resleeving_create_mirror()
 
 	// And uncomment this, too.
 	//new_character.dna.UpdateSE()
@@ -580,6 +582,9 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 	new_character.force_update_limbs()
 	new_character.update_icons_body()
 	new_character.update_eyes()
+
+	// store their round-local body backup
+	SSresleeving.store_round_local_body_backup(new_character.mind, new_character)
 
 	transfer_client_to(new_character)
 
@@ -612,7 +617,7 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 	if(!chosen_species)
 		return SPECIES_HUMAN
 
-	if(!(chosen_species.species_spawn_flags & SPECIES_SPAWN_WHITELISTED) || config.check_alien_whitelist(ckey(chosen_species.id), ckey))
+	if(!(chosen_species.species_spawn_flags & SPECIES_SPAWN_WHITELISTED) || chosen_species.check_whitelist_for_ckey(ckey) || has_admin_rights())
 		return chosen_species.name
 
 	return SPECIES_HUMAN
@@ -640,11 +645,6 @@ INITIALIZE_IMMEDIATE(/mob/new_player)
 
 /mob/new_player/proc/spawn_checks_vr() //Custom spawn checks.
 	var/pass = TRUE
-
-	//Are they on the VERBOTEN LIST?
-	if (prevent_respawns.Find(client.prefs.real_name))
-		to_chat(src,"<span class='warning'>You've already quit the round as this character. You can't go back now that you've free'd your job slot. Play another character, or wait for the next round.</span>")
-		pass = FALSE
 
 	//Do they have their scale properly setup?
 	if(!client.prefs.size_multiplier)

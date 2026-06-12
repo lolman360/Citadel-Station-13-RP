@@ -13,7 +13,7 @@
 	sight = SIGHT_FLAGS_DEFAULT
 	rad_flags = NONE
 
-	//? Core
+	//* -- System -- *//
 	/// mobs use ids as ref tags instead of actual refs.
 	var/static/next_mob_id = 0
 
@@ -27,17 +27,26 @@
 	/// * control and sight of these requires only control over motion / actions
 	var/datum/action_holder/actions_controlled
 
-	//? Rendering
+	//* Rendering *//
 	/// Fullscreen objects
 	var/list/fullscreens = list()
 
-	//? Intents
+	//* Intents *//
+	//  todo: movement intents are complicated and will have to stay on the mob for quite a while
+	//  todo: action intents should not be on /mob level, instead be on actor huds and passed through to click procs from the
+	//        initiator's HUD.
 	/// How are we intending to move? Walk / run / etc.
 	var/m_intent = MOVE_INTENT_RUN
 	/// How are we intending to act? Help / harm / etc.
 	var/a_intent = INTENT_HELP
 
-	//? Perspectives
+	//* Input*//
+	/// next time we should allow a click being ingested into the click-chain handling sequence.
+	/// * This is effectively only from our client. Remote control should directly call clickchain
+	///   handlers, instead of 'click_on'.
+	var/next_click
+
+	//* Perspective & Vision *//
 	/// using perspective - if none, it'll be self - when client logs out, if using_perspective has reset_on_logout, this'll be unset.
 	var/datum/perspective/using_perspective
 	/// current darksight modifiers.
@@ -49,34 +58,18 @@
 	/// current datum that's entirely intercepting our movements. only can have one - this is usually used with perspective.
 	var/datum/movement_intercept
 
-	//? Buckling
-	/// Atom we're buckled to
-	var/atom/movable/buckled
-	/// Atom we're buckl**ing** to. Used to stop stuff like lava from incinerating those who are mid buckle.
-	var/atom/movable/buckling
-
-	//* HUD (Atom) *//
-	/// HUDs to initialize, typepaths
-	var/list/atom_huds_to_initialize
-
 	//* HUD *//
 	/// active, opened storage
 	//  todo: doesn't clear from clients properly on logout, relies on login clearing screne.
 	//  todo: we'll eventually need a system to handle ckey transfers properly.
+	//  todo: this shouldn't be registered on the /mob probably? actor huds maybe?
 	var/datum/object_system/storage/active_storage
 
 	//? Movespeed
-	/// List of movement speed modifiers applying to this mob
-	var/list/movespeed_modification				//Lazy list, see mob_movespeed.dm
-	/// List of movement speed modifiers ignored by this mob. List -> List (id) -> List (sources)
-	var/list/movespeed_mod_immunities			//Lazy list, see mob_movespeed.dm
-	/// The calculated mob speed slowdown based on the modifiers list
-	var/cached_multiplicative_slowdown
-	/// cached legacy movespeed multiplier -_-
-	//  todo: remove
-	var/cached_movespeed_multiply
 	/// Next world.time we will be able to move.
 	var/move_delay = 0
+	/// Next world.time we should allow a self-turn
+	var/turn_delay = 2
 	/// Last world.time we finished a normal, non relay/intercepted move
 	var/last_self_move = 0
 	/// Last world.time we turned in our spot without moving (see: facing directions)
@@ -89,12 +82,6 @@
 	var/datum/global_physiology/physiology
 	/// physiology modifiers - see physiology.dm; set to list of paths at init to initialize into instances.
 	var/list/datum/physiology_modifier/physiology_modifiers
-
-	//? Actionspeed
-	/// List of action speed modifiers applying to this mob
-	var/list/actionspeed_modification				//Lazy list, see mob_movespeed.dm
-	/// List of action speed modifiers ignored by this mob. List -> List (id) -> List (sources)
-	var/list/actionspeed_mod_immunities			//Lazy list, see mob_movespeed.dm
 
 	//? Pixel Offsets
 	/// are we shifted by the user?
@@ -113,9 +100,8 @@
 	var/list/datum/ability/abilities
 
 	//* Inventory *//
-	/// our inventory datum, if any.
-	var/datum/inventory/inventory
 	/// active hand index - null or num. must always be in range of held_items indices!
+	/// * 1 is left, 2 is right, etc
 	var/active_hand
 
 	//* IFF *//
@@ -130,11 +116,12 @@
 	/// our size multiplier
 	var/size_multiplier = 1
 
-	//? Misc
+	//* Misc *//
 	/// What we're interacting with right now, associated to list of reasons and the number of concurrent interactions for that reason.
+	/// * Used by do_after().
 	var/list/interacting_with
 
-	//? Mobility / Stat
+	//* Mobility / Stat *//
 	/// mobility flags from [code/__DEFINES/mobs/mobility.dm], updated by update_mobility(). use traits to remove these.
 	var/mobility_flags = MOBILITY_FLAGS_DEFAULT
 	/// force-enabled mobility flags, usually updated by traits
@@ -147,19 +134,17 @@
 	/// which way are we lying down right now? in degrees. 0 default since we're not laying down.
 	var/lying = 0
 
-	//? Status Effects
+	//* Status Effects *//
 	/// A list of all status effects the mob has
 	var/list/status_effects
 
-	//? SSD
+	//* SSD Indicator *//
 	/// current ssd overlay
 	var/image/ssd_overlay
 	/// do we use ssd overlays?
 	var/ssd_visible = FALSE
 
 	//? unsorted / legacy
-	var/datum/mind/mind
-
 	var/next_move = null // For click delay, despite the misleading name.
 
 	var/atom/movable/screen/hands = null
@@ -204,8 +189,6 @@
 	 */
 	var/atom/movable/screen/zone_sel/zone_sel = null
 
-	/// Allows all mobs to use the me verb by default, will have to manually specify they cannot.
-	var/use_me = 1
 	var/damageoverlaytemp = 0
 	var/computer_id = null
 	var/obj/machinery/machine = null
@@ -237,10 +220,6 @@
 	/// Allows mobs to move through dense areas without restriction. For instance, in space or out of holder objects.
 	var/incorporeal_move = 0 //0 is off, 1 is normal, 2 is for ninjas.
 	var/unacidable = 0
-	/// List of things pinning this creature to walls. (see living_defense.dm)
-	var/list/pinned = list()
-	/// Embedded items, since simple mobs don't have organs.
-	var/list/embedded = list()
 	/// For speaking/listening.
 	var/list/languages = list()
 	/// For species who want reset to use a specified default.
@@ -270,7 +249,6 @@
 	var/overeatduration = 0
 	var/losebreath = 0 //?Carbon
 	var/shakecamera = 0
-	var/m_int = null //?Living
 	var/lastKnownIP = null
 
 	var/seer = 0 //for cult//Carbon, probably Human
@@ -302,9 +280,6 @@
 	/// To prevent pAIs/mice/etc from getting antag in autotraitor and future auto- modes. Uses inheritance instead of a bunch of typechecks.
 	// todo: what the fuck
 	var/can_be_antagged = FALSE
-
-	/// The last mob/living/carbon to push/drag/grab this mob (mostly used by slimes friend recognition)
-	var/mob/living/carbon/LAssailant = null
 
 	/// Wizard's spell list, it can be used in other modes thanks to the "Give Spell" badmin button.
 	var/list/spell/spell_list = list()
@@ -424,10 +399,6 @@
 	/// a singular thing that can intercept keyboard inputs
 	var/datum/key_intercept
 
-	//Moved from code\game\click\click.dm
-	// 1 decisecond click delay (above and beyond mob/next_move)
-	var/next_click = 0
-
 	//Moved from code\game\rendering\legacy\alert.dm
 	var/list/alerts = list() // contains /atom/movable/screen/alert only // On /mob so clientless mobs will throw alerts properly
 
@@ -447,4 +418,9 @@
 
 	//Moved from code\modules\nano\nanoexternal.dm
 	// Used by the Nano UI Manager (/datum/nanomanager) to track UIs opened by this mob
-	var/list/open_uis = list()
+	var/list/open_nano_uis = list()
+
+	///List of progress bars this mob is currently seeing for actions
+	var/list/progressbars = null //for stacking do_after bars
+
+	var/interaction_range = 0 //how far a mob has to be to interact with something without caring about obsctruction, defaulted to 0 tiles

@@ -5,7 +5,7 @@
 	icon_state = "jar"
 	w_class = WEIGHT_CLASS_SMALL
 	materials_base = list(MAT_GLASS = 200)
-	item_flags = ITEM_NOBLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
+	item_flags = ITEM_NO_BLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
 	var/list/accept_mobs = list(/mob/living/simple_mob/animal/passive/lizard, /mob/living/simple_mob/animal/passive/mouse, /mob/living/simple_mob/animal/sif/leech, /mob/living/simple_mob/animal/sif/frostfly, /mob/living/simple_mob/animal/sif/glitterfly)
 	var/contains = 0 // 0 = nothing, 1 = money, 2 = animal, 3 = spiderling
 	drop_sound = 'sound/items/drop/glass.ogg'
@@ -32,8 +32,8 @@
 		contains = 2
 		update_icon()
 		return
-	else if(istype(target, /obj/effect/spider/spiderling))
-		var/obj/effect/spider/spiderling/S = target
+	else if(istype(target, /obj/structure/spider/spiderling))
+		var/obj/structure/spider/spiderling/S = target
 		user.visible_message("<span class='notice'>[user] scoops [S] into \the [src].</span>", "<span class='notice'>You scoop [S] into \the [src].</span>")
 		S.loc = src
 		STOP_PROCESSING(SSobj, S) // No growing inside jars
@@ -61,7 +61,7 @@
 			update_icon()
 			return
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				S.forceMove(user.loc)
 				user.visible_message("<span class='notice'>[user] releases [S] from \the [src].</span>", "<span class='notice'>You release [S] from \the [src].</span>")
 				START_PROCESSING(SSobj, S) // They can grow after being let out though
@@ -112,7 +112,7 @@
 				name = "glass jar with [M]"
 				desc = "A small jar with [M] inside."
 		if(3)
-			for(var/obj/effect/spider/spiderling/S in src)
+			for(var/obj/structure/spider/spiderling/S in src)
 				var/image/victim = image(S.icon, S.icon_state)
 				underlays += victim
 				name = "glass jar with [S]"

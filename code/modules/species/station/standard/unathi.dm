@@ -40,11 +40,11 @@
 	ambiguous_genders = TRUE
 	gluttonous = 1
 
+	movement_base_speed = 4.5
 	item_slowdown_mod = 0.25
 
 	total_health = 125
 
-	slowdown  = 0.5
 	brute_mod = 0.8
 	flash_mod = 1.2
 
@@ -115,10 +115,10 @@
 	vision_organ = O_EYES
 
 	unarmed_types = list(
-		/datum/unarmed_attack/stomp,
-		/datum/unarmed_attack/kick,
-		/datum/unarmed_attack/claws,
-		/datum/unarmed_attack/bite/sharp,
+		/datum/melee_attack/unarmed/stomp,
+		/datum/melee_attack/unarmed/kick,
+		/datum/melee_attack/unarmed/claws,
+		/datum/melee_attack/unarmed/bite/sharp,
 	)
 
 	heat_discomfort_level = 343
@@ -147,7 +147,7 @@
 
 /datum/species/unathi/apply_racial_gear(mob/living/carbon/for_target, list/into_box, list/into_inv)
 	var/footwear_type = /obj/item/clothing/shoes/sandal
-	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes))
+	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes::id))
 		var/obj/item/footwear_instance = new footwear_type
 		if(!for_target.inventory.equip_to_slot_if_possible(footwear_instance, /datum/inventory_slot/inventory/shoes))
 			into_inv += footwear_instance

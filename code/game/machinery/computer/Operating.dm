@@ -57,7 +57,7 @@
 /obj/machinery/computer/operating/ui_interact(mob/user, datum/tgui/ui)
 	ui = SStgui.try_update_ui(user, src, ui)
 	if(!ui)
-		ui = new(user, src, "OperatingComputer", "Patient Monitor")
+		ui = new(user, src, "computers/OperatingComputer", "Patient Monitor")
 		ui.open()
 
 /obj/machinery/computer/operating/ui_data(mob/user, datum/tgui/ui)
@@ -103,7 +103,7 @@
 				occupantData["temperatureSuitability"] = 2
 			else if(occupant.bodytemperature > sp.heat_level_1)
 				occupantData["temperatureSuitability"] = 1
-		else if(isanimal(occupant))
+		else if(isanimal_legacy_this_is_broken(occupant))
 			var/mob/living/simple_mob/silly = occupant
 			if(silly.bodytemperature < silly.minbodytemp)
 				occupantData["temperatureSuitability"] = -3
@@ -113,10 +113,10 @@
 		occupantData["btCelsius"] = occupant.bodytemperature - T0C
 		occupantData["btFaren"] = ((occupant.bodytemperature - T0C) * (9.0/5.0))+ 32
 
-		if(ishuman(occupant) && !(NO_BLOOD in occupant.species.species_flags) && occupant.vessel)
+		if(ishuman(occupant) && !(NO_BLOOD in occupant.species.species_flags) && occupant.blood_holder)
 			occupantData["pulse"] = occupant.get_pulse(GETPULSE_TOOL)
 			occupantData["hasBlood"] = 1
-			var/blood_volume = round(occupant.vessel.get_reagent_amount("blood"))
+			var/blood_volume = round(occupant.blood_holder.get_total_volume())
 			occupantData["bloodLevel"] = blood_volume
 			occupantData["bloodMax"] = occupant.species.blood_volume
 			occupantData["bloodPercent"] = round(100*(blood_volume/occupant.species.blood_volume), 0.01) //copy pasta ends here
@@ -135,7 +135,7 @@
 
 	return data
 
-/obj/machinery/computer/operating/ui_act(action, list/params, datum/tgui/ui)
+/obj/machinery/computer/operating/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return TRUE
 	if((usr.contents.Find(src) || (in_range(src, usr) && istype(src.loc, /turf))) || (istype(usr, /mob/living/silicon)))

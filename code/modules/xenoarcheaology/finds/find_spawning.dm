@@ -289,12 +289,12 @@
 		if(26)
 			//energy gun
 			var/spawn_type = pick(\
-			/obj/item/gun/energy/laser/practice/xenoarch,\
-			/obj/item/gun/energy/laser/xenoarch,\
-			/obj/item/gun/energy/xray/xenoarch,\
-			/obj/item/gun/energy/captain/xenoarch)
+			/obj/item/gun/projectile/energy/laser/practice/xenoarch,\
+			/obj/item/gun/projectile/energy/laser/xenoarch,\
+			/obj/item/gun/projectile/energy/xray/xenoarch,\
+			/obj/item/gun/projectile/energy/captain/xenoarch)
 			if(spawn_type)
-				var/obj/item/gun/energy/new_gun = new spawn_type(src.loc)
+				var/obj/item/gun/projectile/energy/new_gun = new spawn_type(src.loc)
 				new_item = new_gun
 				new_item.icon_state = "egun[rand(1,6)]"
 				new_gun.desc = "This is an antique energy weapon, you're not sure if it will fire or not."
@@ -303,51 +303,20 @@
 				//10% chance to have an unchargeable cell
 				//15% chance to gain a random amount of starting energy, otherwise start with an empty cell
 				if(prob(5))
-					new_gun.power_supply.rigged = 1
+					new_gun.obj_cell_slot.cell.rigged = 1
 				if(prob(10))
-					new_gun.power_supply.maxcharge = 0
+					new_gun.obj_cell_slot.cell.max_charge = 0
 					LAZYSET(new_gun.origin_tech, TECH_ARCANE, rand(0, 1))
 				if(prob(15))
-					new_gun.power_supply.charge = rand(0, new_gun.power_supply.maxcharge)
+					new_gun.obj_cell_slot.cell.charge = rand(0, new_gun.obj_cell_slot.cell.max_charge)
 					LAZYSET(new_gun.origin_tech, TECH_ARCANE, 1)
 				else
-					new_gun.power_supply.charge = 0
+					new_gun.obj_cell_slot.cell.charge = 0
 
 			item_type = "gun"
 		if(27)
-			//revolver
-			var/obj/item/gun/ballistic/new_gun = new /obj/item/gun/ballistic/revolver(src.loc)
-			new_item = new_gun
-			new_item.icon_state = "gun[rand(1,4)]"
-			new_item.icon = 'icons/obj/xenoarchaeology.dmi'
-
-			//33% chance to be able to reload the gun with human ammunition
-			if(prob(66))
-				new_gun.caliber = null
-
-			//33% chance to fill it with a random amount of bullets
-			new_gun.max_shells = rand(1,12)
-			if(prob(33))
-				var/num_bullets = rand(1,new_gun.max_shells)
-				if(num_bullets < new_gun.loaded.len)
-					new_gun.loaded.Cut()
-					for(var/i = 1, i <= num_bullets, i++)
-						var/A = new_gun.ammo_type
-						new_gun.loaded += new A(new_gun)
-				else
-					for(var/obj/item/I in new_gun)
-						if(new_gun.loaded.len > num_bullets)
-							if(I in new_gun.loaded)
-								new_gun.loaded.Remove(I)
-								I.loc = null
-						else
-							break
-			else
-				for(var/obj/item/I in new_gun)
-					if(I in new_gun.loaded)
-						new_gun.loaded.Remove(I)
-						I.loc = null
-
+			var/datum/procedural_entity_descriptor/item/descriptor = new /datum/procedural_entity_descriptor/item/gun/ballistic/xenoarcheology_1
+			descriptor.instantiate_single(loc)
 			item_type = "gun"
 		if(28)
 			//completely unknown alien device
@@ -403,7 +372,7 @@
 			//robot remains
 			apply_prefix = 0
 			item_type = "[pick("mechanical","robotic","cyborg")] [pick("remains","chassis","debris")]"
-			icon = 'icons/mob/robots.dmi'
+			icon = 'icons/mob/robot-legacy.dmi'
 			icon_state = "remainsrobot"
 			additional_desc = pick("Almost mistakeable for the remains of a modern cyborg.",\
 			"They are barely recognisable as anything other than a pile of waste metals.",\
@@ -460,7 +429,7 @@
 				/obj/item/surgical/retractor/alien,
 				/obj/item/surgical/scalpel/alien,
 				/obj/item/surgical/surgicaldrill/alien,
-				/obj/item/cell/device/weapon/recharge/alien,
+				/obj/item/cell/regen/weapon,
 				/obj/item/clothing/suit/armor/alien,
 				/obj/item/clothing/head/helmet/alien,
 				/obj/item/clothing/head/psy_crown/wrath
@@ -607,7 +576,7 @@
 		new_item.name = name
 		new_item.desc = src.desc
 
-		if(talkative)
+		if(talkative && istype(new_item, /obj/item))
 			new_item.talking_atom = new(new_item)
 			LAZYINITLIST(new_item.origin_tech)
 			LAZYSET(new_item.origin_tech, TECH_ARCANE, 1)
@@ -621,6 +590,6 @@
 
 	else if(talkative)
 		src.talking_atom = new(src)
-		if(new_item)
+		if(new_item && istype(new_item, /obj/item))
 			LAZYSET(new_item.origin_tech, TECH_ARCANE, 1)
 			LAZYSET(new_item.origin_tech, TECH_PRECURSOR, 1)

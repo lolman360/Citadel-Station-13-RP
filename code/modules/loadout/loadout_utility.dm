@@ -101,7 +101,7 @@
 
 /datum/loadout_entry/utility/battery
 	name = "Device Cell"
-	path = /obj/item/cell/device
+	path = /obj/item/cell/basic/tier_1/small
 
 /datum/loadout_entry/utility/implant
 	slot = "implant"
@@ -273,6 +273,7 @@ modular computers
 	path = /obj/item/clothing/head/welding/arar
 
 /datum/loadout_entry/utility/webbing
+	slot = /datum/inventory_slot/abstract/attach_as_accessory
 	name = "Webbing - Simple"
 	path = /obj/item/clothing/accessory/storage/webbing
 

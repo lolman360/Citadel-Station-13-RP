@@ -33,11 +33,11 @@
 			continue
 		switch(S.charge_type)
 			if(Sp_RECHARGE)
-				STATPANEL_DATA_CLICK("[S.charge_counter/10.0]/[S.charge_max/10]", "[S.connected_button]", "\ref[S.connected_button]")
+				INJECT_STATPANEL_DATA_CLICK(., "[S.charge_counter/10.0]/[S.charge_max/10]", "[S.connected_button]", "\ref[S.connected_button]")
 			if(Sp_CHARGES)
-				STATPANEL_DATA_CLICK("[S.charge_counter]/[S.charge_max]", "[S.connected_button]", "\ref[S.connected_button]")
+				INJECT_STATPANEL_DATA_CLICK(., "[S.charge_counter]/[S.charge_max]", "[S.connected_button]", "\ref[S.connected_button]")
 			if(Sp_HOLDVAR)
-				STATPANEL_DATA_CLICK("[S.holder_var_type] [S.holder_var_amount]", "[S.connected_button]", "\ref[S.connected_button]")
+				INJECT_STATPANEL_DATA_CLICK(., "[S.holder_var_type] [S.holder_var_amount]", "[S.connected_button]", "\ref[S.connected_button]")
 	// process tabs
 	var/list/removing = C.tgui_stat.spell_last - collected
 	var/list/adding = collected - C.tgui_stat.spell_last
@@ -45,11 +45,6 @@
 		C.statpanel_tab(adding, TRUE)
 	for(var/tab in removing)
 		C.statpanel_tab(removing, TRUE)
-
-/hook/clone/proc/restore_spells(var/mob/H)
-	if(H.mind && H.mind.learned_spells)
-		for(var/spell/spell_to_add in H.mind.learned_spells)
-			H.add_spell(spell_to_add)
 
 /mob/proc/add_spell(var/spell/spell_to_add, var/spell_base = "wiz_spell_ready", var/master_type = /atom/movable/screen/movable/spell_master)
 	if(!spell_masters)

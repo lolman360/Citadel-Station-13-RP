@@ -345,12 +345,6 @@ GLOBAL_LIST_INIT(firelock_align_types, typecacheof(list(
 			"You try to pry \the [src] [density ? "open" : "closed"], but it is welded in place!",\
 			"You hear someone struggle and metal straining.")
 			return
-
-		if(istype(C,/obj/item/material/twohanded/fireaxe))
-			var/obj/item/material/twohanded/fireaxe/F = C
-			if(!F.wielded)
-				return
-
 		if(prying)
 			to_chat(user, "<span class='notice'>Someone's already prying that [density ? "open" : "closed"].</span>")
 			return
@@ -492,7 +486,7 @@ GLOBAL_LIST_INIT(firelock_align_types, typecacheof(list(
 		if(dir_alerts)
 			for(var/d=1;d<=4;d++)
 				for(var/i=1;i<=ALERT_STATES.len;i++)
-					if(dir_alerts[d] & BITFLAG(i-1))
+					if(dir_alerts[d] & (1 << (i-1)))
 						add_overlay("alert_[ALERT_STATES[i]]")
 						do_set_light = TRUE
 	else

@@ -123,7 +123,7 @@
 /turf/simulated/shuttle/floor/alien,
 /area/tether_away/alienship)
 "aB" = (
-/obj/item/cell/device/weapon/recharge/alien,
+/obj/item/cell/regen/fractal/weapon,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
 "aC" = (
@@ -133,7 +133,7 @@
 /area/tether_away/alienship)
 "aD" = (
 /obj/structure/table/alien,
-/obj/item/cell/device/weapon/recharge/alien,
+/obj/item/cell/regen/fractal/weapon,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
 "aE" = (
@@ -482,7 +482,7 @@
 /area/tether_away/alienship)
 "cF" = (
 /obj/structure/closet/alien,
-/obj/item/gun/energy/alien,
+/obj/item/gun/projectile/energy/alien,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
 "cG" = (
@@ -495,13 +495,13 @@
 /turf/simulated/shuttle/floor/alien,
 /area/tether_away/alienship)
 "cI" = (
-/obj/item/cell/device/weapon/recharge/alien,
+/obj/item/cell/regen/fractal/weapon,
 /obj/structure/table/alien,
 /obj/item/weldingtool/alien,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
 "cJ" = (
-/obj/item/cell/device/weapon/recharge/alien,
+/obj/item/cell/regen/fractal/weapon,
 /obj/structure/table/alien,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
@@ -535,7 +535,7 @@
 /area/tether_away/alienship)
 "cS" = (
 /obj/structure/table/alien,
-/obj/item/gun/energy/alien,
+/obj/item/gun/projectile/energy/alien,
 /turf/simulated/shuttle/floor/alienplating,
 /area/tether_away/alienship)
 "cT" = (

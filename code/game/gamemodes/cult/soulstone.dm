@@ -11,6 +11,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 	slot_flags = SLOT_BELT
 	origin_tech = list(TECH_BLUESPACE = 4, TECH_MATERIAL = 4, TECH_ARCANE = 1)
+	belt_storage_class = BELT_CLASS_SMALL
 	var/imprinted = "empty"
 	var/possible_constructs = list("Juggernaut","Wraith","Artificer","Harvester")
 
@@ -19,7 +20,7 @@
 
 //////////////////////////////Capturing////////////////////////////////////////////////////////
 
-/obj/item/soulstone/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/soulstone/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(!istype(target, /mob/living/carbon/human))//If target is not a human.
 		return ..()
 	if(istype(target, /mob/living/carbon/human/dummy))
@@ -49,7 +50,7 @@
 		dat += {"<A href='byond://?src=\ref[src];choice=Summon'>Summon Shade</A>"}
 		dat += "<br>"
 		dat += {"<a href='byond://?src=\ref[src];choice=Close'> Close</a>"}
-	user << browse(dat, "window=aicard")
+	user << browse(HTML_SKELETON(dat), "window=aicard")
 	onclose(user, "aicard")
 	return
 

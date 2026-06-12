@@ -175,10 +175,6 @@ CREATE_WALL_MOUNTING_TYPES_SHIFTED(/obj/machinery/power/apc/talon, 28)
 	req_one_access = list(ACCESS_FACTION_TALON)
 	alarms_hidden = 1
 
-CREATE_WALL_MOUNTING_TYPES_SHIFTED(/obj/machinery/power/apc/talon/hyper, 28)
-/obj/machinery/power/apc/talon/hyper
-	cell_type = /obj/item/cell/hyper
-
 CREATE_WALL_MOUNTING_TYPES_SHIFTED(/obj/machinery/air_alarm/talon, 26)
 /obj/machinery/air_alarm/talon
 	req_access = list()
@@ -273,7 +269,7 @@ CREATE_WALL_MOUNTING_TYPES_SHIFTED(/obj/machinery/air_alarm/talon, 26)
 		/obj/item/clothing/shoes/boots/jackboots,
 		/obj/item/clothing/shoes/boots/jackboots/toeless,
 		/obj/item/handcuffs = 2,
-		/obj/item/gun/energy/stunrevolver,
+		/obj/item/gun/projectile/energy/stunrevolver,
 		/obj/item/clothing/accessory/armor/tag/civsec,
 		/obj/item/flash,
 		/obj/item/flashlight/maglight,

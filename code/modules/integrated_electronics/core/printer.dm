@@ -125,7 +125,7 @@
 		if(!EA.opened)
 			to_chat(user, SPAN_WARNING("You can't reach [EA]'s components to remove them!"))
 			return
-		if(EA.battery)
+		if(EA.obj_cell_slot?.cell)
 			to_chat(user, SPAN_WARNING("Remove [EA]'s power cell first!"))
 			return
 		var/inc = 0
@@ -259,7 +259,7 @@
 
 	return data
 
-/obj/item/integrated_circuit_printer/ui_act(action, list/params, datum/tgui/ui)
+/obj/item/integrated_circuit_printer/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return TRUE
 
@@ -298,7 +298,7 @@
 			if(istext(new_input))
 				to_chat(usr, SPAN_NOTICE("[new_input]"))
 				to_chat(usr, SPAN_NOTICE("Load blueprint pressed"))
-			log_game("[usr] cloned circuit [new_input]")
+			log_game("[usr] inputted blueprint for circuit [new_input]")
 			var/validation = SScircuit.validate_electronic_assembly(new_input)
 			// Validation error codes are returned as text.
 			if(istext(validation))

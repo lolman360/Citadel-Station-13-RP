@@ -6,7 +6,7 @@
 	immediate += /datum/asset_pack/simple/nanomaps
 	return ..()
 
-/datum/tgui_module_old/crew_monitor/ui_act(action, list/params, datum/tgui/ui)
+/datum/tgui_module_old/crew_monitor/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return TRUE
 
@@ -14,7 +14,7 @@
 		playsound(ui_host(), SFX_ALIAS_TERMINAL, 50, 1)
 
 	var/turf/T = get_turf(usr)
-	if(!T || !(T.z in (LEGACY_MAP_DATUM).player_levels))
+	if(!T || !(T.z in (LEGACY_MAP_DATUM).station_levels))
 		to_chat(usr, SPAN_WARNING("<b>Unable to establish a connection</b>: You're too far away from the station!"))
 		return FALSE
 

@@ -33,7 +33,15 @@
 /obj/item/reagent_containers/food/snacks/Initialize(mapload)
 	. = ..()
 	if(nutriment_amt)
-		reagents.add_reagent("nutriment",nutriment_amt,nutriment_desc)
+		var/datum/nutriment_data/nutriment_data = new
+		for(var/taste in nutriment_desc)
+			var/amount = nutriment_desc[taste]
+			nutriment_data.add_taste(taste, amount, TRUE)
+		reagents.add_reagent(
+			/datum/reagent/nutriment::id,
+			nutriment_amt,
+			nutriment_data,
+		)
 
 	//Placeholder for effect that trigger on eating that aren't tied to reagents.
 /obj/item/reagent_containers/food/snacks/proc/On_Consume(mob/M)
@@ -66,7 +74,7 @@
 	to_chat(user, "<span class='notice'>[open_message]</span>")
 	sealed = FALSE
 
-/obj/item/reagent_containers/food/snacks/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/reagent_containers/food/snacks/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE
@@ -103,7 +111,7 @@
 					to_chat(user, "<span class='warning'>\The [blocked] is in the way!</span>")
 					return
 
-			user.setClickCooldown(user.get_attack_speed(src)) //puts a limit on how fast people can eat/drink things
+			user.setClickCooldownLegacy(user.get_attack_speed_legacy(src)) //puts a limit on how fast people can eat/drink things
 			if (fullness <= 100)
 				to_chat(M, "<span class='danger'>You hungrily chew out a piece of [src] and gobble it!</span>")
 			if (fullness > 100 && fullness <= 300)
@@ -141,7 +149,7 @@
 					return
 
 			user.visible_message(SPAN_DANGER("[user] attempts to feed [M] [src]."))
-			user.setClickCooldown(user.get_attack_speed(src))
+			user.setClickCooldownLegacy(user.get_attack_speed_legacy(src))
 			if(!do_mob(user, M, 3 SECONDS))
 				return
 			//Do we really care about this
@@ -219,7 +227,7 @@
 			var/confirm=input(user, "Are you certain you want to insert \the [W] into [src]?","Hide item") as null|anything in list("Yes","No")
 			if(!confirm || confirm == "No")
 				return
-			if (W.w_class >= w_class || is_robot_module(W))
+			if (W.w_class >= w_class)
 				return
 			if(!user.attempt_insert_item_for_installation(W, src))
 				return
@@ -260,7 +268,7 @@
 /// FOOD END
 ////////////////////////////////////////////////////////////////////////////////
 /obj/item/reagent_containers/food/snacks/attack_generic(var/mob/living/user)
-	if(!isanimal(user) && !isalien(user))
+	if(!isanimal_legacy_this_is_broken(user) && !isalien(user))
 		return
 	user.visible_message("<b>[user]</b> nibbles away at \the [src].","You nibble away at \the [src].")
 	bitecount++
@@ -561,10 +569,12 @@
 /obj/item/reagent_containers/food/snacks/donut
 	name = "donut"
 	desc = "Goes great with Robust Coffee."
+	description_fluff = "These donuts claim to be made fresh daily in a boutique bakery in New Reykjavik and delivered to Nanotrasen's hardworking asset protection crew. They're probably synthesized."
 	icon_state = "donut1"
 	filling_color = "#D9C386"
 	var/overlay_state = "box-donut1"
 	nutriment_desc = list("sweetness", "donut")
+	belt_storage_class = BELT_CLASS_SMALL
 
 /obj/item/reagent_containers/food/snacks/donut/normal
 	name = "donut"
@@ -3985,29 +3995,26 @@ END CITADEL CHANGE */
 //Code for dipping food in batter
 /obj/item/reagent_containers/food/snacks/afterattack(atom/target, mob/user, clickchain_flags, list/params)
 	if(target.is_open_container() && target.reagents && !(istype(target, /obj/item/reagent_containers/food)))
-		for (var/r in target.reagents.reagent_list)
-
-			var/datum/reagent/R = r
+		for(var/datum/reagent/R as anything in target.reagents.get_reagent_datums())
 			if (istype(R, /datum/reagent/nutriment/coating))
-				if (apply_coating(R, user))
+				if (apply_coating(R, user, target.reagents))
 					return 1
 
 	return ..()
 
 //This proc handles drawing coatings out of a container when this food is dipped into it
-/obj/item/reagent_containers/food/snacks/proc/apply_coating(var/datum/reagent/nutriment/coating/C, var/mob/user)
+/obj/item/reagent_containers/food/snacks/proc/apply_coating(datum/reagent/nutriment/coating/C, mob/user, datum/reagent_holder/coating_holder)
 	if (coating)
 		to_chat(user, "The [src] is already coated in [coating.name]!")
 		return 0
 
 	//Calculate the reagents of the coating needed
 	var/req = 0
-	for (var/r in reagents.reagent_list)
-		var/datum/reagent/R = r
+	for(var/datum/reagent/R as anything in reagents.get_reagent_datums())
 		if (istype(R, /datum/reagent/nutriment))
-			req += R.volume * 0.2
+			req += reagents.reagent_volumes[R.id] * 0.2
 		else
-			req += R.volume * 0.1
+			req += reagents.reagent_volumes[R.id] * 0.1
 
 	req += w_class*0.5
 
@@ -4015,11 +4022,9 @@ END CITADEL CHANGE */
 		//the food has no reagents left, its probably getting deleted soon
 		return 0
 
-	if (C.volume < req)
+	if (coating_holder.reagent_volumes?[C.id] < req)
 		to_chat(user, SPAN_WARNING( "There's not enough [C.name] to coat the [src]!"))
 		return 0
-
-	var/id = C.id
 
 	//First make sure there's space for our batter
 	if (reagents.available_volume() < req+5)
@@ -4027,12 +4032,7 @@ END CITADEL CHANGE */
 		reagents.maximum_volume += extra
 
 	//Suck the coating out of the holder
-	C.holder.trans_to_holder(reagents, req)
-
-	//We're done with C now, repurpose the var to hold a reference to our local instance of it
-	C = reagents.get_reagent(id)
-	if (!C)
-		return
+	coating_holder.transfer_to_holder(src, list(C.id), req)
 
 	coating = C
 	//Now we have to do the witchcraft with masking images
@@ -4086,12 +4086,11 @@ END CITADEL CHANGE */
 		if (do_coating_prefix == 1)
 			name = "[coating.coated_adj] [name]"
 
-	for (var/r in reagents.reagent_list)
-		var/datum/reagent/R = r
-		if (istype(R, /datum/reagent/nutriment/coating))
-			var/datum/reagent/nutriment/coating/C = R
-			C.data["cooked"] = 1
-			C.name = C.cooked_name
+	for(var/datum/reagent/nutriment/coating/coating in reagents.get_reagent_datums())
+		var/datum/nutriment_data/coating_data = reagents.reagent_datas?[coating.id]
+		if(!coating_data)
+			continue
+		coating_data.cooked = TRUE
 
 /obj/item/reagent_containers/food/snacks/proc/on_consume(var/mob/eater, var/mob/feeder = null)
 	if(!reagents.total_volume)
@@ -4125,17 +4124,14 @@ END CITADEL CHANGE */
 /mob/living/carbon/alien/diona
 	composition_reagent = "nutriment"//Dionae are plants, so eating them doesn't give animal protein
 
-/mob/living/simple_mob/slime
-	composition_reagent = "slimejelly"
+// /mob/living/simple_animal
+// 	var/kitchen_tag = "animal" //Used for cooking with animals
 
-/mob/living/simple_animal
-	var/kitchen_tag = "animal" //Used for cooking with animals
+// /mob/living/simple_animal/mouse
+// 	kitchen_tag = "rodent"
 
-/mob/living/simple_animal/mouse
-	kitchen_tag = "rodent"
-
-/mob/living/simple_animal/lizard
-	kitchen_tag = "lizard"
+// /mob/living/simple_animal/lizard
+// 	kitchen_tag = "lizard"
 
 /obj/item/reagent_containers/food/snacks/sliceable/cheesewheel
 	slices_num = 8
@@ -4259,7 +4255,7 @@ END CITADEL CHANGE */
 /obj/item/reagent_containers/food/snacks/sliceable/pizza/crunch/Initialize(mapload)
 	. = ..()
 	reagents.add_reagent("batter", 6.5)
-	coating = reagents.get_reagent("batter")
+	coating = SSchemistry.fetch_reagent(/datum/reagent/nutriment/coating/batter::id)
 	reagents.add_reagent("cooking_oil", 4)
 	bitesize = 2
 
@@ -5738,11 +5734,6 @@ END CITADEL CHANGE */
 	nutriment_desc = list("rice" = 5, "fish" = 5)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/sliceable/sushi/crab/Initialize(mapload)
-	..()
-	reagents.add_reagent("protein", 15)
-	bitesize = 5
-
 /obj/item/reagent_containers/food/snacks/slice/sushi/crab/filled
 	name = "piece of sushi (crab)"
 	desc = "A slice of a larger sushi roll, ready to devour."
@@ -5762,11 +5753,6 @@ END CITADEL CHANGE */
 	nutriment_desc = list("rice" = 5, "fish" = 5)
 	nutriment_amt = 20
 
-/obj/item/reagent_containers/food/snacks/sliceable/sushi/horse/Initialize(mapload)
-	..()
-	reagents.add_reagent("protein", 15)
-	bitesize = 5
-
 /obj/item/reagent_containers/food/snacks/slice/sushi/horse/filled
 	name = "piece of sushi (horse)"
 	desc = "A slice of a larger sushi roll, ready to devour."
@@ -5785,11 +5771,6 @@ END CITADEL CHANGE */
 	slices_num = 5
 	nutriment_desc = list("rice" = 5, "fish" = 5)
 	nutriment_amt = 20
-
-/obj/item/reagent_containers/food/snacks/sliceable/sushi/mystery/Initialize(mapload)
-	..()
-	reagents.add_reagent("protein", 15)
-	bitesize = 5
 
 /obj/item/reagent_containers/food/snacks/slice/sushi/mystery/filled
 	name = "piece of sushi (???)"
@@ -5843,7 +5824,7 @@ END CITADEL CHANGE */
 	name = "roast beef"
 	desc = "It's beef. It's roasted. It's been a staple of dining tradition for centuries."
 	icon_state = "roastbeef"
-	trash = /obj/item/trash/waffles
+	trash = /obj/item/trash/plate
 	nutriment_amt = 8
 	nutriment_desc = list("cooked meat" = 5)
 
@@ -7069,3 +7050,128 @@ END CITADEL CHANGE */
 /obj/item/reagent_containers/food/snacks/macaron/green
 	desc = "A small sugary treat. This one is green!"
 	icon_state = "macaron_green"
+
+///Because Scale Creep is a Thing
+
+/obj/item/reagent_containers/food/snacks/ashomarr
+	name = "Ashomarr Berries"
+	desc = "Native to Adhomai, this sweet berry that thrives in the cold. It has many uses in traditional Tajaran cuisine, medicine, and crafts as a dye."
+	icon_state = "holly"
+	nutriment_amt = 2
+	nutriment_desc = list("sweetness" = 1, "bitterness" = 1)
+
+/obj/item/reagent_containers/food/snacks/guska
+	name = "Guskaroot"
+	desc = "A cold resilent and infamously unappetizing tuber native to Adhomai. Its ability to thrive in cold has made it a staple crop for Adhomai's poorest peasants."
+	icon_state = "tajtuber"
+	nutriment_amt = 3
+	nutriment_desc = list("nutritious dirt" = 1)
+
+/obj/item/reagent_containers/food/snacks/guskacake
+	name = "Guskacake"
+	desc = "A traditional Adhomai peasant's dish, guskaroot mashed and garnished with Ashomarr Jam to mask the Guskaroot's earthy flavor."
+	icon_state = "tajtubercake"
+	nutriment_amt = 10
+	nutriment_desc = list("flavored dirt" = 1)
+
+/obj/item/reagent_containers/food/snacks/taj_pemmican
+	name = "Adhomai Pemmican"
+	desc = "Dried meat and beries mixed together for travel and shelf life. This particular mix is from Adhomai."
+	icon_state = "taj_pemmican"
+	nutriment_amt = 4
+	nutriment_desc = list("dry meat" = 1, "berry" = 1)
+
+/obj/item/reagent_containers/food/snacks/taj_pemmican/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("protein", 3)
+	reagents.add_reagent("triglyceride", 1)
+
+//Seasonals - Xmas
+
+/obj/item/reagent_containers/food/snacks/gingerbreadcookie
+	name = "gingerbread cookie"
+	desc = "A gingerbread individual. You struggle to ascertain their gender."
+	icon_state =  "gingerbread"
+	filling_color = "#7D5F46"
+	nutriment_amt = 1
+	nutriment_desc = list("gingerbread" = 2)
+	bitesize = 1
+
+/obj/item/reagent_containers/food/snacks/gingerbreadcookie/cane
+	name = "gingerbread cookie"
+	desc = "A gingerbread cane with stripes drawn in icing."
+	icon_state =  "gingerbreadcane"
+	filling_color = "#7D5F46"
+	nutriment_amt = 1
+	nutriment_desc = list("gingerbread" = 2)
+	bitesize = 1
+
+/obj/item/reagent_containers/food/snacks/gingerbreadcookie/tree
+	name = "gingerbread cookie"
+	desc = "A small conifer of the gingerbread species."
+	icon_state =  "gingerbreadtree"
+	filling_color = "#7D5F46"
+	nutriment_amt = 1
+	nutriment_desc = list("gingerbread" = 2)
+	bitesize = 1
+
+/obj/item/reagent_containers/food/snacks/gingerbreadcookie/star
+	name = "gingerbread cookie"
+	desc = "A gingerbread star. Presumably of the astronomical rather than marine variety, but you're not sure."
+	icon_state =  "gingerbreadstar"
+	filling_color = "#7D5F46"
+	nutriment_amt = 1
+	nutriment_desc = list("gingerbread" = 2)
+	bitesize = 1
+
+/obj/item/reagent_containers/food/snacks/stroopwafel
+	name = "stroopwafel"
+	desc = "A pair of thin wafers glued together with thick, syrupy caramel. Delicious."
+	icon_state =  "stroopwafel"
+	filling_color = "#7D5F46"
+	nutriment_amt = 3
+	nutriment_desc = list("wafer" = 2, "caramel" = 1)
+	bitesize = 1
+
+/obj/item/reagent_containers/food/snacks/sliceable/holidaycake
+	name = "Holiday Fruit Cake"
+	desc = "A perfectly preserved holiday fruit cake. The hole in the middle makes it a breeze to cut even if you're using a bayonet."
+	icon_state = "holidaycake"
+	slice_path = /obj/item/reagent_containers/food/snacks/slice/holidaycake
+	slices_num = 5
+	filling_color = "#3b2b0d"
+	nutriment_desc = list("cake" = 10, "sweetness" = 10, "candied berry" = 15)
+	nutriment_amt = 25
+
+/obj/item/reagent_containers/food/snacks/sliceable/holidaycake/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("tricordrazine", 15)
+	reagents.add_reagent("paracetamol", 5)
+	bitesize = 5
+
+/obj/item/reagent_containers/food/snacks/slice/holidaycake
+	name = "Holiday Fruit Cake slice"
+	desc = "A festive slice of holiday fruit cake. Great for sharing with squadmates!"
+	icon_state = "holidaycake_slice"
+	filling_color = "#3b2b0d"
+	bitesize = 2
+	nutriment_desc = list("cake" = 10, "sweetness" = 10, "candied berry" = 15)
+	whole_path = /obj/item/reagent_containers/food/snacks/sliceable/holidaycake
+
+/obj/item/reagent_containers/food/snacks/slice/holidaycake/filled
+	filled = TRUE
+
+//Seasonals - Halloween
+
+/obj/item/reagent_containers/food/snacks/candycornjelloshot
+	name = "Candy Corn Jello Shot"
+	desc = "A layered shot of Candy Corn Martini solidified using gelatin."
+	icon_state =  "candycornjelloshot"
+	filling_color = "#ff7b00"
+	nutriment_desc = list("candy corn" = 2)
+	bitesize = 5
+
+/obj/item/reagent_containers/food/snacks/candycornjelloshot/Initialize(mapload)
+	. = ..()
+	reagents.add_reagent("candycornmartini", 5)
+	bitesize = 5

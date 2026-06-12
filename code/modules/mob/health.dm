@@ -47,10 +47,14 @@
 		else if(!was_dead && is_dead)
 			living_mob_list -= src
 			dead_mob_list += src
+	on_stat_change(old_stat, new_stat)
 	if(update_mobility)
 		update_mobility()
 	update_hud_med_status()
 	return TRUE
+
+/mob/proc/on_stat_change(old_stat, new_stat)
+	return
 
 /**
  * brings a mob back to life
@@ -59,10 +63,10 @@
  * * force - ignore health and revive even if we'll immediately die again
  * * full_heal - fix everything we need to live
  */
-/mob/proc/revive(force, full_heal)
+/mob/proc/revive(force, full_heal, restore_nutrition)
 	// full heal if requested
 	if(full_heal)
-		rejuvenate(TRUE)
+		rejuvenate(TRUE, restore_nutrition = restore_nutrition)
 	// flush playtimes
 	SSplaytime.queue_playtimes(client)
 	// set to conscious
@@ -78,5 +82,5 @@
  * * fix_missing - restore all organs we'd need to live, and all default organs (say, limbs) that we're missing
  * * reset_to_slot - wipe all state and reset back to the character slot.
  */
-/mob/proc/rejuvenate(fix_missing, reset_to_slot)
+/mob/proc/rejuvenate(fix_missing, reset_to_slot, restore_nutrition = TRUE)
 	return TRUE

@@ -14,6 +14,8 @@
 	icon = 'icons/obj/surgery.dmi'
 	w_class = WEIGHT_CLASS_SMALL
 	item_flags = ITEM_CAREFUL_BLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR
+	belt_storage_class = BELT_CLASS_SMALL
 	var/helpforce = 0	//For help intent things
 	drop_sound = 'sound/items/drop/weldingtool.ogg'
 	pickup_sound = 'sound/items/pickup/weldingtool.ogg'
@@ -64,14 +66,7 @@
 	w_class = WEIGHT_CLASS_NORMAL
 	origin_tech = list(TECH_MATERIAL = 1, TECH_BIO = 1)
 	attack_verb = list("drilled")
-
-/obj/item/surgical/surgicaldrill/suicide_act(mob/user)
-		var/datum/gender/TU = GLOB.gender_datums[user.get_visible_gender()]
-		user.visible_message(pick(
-			SPAN_DANGER("\The [user] is pressing \the [src] to [TU.his] temple and activating it! It looks like [TU.hes] trying to commit suicide."),
-			SPAN_DANGER("\The [user] is pressing \the [src] to [TU.his] chest and activating it! It looks like [TU.hes] trying to commit suicide."),
-		))
-		return (BRUTELOSS)
+	belt_storage_class = BELT_CLASS_MEDIUM
 
 /*
  * Scalpel
@@ -91,31 +86,24 @@
 	materials_base = list(MAT_STEEL = 10000, MAT_GLASS = 5000)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/surgical/scalpel/suicide_act(mob/user)
-		var/datum/gender/TU = GLOB.gender_datums[user.get_visible_gender()]
-		user.visible_message(pick("<span class='danger'>\The [user] is slitting [TU.his] wrists with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] throat with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] stomach open with the [src.name]! It looks like [TU.hes] trying to commit seppuku.</span>"))
-		return (BRUTELOSS)
-
 /*
  * Researchable Scalpels
  */
 /obj/item/surgical/scalpel/laser1
-	name = "laser scalpel"
+	name = "basic laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks basic and could be improved."
 	icon_state = "scalpel_laser1_on"
 	damage_type = DAMAGE_TYPE_BURN
 
 /obj/item/surgical/scalpel/laser2
-	name = "laser scalpel"
+	name = "improved laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks somewhat advanced."
 	icon_state = "scalpel_laser2_on"
 	damage_type = DAMAGE_TYPE_BURN
 	damage_force = 12.0
 
 /obj/item/surgical/scalpel/laser3
-	name = "laser scalpel"
+	name = "advanced laser scalpel"
 	desc = "A scalpel augmented with a directed laser, for more precise cutting without blood entering the field.  This one looks to be the pinnacle of precision energy cutlery!"
 	icon_state = "scalpel_laser3_on"
 	damage_type = DAMAGE_TYPE_BURN
@@ -153,6 +141,7 @@
 	materials_base = list(MAT_STEEL = 20000, MAT_GLASS = 10000)
 	attack_verb = list("attacked", "slashed", "sawed", "cut")
 	damage_mode = DAMAGE_MODE_SHARP | DAMAGE_MODE_EDGE
+	belt_storage_class = BELT_CLASS_MEDIUM
 
 /obj/item/surgical/circular_saw/manager
 	name = "energetic bone diverter"
@@ -326,13 +315,6 @@
 	materials_base = list("bone" = 5000, MAT_GLASS = 2500)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
 
-/obj/item/surgical/scalpel_primitive/suicide_act(mob/user)
-		var/datum/gender/TU = GLOB.gender_datums[user.get_visible_gender()]
-		user.visible_message(pick("<span class='danger'>\The [user] is slitting [TU.his] wrists with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] throat with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] stomach open with the [src.name]! It looks like [TU.hes] trying to commit seppuku.</span>"))
-		return (BRUTELOSS)
-
 /obj/item/surgical/scalpel_bronze
 	name = "bronze scalpel"
 	desc = "Finely shrapened bronze blade attached to a carved bone handle. Excellent for percise cutting"
@@ -348,14 +330,6 @@
 	origin_tech = list(TECH_MATERIAL = 1)
 	materials_base = list("bone" = 5000, MAT_BRONZE = 2500)
 	attack_verb = list("attacked", "slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
-
-
-/obj/item/surgical/scalpel_bronze/suicide_act(mob/user)
-		var/datum/gender/TU = GLOB.gender_datums[user.get_visible_gender()]
-		user.visible_message(pick("<span class='danger'>\The [user] is slitting [TU.his] wrists with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] throat with the [src.name]! It looks like [TU.hes] trying to commit suicide.</span>", \
-		                      "<span class='danger'>\The [user] is slitting [TU.his] stomach open with the [src.name]! It looks like [TU.hes] trying to commit seppuku.</span>"))
-		return (BRUTELOSS)
 
 /obj/item/surgical/saw_primitive
 	name = "primitive bone saw"

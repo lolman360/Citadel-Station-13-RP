@@ -14,7 +14,7 @@
 
 	var/mob/living/silicon/ai/carded_ai
 
-/obj/item/aicard/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/aicard/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(!istype(target, /mob/living/silicon/decoy))
 		return ..()
 	target.death()
@@ -106,7 +106,7 @@
 		to_chat(user, "<span class='danger'>Transfer failed:</span> Existing AI found on remote device. Remove existing AI to install a new one.")
 		return 0
 
-	if(!user.IsAdvancedToolUser() && isanimal(user))
+	if(!user.IsAdvancedToolUser() && isanimal_legacy_this_is_broken(user))
 		var/mob/living/simple_mob/S = user
 		if(!S.IsHumanoidToolUser(src))
 			return 0

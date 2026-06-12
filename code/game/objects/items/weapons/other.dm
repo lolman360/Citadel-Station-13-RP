@@ -110,7 +110,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "whitecane"
 
-/obj/item/cane/whitecane/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/cane/whitecane/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HELP)
 		user.visible_message(SPAN_NOTICE("\The [user] has lightly tapped [target] on the ankle with their white cane!"))
 		return
@@ -169,19 +169,6 @@
 	desc = "A long stick with a crosspiece at the top, used to help with walking."
 	icon_state = "crutch"
 	item_state = "crutch"
-
-/obj/item/disk
-	name = "disk"
-	icon = 'icons/obj/items.dmi'
-	drop_sound = 'sound/items/drop/disk.ogg'
-	pickup_sound =  'sound/items/pickup/disk.ogg'
-
-/obj/item/disk/nuclear
-	name = "nuclear authentication disk"
-	desc = "Better keep this safe."
-	icon_state = "nucleardisk"
-	item_state = "card-id"
-	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/caution
 	desc = "Caution! Wet Floor!"
@@ -273,7 +260,7 @@
 	w_class = WEIGHT_CLASS_SMALL
 
 /obj/item/module
-	icon = 'icons/obj/module.dmi'
+	icon = 'icons/items/circuits.dmi'
 	icon_state = "std_module"
 	item_state = "std_mod"
 	w_class = WEIGHT_CLASS_SMALL
@@ -415,7 +402,7 @@
 
 //Code isn't working. Figure it out tomorrow.
 
-/obj/item/bitterash/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/bitterash/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	. = ..()
 	if(user.a_intent == INTENT_HARM)
 		return ..()

@@ -32,11 +32,10 @@
 	vision_innate = /datum/vision/baseline/species_tier_2
 	vision_organ = O_EYES
 
-	slowdown  = -0.5
 	snow_movement = -1 //Ignores half of light snow
 
-	brute_mod = 1.15
-	burn_mod  = 1.15
+	brute_mod = 1.1
+	burn_mod  = 1.1
 	flash_mod = 1.1
 
 	metabolic_rate = 1.1
@@ -113,10 +112,10 @@
 	)
 
 	unarmed_types = list(
-		/datum/unarmed_attack/stomp,
-		/datum/unarmed_attack/kick,
-		/datum/unarmed_attack/claws,
-		/datum/unarmed_attack/bite/sharp,
+		/datum/melee_attack/unarmed/stomp,
+		/datum/melee_attack/unarmed/kick,
+		/datum/melee_attack/unarmed/claws,
+		/datum/melee_attack/unarmed/bite/sharp,
 	)
 
 	inherent_verbs = list(
@@ -129,7 +128,7 @@
 
 /datum/species/tajaran/apply_racial_gear(mob/living/carbon/for_target, list/into_box, list/into_inv)
 	var/footwear_type = /obj/item/clothing/shoes/sandal
-	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes))
+	if(for_target && !for_target.inventory?.get_slot_single(/datum/inventory_slot/inventory/shoes::id))
 		var/obj/item/footwear_instance = new footwear_type
 		if(!for_target.inventory.equip_to_slot_if_possible(footwear_instance, /datum/inventory_slot/inventory/shoes))
 			into_inv += footwear_instance

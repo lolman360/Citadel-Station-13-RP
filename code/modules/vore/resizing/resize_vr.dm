@@ -85,9 +85,13 @@ var/const/RESIZE_A_SMALLTINY = (RESIZE_SMALL + RESIZE_TINY) / 2
 	if(atom_huds)
 		//it lowers lesser than it raises when it comes to micros v. macros else the medHUD would bury the micro
 		var/new_y_offset = (size_multiplier < 1 ? 27 : 32) * (size_multiplier - 1)
-		for(var/id in atom_huds)
-			var/image/image = atom_huds[id]
-			image.pixel_y = new_y_offset
+		// TODO: please make a better way of doing this holy shit
+		spawn(0)
+			var/timeout = world.time + 5 SECONDS
+			for(var/id in atom_huds)
+				UNTIL((world.time > timeout) || atom_huds?[id])
+				var/image/image = atom_huds[id]
+				image?.pixel_y = new_y_offset
 
 // Optimize mannequins - never a point to animating or doing HUDs on these.
 /mob/living/carbon/human/dummy/mannequin/resize(var/new_size, var/animate = TRUE)
@@ -109,13 +113,6 @@ var/const/RESIZE_A_SMALLTINY = (RESIZE_SMALL + RESIZE_TINY) / 2
 		src.resize(new_size/100, TRUE)
 		message_admins("[key_name(src)] used the resize command in-game to be [new_size]% size. \
 			([src ? "<a href='?_src_=holder;adminplayerobservecoodjump=1;X=[src.x];Y=[src.y];Z=[src.z]'>JMP</a>" : "null"])")
-
-/*
-//Add the set_size() proc to usable verbs. By commenting this out, we can leave the proc and hand it to species that need it.
-/hook/living_new/proc/resize_setup(mob/living/H)
-	add_verb(H, /mob/living/proc/set_size)
-	return 1
-*/
 
 /**
  * Attempt to scoop up this mob up into M's hands, if the size difference is large enough.

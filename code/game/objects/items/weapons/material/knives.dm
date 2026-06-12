@@ -8,6 +8,7 @@
 	attack_verb = list("patted", "tapped")
 	force_multiplier = 0.1
 	throw_force_multiplier = 1.5
+	belt_storage_class = BELT_CLASS_SMALL
 	drop_sound = 'sound/items/drop/knife.ogg'
 	pickup_sound = 'sound/items/pickup/knife.ogg'
 	var/active = FALSE
@@ -72,18 +73,13 @@
 	icon = 'icons/obj/kitchen.dmi'
 	icon_state = "knife"
 	desc = "A general purpose chef's knife. Glithari Exports filet knives, Centauri bread knives, all pale in comparison to Nanotrasen's very own Cookware line of cheap, affordable chef's knives."
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR | SUIT_STORAGE_CLASS_HARDWEAR
 	damage_mode = DAMAGE_MODE_SHARP | DAMAGE_MODE_EDGE
 	material_significance = MATERIAL_SIGNIFICANCE_WEAPON_LIGHT
+	belt_storage_class = BELT_CLASS_MEDIUM
 	materials_base = list(MAT_STEEL = 12000)
 	origin_tech = list(TECH_MATERIAL = 1)
 	attack_verb = list("slashed", "stabbed", "sliced", "torn", "ripped", "diced", "cut")
-
-/obj/item/material/knife/suicide_act(mob/user)
-	var/datum/gender/TU = GLOB.gender_datums[user.get_visible_gender()]
-	user.visible_message(pick("<span class='danger'>\The [user] is slitting [TU.his] wrists with \the [src]! It looks like [TU.hes] trying to commit suicide.</span>", \
-	                      "<span class='danger'>\The [user] is slitting [TU.his] throat with \the [src]! It looks like [TU.hes] trying to commit suicide.</span>", \
-	                      "<span class='danger'>\The [user] is slitting [TU.his] stomach open with \the [src]! It looks like [TU.hes] trying to commit seppuku.</span>"))
-	return (BRUTELOSS)
 
 // These no longer inherit from hatchets.
 /obj/item/material/knife/tacknife
@@ -92,6 +88,7 @@
 	icon = 'icons/obj/weapons.dmi'
 	icon_state = "tacknife"
 	item_state = "knife"
+	material_primary = "blade"
 	material_significance = MATERIAL_SIGNIFICANCE_WEAPON_LIGHT
 	damage_mode = DAMAGE_MODE_SHARP | DAMAGE_MODE_EDGE
 	attack_verb = list("stabbed", "chopped", "cut")
@@ -178,6 +175,10 @@
 
 /obj/item/material/knife/machete/armblade/hardsuit
 	var/obj/item/hardsuit_module/armblade/storing_module
+
+/obj/item/material/knife/machete/armblade/hardsuit/Destroy()
+	storing_module = null
+	return ..()
 
 /obj/item/material/knife/machete/armblade/hardsuit/dropped(mob/user, flags, atom/newLoc)
 	. = ..()

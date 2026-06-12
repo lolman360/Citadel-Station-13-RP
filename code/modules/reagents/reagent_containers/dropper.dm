@@ -14,10 +14,12 @@
 	drop_sound = 'sound/items/drop/glass.ogg'
 	pickup_sound = 'sound/items/pickup/glass.ogg'
 	integrity_flags = INTEGRITY_ACIDPROOF
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR
+	belt_storage_class = BELT_CLASS_SMALL
 
 /obj/item/reagent_containers/dropper/examine(mob/user, dist)
 	. = ..()
-	if(reagents && reagents.reagent_list.len)
+	if(length(reagents?.reagent_volumes))
 		. += "<span class='notice'>It contains [reagents.total_volume] units of liquid.</span>"
 	else
 		. += "<span class='notice'>It is empty.</span>"

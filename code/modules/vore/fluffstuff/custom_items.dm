@@ -93,7 +93,7 @@
 	if(isliving(user))
 		user.visible_message("<span class='warning'>[user] waves their Banner around!</span>","<span class='warning'>You wave your Banner around.</span>")
 
-/obj/item/flag/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/flag/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE
@@ -483,7 +483,7 @@
 	if(configured == 1)
 		return ..()
 
-	var/title = user.client.prefs.get_job_alt_title_name(SSjob.name_occupations[user.job]) || user.job
+	var/title = user.client.prefs.get_job_alt_title_name(RSroles.legacy_job_by_title(user.job)) || user.job
 	assignment = title
 	user.set_id_info(src)
 	if(user.mind && user.mind.initial_account)
@@ -551,12 +551,12 @@
 	desc = "Seems absurd, doesn't it? Yet, here we are. Generally considered dangerous contraband unless the user has permission from Central Command."
 	icon = 'icons/obj/device_alt.dmi'
 	icon_state = "hand_tele"
-	item_flags = ITEM_NOBLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
+	item_flags = ITEM_NO_BLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
 	w_class = WEIGHT_CLASS_SMALL
 	origin_tech = list(TECH_MAGNET = 5, TECH_BLUESPACE = 5, TECH_ILLEGAL = 7)
 
-	var/cell_type = /obj/item/cell/device/weapon
-	var/obj/item/cell/power_source
+	var/cell_type = /obj/item/cell/basic/tier_1/weapon
+	var/cell_accept = CELL_TYPE_SMALL | CELL_TYPE_WEAPON
 	var/charge_cost = 800 // cell/device/weapon has 2400
 
 	var/list/beacons = list()
@@ -569,11 +569,8 @@
 	var/list/logged_events = list()
 
 /obj/item/perfect_tele/Initialize(mapload)
+	init_cell_slot_easy_tool(cell_type, cell_accept)
 	. = ..()
-	if(cell_type)
-		power_source = new cell_type(src)
-	else
-		power_source = new /obj/item/cell/device(src)
 	spk = new(src)
 	spk.set_up(5, 0, src)
 	spk.attach(src)
@@ -583,11 +580,11 @@
 	for(var/obj/item/perfect_tele_beacon/B in beacons)
 		B.tele_hand = null
 	beacons.Cut()
-	QDEL_NULL(power_source)
 	QDEL_NULL(spk)
 	return ..()
 
 /obj/item/perfect_tele/update_icon()
+	var/obj/item/cell/power_source = get_cell()
 	if(!power_source)
 		icon_state = "[initial(icon_state)]_o"
 	else if(ready && (power_source.check_charge(charge_cost) || power_source.fully_charged()))
@@ -596,15 +593,6 @@
 		icon_state = "[initial(icon_state)]_w"
 
 	..()
-
-/obj/item/perfect_tele/attack_hand(mob/user, datum/event_args/actor/clickchain/e_args)
-	if(user.get_inactive_held_item() == src && power_source)
-		to_chat(user,"<span class='notice'>You eject \the [power_source] from \the [src].</span>")
-		user.put_in_hands(power_source)
-		power_source = null
-		update_icon()
-	else
-		return ..()
 
 /obj/item/perfect_tele/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
@@ -655,15 +643,7 @@
 			return
 
 /obj/item/perfect_tele/attackby(obj/W, mob/user)
-	if(istype(W,cell_type) && !power_source)
-		if(!user.attempt_insert_item_for_installation(W, src))
-			return
-		power_source = W
-		power_source.update_icon() //Why doesn't a cell do this already? :|
-		to_chat(user,"<span class='notice'>You insert \the [power_source] into \the [src].</span>")
-		update_icon()
-
-	else if(istype(W,/obj/item/perfect_tele_beacon))
+	if(istype(W,/obj/item/perfect_tele_beacon))
 		var/obj/item/perfect_tele_beacon/tb = W
 		if(tb.tele_name in beacons)
 			if(!user.attempt_consume_item_for_construction(tb))
@@ -678,6 +658,7 @@
 		..()
 
 /obj/item/perfect_tele/proc/teleport_checks(mob/living/target,mob/living/user)
+	var/obj/item/cell/power_source = get_cell()
 	//Uhhuh, need that power source
 	if(!power_source)
 		to_chat(user,"<span class='warning'>\The [src] has no power source!</span>")
@@ -734,6 +715,7 @@
 
 /obj/item/perfect_tele/afterattack(mob/living/target, mob/user, clickchain_flags, list/params)
 	//No, you can't teleport people from over there.
+	var/obj/item/cell/power_source = get_cell()
 	if(!(clickchain_flags & CLICKCHAIN_HAS_PROXIMITY))
 		return
 
@@ -826,7 +808,7 @@
 
 	spk.set_up(5, 0, M)
 	spk.attach(M)
-	playsound(T, /datum/soundbyte/grouped/sparks, 50, 1)
+	playsound(T, /datum/soundbyte/sparks, 50, 1)
 	anim(T,M,'icons/mob/mob.dmi',,"phaseout",,M.dir)
 
 /obj/item/perfect_tele/proc/phase_in(var/mob/M,var/turf/T)
@@ -836,7 +818,7 @@
 
 	spk.start()
 	playsound(T, 'sound/effects/phasein.ogg', 25, 1)
-	playsound(T, /datum/soundbyte/grouped/sparks, 50, 1)
+	playsound(T, /datum/soundbyte/sparks, 50, 1)
 	anim(T,M,'icons/mob/mob.dmi',,"phasein",,M.dir)
 	spk.set_up(5, 0, src)
 	spk.attach(src)
@@ -847,7 +829,7 @@
 	icon = 'icons/obj/device_alt.dmi'
 	icon_state = "motion2"
 	w_class = WEIGHT_CLASS_TINY
-	item_flags = ITEM_NOBLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
+	item_flags = ITEM_NO_BLUDGEON | ITEM_ENCUMBERS_WHILE_HELD
 
 	var/tele_name
 	var/obj/item/perfect_tele/tele_hand
@@ -894,7 +876,7 @@
 	desc = "A more limited translocator with a single beacon, useful for some things, like setting the mining department on fire accidentally. Legal for use in the pursuit of Nanotrasen interests, namely mining and exploration."
 	icon_state = "minitrans"
 	beacons_left = 1 //Just one
-	cell_type = /obj/item/cell/device
+	cell_type = /obj/item/cell/basic/tier_1/small
 	origin_tech = list(TECH_MAGNET = 5, TECH_BLUESPACE = 5)
 
 /*
@@ -910,12 +892,13 @@
 	name = "alien translocator"
 	desc = "This strange device allows one to teleport people and objects across large distances."
 
-	cell_type = /obj/item/cell/device/weapon/recharge/alien
+	cell_type = /obj/item/cell/regen/weapon
 	charge_cost = 400
 	beacons_left = 6
 	failure_chance = 0 //Percent
 
 /obj/item/perfect_tele/admin/teleport_checks(mob/living/target,mob/living/user)
+	var/obj/item/cell/power_source = get_cell()
 	//Uhhuh, need that power source
 	if(!power_source)
 		to_chat(user,"<span class='warning'>\The [src] has no power source!</span>")
@@ -956,14 +939,14 @@
 	icon_state = "hisstective_badge"
 	//slot_flags = SLOT_TIE | SLOT_BELT
 
-/obj/item/clothing/accessory/badge/holo/detective/ruda/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/clothing/accessory/badge/holo/detective/ruda/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE
 	if(isliving(user))
 		user.visible_message("<span class='danger'>[user] invades [target]'s personal space, thrusting [src] into their face with an insistent huff.</span>","<span class='danger'>You invade [target]'s personal space, thrusting [src] into their face with an insistent huff.</span>")
 		user.do_attack_animation(target)
-		user.setClickCooldown(DEFAULT_QUICK_COOLDOWN) //to prevent spam
+		user.setClickCooldownLegacy(DEFAULT_QUICK_COOLDOWN) //to prevent spam
 
 /obj/item/clothing/accessory/badge/holo/detective/ruda/attack_self(mob/user, datum/event_args/actor/actor)
 	. = ..()
@@ -1002,7 +985,7 @@
 	name = "Lesser Form Injector"
 	desc = "Turn the user into their lesser, more primal form."
 
-/obj/item/fluff/injector/monkey/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/fluff/injector/monkey/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE
@@ -1018,7 +1001,7 @@
 	name = "Numbing Venom Injector"
 	desc = "Injects the user with a high dose of some type of chemical, causing any chemical glands they have to kick into overdrive and create the production of a numbing enzyme that is injected via bites.."
 
-/obj/item/fluff/injector/numb_bite/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/fluff/injector/numb_bite/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE
@@ -1128,101 +1111,6 @@
 	else
 		..()
 
-//jacknoir413:Areax Third
-// todo: check sprite, if it matches citmain just integrate this to citrp proper.
-/obj/item/melee/baton/fluff/stunstaff
-	name = "Electrostaff"
-	desc = "Six-foot long staff from dull, rugged metal, with two thin spikes protruding from each end. Small etching near to the middle of it reads 'Children Of Nyx Facilities: Product No. 12'."
-	icon = 'icons/vore/custom_items_vr.dmi'
-	item_icons = list(SLOT_ID_LEFT_HAND = 'icons/vore/custom_items_left_hand_vr.dmi', SLOT_ID_RIGHT_HAND = 'icons/vore/custom_items_right_hand_vr.dmi')
-	icon_state = "stunstaff00"
-	var/base_icon = "stunstaff"
-	damage_force = 5
-	throw_force = 7
-	w_class = WEIGHT_CLASS_HUGE
-	origin_tech = list(TECH_COMBAT = 2)
-	attack_verb = list("beaten")
-	lightcolor = "#CC33FF"
-
-	passive_parry = /datum/passive_parry/melee{
-		parry_chance_melee = 30;
-	}
-
-	//Two Handed
-	var/wielded = 0
-	var/base_name = "stunstaff"
-
-/obj/item/melee/baton/fluff/stunstaff/Initialize(mapload)
-	. = ..()
-	bcell = new/obj/item/cell/device/weapon(src)
-	update_icon()
-	return
-
-/obj/item/melee/baton/fluff/stunstaff/update_worn_icon()
-	var/mob/living/M = loc
-	if(istype(M) && !issmall(M) && M.is_holding(src) && !M.are_usable_hands_full())
-		wielded = 1
-		damage_force = 15
-		name = "[base_name] (wielded)"
-		update_icon()
-	else
-		wielded = 0
-		damage_force = 8
-		name = "[base_name]"
-	update_icon()
-	..()
-
-/obj/item/melee/baton/fluff/stunstaff/update_icon()
-	icon_state = "[base_icon][wielded][status]"
-	item_state = icon_state
-	if(status==1)
-		set_light(2, 2, lightcolor)
-	else
-		set_light(0)
-
-/obj/item/melee/baton/fluff/stunstaff/dropped(mob/user, flags, atom/newLoc)
-	..()
-	if(wielded)
-		wielded = 0
-		spawn(0)
-			update_worn_icon()
-
-/obj/item/melee/baton/fluff/stunstaff/attack_self(mob/user, datum/event_args/actor/actor)
-	. = ..()
-	if(.)
-		return
-	if(bcell && bcell.charge > hitcost)
-		status = !status
-		to_chat(user, "<span class='notice'>[src] is now [status ? "on" : "off"].</span>")
-		if(status == 0)
-			playsound(user, 'sound/weapons/saberoff.ogg', 50, 1)
-		else
-			playsound(user, 'sound/weapons/saberon.ogg', 50, 1)
-	else
-		status = 0
-		to_chat(user, "<span class='warning'>[src] is out of charge.</span>")
-	update_worn_icon()
-	add_fingerprint(user)
-
-/obj/item/storage/backpack/fluff/stunstaff
-	name = "Electrostaff sheath"
-	icon = 'icons/vore/custom_items_vr.dmi'
-	icon_state = "holster_stunstaff"
-	desc = "A sturdy synthetic leather sheath with matching belt and rubberized interior."
-	slot_flags = SLOT_BACK
-	item_icons = list(SLOT_ID_BACK = 'icons/vore/custom_onmob_vr.dmi', SLOT_ID_LEFT_HAND = 'icons/vore/custom_items_left_hand_vr.dmi', SLOT_ID_RIGHT_HAND = 'icons/vore/custom_items_right_hand_vr.dmi')
-
-	insertion_whitelist = list(/obj/item/melee/baton/fluff/stunstaff)
-
-	w_class = WEIGHT_CLASS_HUGE
-	max_single_weight_class = WEIGHT_CLASS_HUGE
-	max_combined_volume = 16
-
-/obj/item/storage/backpack/fluff/stunstaff/Initialize(mapload)
-	. = ..()
-	new /obj/item/melee/baton/fluff/stunstaff(src)
-
-
 /*
  * Awoo Sword
  */
@@ -1269,13 +1157,6 @@
 	update_worn_icon()
 	add_fingerprint(user)
 
-/obj/item/melee/fluffstuff/suicide_act(mob/user)
-	var/tempgender = "[user.gender == MALE ? "he's" : user.gender == FEMALE ? "she's" : "they are"]"
-	if(active)
-		user.visible_message(pick("<span class='danger'>\The [user] is slitting \his stomach open with \the [src]! It looks like [tempgender] trying to commit seppuku.</span>",\
-			"<span class='danger'>\The [user] is falling on \the [src]! It looks like [tempgender] trying to commit suicide.</span>"))
-		return (BRUTELOSS|FIRELOSS)
-
 /obj/item/melee/fluffstuff/wolfgirlsword
 	name = "Wolfgirl Sword Replica"
 	desc = "A replica of a large, scimitar-like sword with a dull edge. Ceremonial... until it isn't."
@@ -1293,7 +1174,6 @@
 	origin_tech = list(TECH_MATERIAL = 2, TECH_COMBAT = 1)
 	item_icons = list(SLOT_ID_LEFT_HAND = 'icons/mob/items/lefthand_melee.dmi', SLOT_ID_RIGHT_HAND = 'icons/mob/items/righthand_melee.dmi', SLOT_ID_BACK = 'icons/vore/custom_items_vr.dmi', SLOT_ID_SUIT = 'icons/vore/custom_items_vr.dmi')
 	var/active_state = "wolfgirlsword"
-	allowed = list(/obj/item/shield/fluff/wolfgirlshield)
 	damage_type = DAMAGE_TYPE_HALLOSS
 
 /obj/item/melee/fluffstuff/wolfgirlsword/dropped(mob/user, flags, atom/newLoc)
@@ -1344,11 +1224,11 @@
 	var/chassis_desc = "A self recharging, ranged mining tool that does increased damage in low temperature. Capable of holding up to six slots worth of mod kits. It seems to have been painted an ugly green, and has a small image of a bird scratched crudely into the stock."
 	var/chassis_icon_file = 'icons/vore/custom_guns_vr.dmi'
 
-/obj/item/ka_modkit/chassis_mod/kai/install(obj/item/gun/energy/kinetic_accelerator/KA, mob/user)
+/obj/item/ka_modkit/chassis_mod/kai/install(obj/item/gun/projectile/energy/kinetic_accelerator/KA, mob/user)
 	KA.desc = chassis_desc
 	KA.icon = chassis_icon_file
 	..()
-/obj/item/ka_modkit/chassis_mod/kai/uninstall(obj/item/gun/energy/kinetic_accelerator/KA)
+/obj/item/ka_modkit/chassis_mod/kai/uninstall(obj/item/gun/projectile/energy/kinetic_accelerator/KA)
 	KA.desc = initial(KA.desc)
 	KA.icon = initial(KA.icon)
 	..()

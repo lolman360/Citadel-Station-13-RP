@@ -1,6 +1,6 @@
 /obj/machinery/recharge_station
 	name = "cyborg recharging station"
-	desc = "A heavy duty rapid charging system, designed to quickly recharge cyborg power reserves."
+	desc = "A heavy duty rapid charging system, designed to quickly recharge cyborg power reserves.\n <span class='notice'>\[Accepts Upgrades\]</span>"
 	icon = 'icons/obj/objects.dmi'
 	icon_state = "borgcharger0"
 	density = 1
@@ -35,6 +35,10 @@
 /obj/machinery/recharge_station/Initialize(mapload)
 	. = ..()
 	update_icon()
+
+/obj/machinery/recharge_station/Destroy()
+	QDEL_NULL(cell)
+	return ..()
 
 /obj/machinery/recharge_station/proc/has_cell_power()
 	return cell && cell.percent() > 0
@@ -76,11 +80,9 @@
 /obj/machinery/recharge_station/proc/process_occupant()
 	if(isrobot(occupant))
 		var/mob/living/silicon/robot/R = occupant
-
-		if(R.module)
-			R.module.respawn_consumable(R, DYNAMIC_W_TO_CELL_UNITS(charging_power, 1) / 250) //consumables are magical, apparently
+		R.regenerate_resources_from_charger(2, 1)
 		if(R.cell && !R.cell.fully_charged())
-			var/diff = min(R.cell.maxcharge - R.cell.charge, DYNAMIC_W_TO_CELL_UNITS(charging_power, 1)) // Capped by charging_power / tick
+			var/diff = min(R.cell.max_charge - R.cell.charge, DYNAMIC_W_TO_CELL_UNITS(charging_power, 1)) // Capped by charging_power / tick
 			var/charge_used = cell.use(diff)
 			R.cell.give(charge_used)
 
@@ -89,6 +91,8 @@
 			R.adjustBruteLoss(-weld_rate)
 		if(wire_rate && R.getFireLoss() && cell.checked_use(DYNAMIC_W_TO_CELL_UNITS(wire_power_use * wire_rate, 1)))
 			R.adjustFireLoss(-wire_rate)
+		R.resources?.regen_provisioned(2)
+		R.module?.legacy_custom_regenerate_resources(R, 2, 1)
 
 	//Handles drone matrix upgrades
 	if(isDrone(occupant))
@@ -96,6 +100,10 @@
 		if(D.master_matrix && D.upgrade_cooldown < world.time && D.cell.fully_charged())
 			D.upgrade_cooldown = world.time + 1 MINUTE
 			D.master_matrix.apply_upgrades(D)
+
+	else if(is_holosphere_shell(occupant))
+		var/mob/living/simple_mob/holosphere_shell/shell = occupant
+		handle_human_nutrition(shell.hologram)
 
 	else if(ishuman(occupant))
 		var/mob/living/carbon/human/H = occupant
@@ -111,14 +119,8 @@
 			if(H.getBrainLoss() > 0)
 				H.adjustBrainLoss(-(rand(1,3)))
 
-			// Also recharge their internal battery.
-			if(H.nutrition < H.species.max_nutrition)
-				var/needed = clamp(H.species.max_nutrition - H.nutrition, 0, 20)
-				var/drained = cell.use(DYNAMIC_KJ_TO_CELL_UNITS(needed * SYNTHETIC_NUTRITION_KJ_PER_UNIT))
-				H.nutrition += DYNAMIC_CELL_UNITS_TO_KJ(drained) / SYNTHETIC_NUTRITION_KJ_PER_UNIT
+			handle_human_nutrition(H)
 
-			// And clear up radiation
-			H.cure_radiation(RAD_MOB_CURE_SYNTH_CHARGER)
 		var/obj/item/hardsuit/wornrig = H.get_hardsuit()
 		if(wornrig) // just to make sure
 			for(var/obj/item/hardsuit_module/storedmod in wornrig)
@@ -127,9 +129,19 @@
 					storedmod.damage = 0
 			var/obj/item/cell/rigcell = wornrig.get_cell()
 			if(rigcell)
-				var/diff = min(rigcell.maxcharge - rigcell.charge, DYNAMIC_W_TO_CELL_UNITS(charging_power, 1)) // Capped by charging_power / tick
+				var/diff = min(rigcell.max_charge - rigcell.charge, DYNAMIC_W_TO_CELL_UNITS(charging_power, 1)) // Capped by charging_power / tick
 				var/charge_used = cell.use(diff)
 				rigcell.give(charge_used)
+
+/obj/machinery/recharge_station/proc/handle_human_nutrition(mob/living/carbon/human/H)
+	// Also recharge their internal battery.
+	if(H.nutrition < H.species.max_nutrition)
+		var/needed = clamp(H.species.max_nutrition - H.nutrition, 0, 20)
+		var/drained = cell.use(DYNAMIC_KJ_TO_CELL_UNITS(needed * SYNTHETIC_NUTRITION_KJ_PER_UNIT))
+		H.nutrition += DYNAMIC_CELL_UNITS_TO_KJ(drained) / SYNTHETIC_NUTRITION_KJ_PER_UNIT
+
+	// And clear up radiation
+	H.cure_radiation(RAD_MOB_CURE_SYNTH_CHARGER)
 
 /obj/machinery/recharge_station/examine(mob/user, dist)
 	. = ..()
@@ -258,7 +270,7 @@
 		R.update_perspective()
 		occupant = R
 		update_icon()
-		return 1
+		return TRUE
 
 	else if(istype(L,  /mob/living/carbon/human))
 		var/mob/living/carbon/human/H = L
@@ -268,7 +280,16 @@
 			H.update_perspective()
 			occupant = H
 			update_appearance()
-			return 1
+			return TRUE
+	else if(is_holosphere_shell(L))
+		var/mob/living/simple_mob/holosphere_shell/shell = L
+		var/mob/living/carbon/human/H = shell.hologram
+		add_fingerprint(H)
+		shell.forceMove(src)
+		shell.update_perspective()
+		occupant = shell
+		update_appearance()
+		return TRUE
 	else
 		return
 

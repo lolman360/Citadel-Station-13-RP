@@ -157,7 +157,7 @@
 	SSnanoui.update_uis(src)
 
 /obj/machinery/computer/HolodeckControl/emag_act(var/remaining_charges, var/mob/user as mob)
-	playsound(src.loc, /datum/soundbyte/grouped/sparks, 75, 1)
+	playsound(src.loc, /datum/soundbyte/sparks, 75, 1)
 	last_to_emag = user //emag again to change the owner
 	if (!emagged)
 		emagged = 1
@@ -189,7 +189,9 @@
 	current_program = powerdown_program
 	linkedholodeck = locate(projection_area)
 	if(!linkedholodeck)
-		to_chat(world, "<span class='danger'>Holodeck computer at [x],[y],[z] failed to locate projection area.</span>")
+		log_mapping("[src] at [AREACOORD(src)] has no matching holodeck area.")
+		qdel(src)
+		return
 
 //This could all be done better, but it works for now.
 /obj/machinery/computer/HolodeckControl/Destroy()

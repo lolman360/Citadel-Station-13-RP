@@ -9,6 +9,7 @@
 	layer = TURF_LAYER
 
 	//* Core *//
+
 	/// Atom flags.
 	var/atom_flags = NONE
 	/// Prototype ID; persistence uses this to know what atom to load, even if the path changes in a refactor.
@@ -95,6 +96,8 @@
 
 	//? Chemistry
 	// todo: properly finalize the semantics of this variable and what it's for.
+	// todo: should this variable even exist? most atoms don't need this, and we can easily have an APi
+	//       to fetch a relevant holder upon being inspected by an analyzer.
 	var/datum/reagent_holder/reagents = null
 
 	//? Detective Work
@@ -116,7 +119,8 @@
 	/// Shows up under a UV light.
 	var/fluorescent
 
-	//? Materials
+	//* Materials *//
+
 	/// combined material trait flags
 	/// this list is at /atom level but are only used/implemented on /obj generically; anything else, e.g. walls, should implement manually for efficiency.
 	/// * this variable is a cache variable and is generated from the materials on an entity.
@@ -133,7 +137,6 @@
 	var/tmp/material_traits_data
 	/// 'stacks' of ticking
 	/// this synchronizes the system so removing one ticking material trait doesn't fully de-tick the entity
-	//! DO NOT FUCK WITH THIS UNLESS YOU KNOW WHAT YOU ARE DOING
 	/// * this variable is a cache variable and is generated from the materials on an entity.
 	/// * this variable is not visible and should not be edited in the map editor.
 	var/tmp/material_ticking_counter = 0
@@ -146,6 +149,7 @@
 	/// radiation flags
 	var/rad_flags = RAD_NO_CONTAMINATE	// overridden to NONe in /obj and /mob base
 	/// radiation insulation - does *not* affect rad_act!
+	//  TODO: BUG: rad_insulation needs a `set_rad_insulation()` which updates turf!
 	var/rad_insulation = RAD_INSULATION_NONE
 	/// contamination insulation; null defaults to rad_insulation, this is a multiplier. *never* set higher than 1!!
 	var/rad_stickiness = 1
@@ -181,26 +185,49 @@
 	var/relative_layer = 0
 
 	//? Pixel Offsets
-	/// Default pixel x shifting for the atom's icon.
+	/// Base pixel x offset; this tracks non-ephemeral pixel offsets like wall-mounting
+	/// and permanent adjustment.
+	/// * Do **not** use this when calculating auto-centering; if we are a wall-mount it doesn't make sense to do so, as an example.
 	var/base_pixel_x = 0
-	/// Default pixel y shifting for the atom's icon.
+	/// Base pixel y offset; this tracks non-ephemeral pixel offsets like wall-mounting
+	/// and permanent adjustment.
+	/// * Do **not** use this when calculating auto-centering; if we are a wall-mount it doesn't make sense to do so, as an example.
 	var/base_pixel_y = 0
+	///Default pixel w shifting for the atom's icon.
+	var/base_pixel_w = 0
+	///Default pixel z shifting for the atom's icon.
+	var/base_pixel_z = 0
+
 	/// expected icon width; centering offsets will be calculated from this and our base pixel x.
+	/// * this **should**, but often is not necessarily, always set to the icon's actual file dimensions.
+	///   if an admin edits an icon this is often not set and we can't really assume alignment either way, so.
+	/// * this is not necessarily able to be used for centering unless we are actually centered in the icon.
 	var/icon_x_dimension = 32
-	/// expected icon height; centering offsets will be calculated from this and our base pixel y.
+	/// expected icon height
+	/// * this **should**, but often is not necessarily, always set to the icon's actual file dimensions.
+	///   if an admin edits an icon this is often not set and we can't really assume alignment either way, so.
+	/// * this is not necessarily able to be used for centering unless we are actually centered in the icon.
 	var/icon_y_dimension = 32
 
 	//? Misc
 	/// What mobs are interacting with us right now, associated directly to concurrent interactions. (use defines)
 	var/list/interacting_mobs
-	/// The orbiter comopnent if we're being orbited.
-	var/datum/component/orbiter/orbiters
 
 	//? Sounds
 	/// Default sound played on impact when damaged by a weapon / projectile / whatnot. This is usually null for default.
 	var/hit_sound_brute
 	/// Default sound played on a burn type impact. This is usually null for default.
 	var/hit_sound_burn
+
+/**
+ * Called if we're deleted before Initialize() is called.
+ * * Must clean up anything done in /New.
+ */
+/atom/proc/EarlyDestroy(force)
+	// tag is set in New()
+	if(tag)
+		tag = null
+	return QDEL_HINT_QUEUE
 
 /**
  * Top level of the destroy chain for most atoms
@@ -232,31 +259,28 @@
 
 	return ..()
 
-//* Preload Hooks *//
-
-/**
- * Called by the maploader if a dmm_context is set
- *
- * todo: rename to preload_from_mapload()
- */
-/atom/proc/preloading_instance(datum/dmm_context/context)
-	return
-
-/**
- * hook for abstract direction sets from the maploader
- *
- * todo: this might need to be part of preloading_instance; investigate
- *
- * return FALSE to override maploader automatic rotation
- */
-/atom/proc/preloading_dir(datum/dmm_context/context)
-	return TRUE
-
-/**
- * Preloads before Initialize(), invoked by init from a stack recipe.
- */
-/atom/proc/preload_from_stack_recipe(datum/stack_recipe/recipe)
-	return
+/atom/gc_trace_data()
+	. = ..()
+	if(loc)
+		.["atom-coord"] = "[COORD(src)]"
+		var/turf/our_turf = get_turf(src)
+		.["atom-turf"] = "[AREACOORD(our_turf)]"
+	else
+		.["atom-coord"] = "nullspace"
+	if(length(context_menus))
+		.["atom-context-menus"] = json_encode(context_menus)
+	if(length(atom_huds))
+		.["atom-huds"] = json_encode(atom_huds)
+	if(reagents)
+		.["atom-reagents"] = "exists"
+	if(length(material_traits))
+		.["atom-material-traits"] = json_encode(material_traits)
+	if(length(shieldcalls))
+		.["atom-shieldcalls"] = json_encode(shieldcalls)
+	if(orbiters)
+		.["atom-orbiters"] = "exists"
+	if(length(interacting_mobs))
+		.["atom-interacting-mobs"] = json_encode(interacting_mobs)
 
 /atom/proc/reveal_blood()
 	return
@@ -309,7 +333,6 @@
 			found += A.search_contents_for(path,filter_path)
 	return found
 
-
 // called by mobs when e.g. having the atom as their machine, pulledby, loc (AKA mob being inside the atom) or buckled var set.
 // see code/modules/mob/mob_movement.dm for more.
 /atom/proc/relaymove()
@@ -361,16 +384,19 @@
 			return FALSE
 		if (H.gloves)
 			if (fingerprintslast != H.key)
+				LAZYINITLIST(fingerprintshidden)
 				fingerprintshidden += "\[[time_stamp()]\] (Wearing gloves). Real name: [H.real_name], Key: [H.key]"
 				fingerprintslast = H.key
 			return FALSE
 		if (!(fingerprints))
 			if (fingerprintslast != H.key)
+				LAZYINITLIST(fingerprintshidden)
 				fingerprintshidden += "\[[time_stamp()]\] Real name: [H.real_name], Key: [H.key]"
 				fingerprintslast = H.key
 			return TRUE
 	else
 		if (fingerprintslast != M.key)
+			LAZYINITLIST(fingerprintshidden)
 			fingerprintshidden += "\[[time_stamp()]\] Real name: [M.real_name], Key: [M.key]"
 			fingerprintslast = M.key
 	return
@@ -476,6 +502,7 @@
 	else
 		//Smudge up dem prints some
 		if(fingerprintslast != M.key)
+			LAZYINITLIST(fingerprintshidden)
 			fingerprintshidden += "[time_stamp()]: [key_name(M)]"
 			fingerprintslast = M.key
 
@@ -683,12 +710,13 @@
 
 /atom/proc/CheckParts(list/parts_list)
 	for(var/A in parts_list)
-		if(istype(A, /datum/reagent))
-			if(!reagents)
-				reagents = new()
-			reagents.reagent_list.Add(A)
-			reagents.conditional_update()
-		else if(ismovable(A))
+		// todo: i don't know why we do this in crafting but crafting needs fucking refactored lmao
+		// if(istype(A, /datum/reagent))
+		// 	if(!reagents)
+		// 		reagents = new()
+		// 	reagents.reagent_list.Add(A)
+		// 	reagents.conditional_update()
+		if(ismovable(A))
 			var/atom/movable/M = A
 			M.forceMove(src)
 
@@ -698,40 +726,6 @@
 
 /atom/proc/get_cell(inducer)
 	return
-
-//? Radiation
-
-/**
- * called when we're hit by a radiation wave
- *
- * * this is only called directly on turfs
- * * this is also called directly if an outgoing pulse is shielded by something, so it hits everything inside it instead
- * * for any other atom on turf, you need /datum/component/radiation_listener
- * * /datum/element/z_radiation_listener is needed if you want to listen to z-wide and other high-gain rad pulses
- */
-/atom/proc/rad_act(strength, datum/radiation_wave/wave)
-	SHOULD_CALL_PARENT(TRUE)
-	SEND_SIGNAL(src, COMSIG_ATOM_RAD_ACT, strength)
-
-/**
- * called when we're hit by z radiation
- */
-/atom/proc/z_rad_act(strength)
-	SHOULD_CALL_PARENT(TRUE)
-	rad_act(strength)
-
-/atom/proc/add_rad_block_contents(source)
-	ADD_TRAIT(src, TRAIT_ATOM_RAD_BLOCK_CONTENTS, source)
-	rad_flags |= RAD_BLOCK_CONTENTS
-
-/atom/proc/remove_rad_block_contents(source)
-	REMOVE_TRAIT(src, TRAIT_ATOM_RAD_BLOCK_CONTENTS, source)
-	if(!HAS_TRAIT(src, TRAIT_ATOM_RAD_BLOCK_CONTENTS))
-		rad_flags &= ~RAD_BLOCK_CONTENTS
-
-/atom/proc/clean_radiation(str, mul, cheap)
-	var/datum/component/radioactive/RA = GetComponent(/datum/component/radioactive)
-	RA?.clean(str, mul)
 
 //* Color *//
 
@@ -836,87 +830,133 @@
 
 //? Pixel Offsets
 
-// todo: at some point we need to optimize this entire chain of bullshit, proccalls are expensive yo
-
+/**
+ * Set ephemeral pixel X / Y.
+ * * Our managed pixel X / Y will be applied ontop of this.
+ * * **Rule of Three**: If this is overridden, all `set_pixel_x/y/offsets` must be overridden.
+ */
 /atom/proc/set_pixel_x(val)
+	SHOULD_NOT_SLEEP(TRUE)
 	pixel_x = val + get_managed_pixel_x()
 	SEND_SIGNAL(src, COMSIG_MOVABLE_PIXEL_OFFSET_CHANGED)
 
+/**
+ * Set ephemeral pixel X / Y.
+ * * Our managed pixel X / Y will be applied ontop of this.
+ * * **Rule of Three**: If this is overridden, all `set_pixel_x/y/offsets` must be overridden.
+ */
 /atom/proc/set_pixel_y(val)
+	SHOULD_NOT_SLEEP(TRUE)
 	pixel_y = val + get_managed_pixel_y()
 	SEND_SIGNAL(src, COMSIG_MOVABLE_PIXEL_OFFSET_CHANGED)
 
+/**
+ * Set ephemeral pixel X / Y.
+ * * Our managed pixel X / Y will be applied ontop of this.
+ * * **Rule of Three**: If this is overridden, all `set_pixel_x/y/offsets` must be overridden.
+ */
 /atom/proc/set_pixel_offsets(x, y)
+	SHOULD_NOT_SLEEP(TRUE)
 	pixel_x = x + get_managed_pixel_x()
 	pixel_y = y + get_managed_pixel_y()
 	SEND_SIGNAL(src, COMSIG_MOVABLE_PIXEL_OFFSET_CHANGED)
 
+/**
+ * Unset ephemeral pixel X / Y
+ * * Our managed pixel X / Y will still be applied.
+ */
 /atom/proc/reset_pixel_offsets()
+	SHOULD_NOT_SLEEP(TRUE)
 	pixel_x = get_managed_pixel_x()
 	pixel_y = get_managed_pixel_y()
 	SEND_SIGNAL(src, COMSIG_MOVABLE_PIXEL_OFFSET_CHANGED)
 
 /**
- * get our pixel_x to reset to
+ * Gets our managed pixel x / y, which is our natural offsets when not taking
+ * into account anything else. Things like buckling will offset us to them with this.
+ * * The advantage of this over base_pixel_x/y is that this tracks
+ *   sources inherently, at the cost of higher overhead. Things like taur offsets and
+ *   buckling go in here.
  */
 /atom/proc/get_managed_pixel_x()
-	return get_standard_pixel_x_offset()
-
-/**
- * get our pixel_y to reset to
- */
-/atom/proc/get_managed_pixel_y()
-	return get_standard_pixel_y_offset()
-
-/**
- * get the pixel_x needed to center our sprite visually with our current bounds
- */
-/atom/proc/get_standard_pixel_x_offset()
 	return base_pixel_x
 
 /**
- * get the pixel_y needed to center our sprite visually with our current bounds
+ * Gets our managed pixel x / y, which is our natural offsets when not taking
+ * into account anything else. Things like buckling will offset us to them with this.
+ * * The advantage of this over base_pixel_x/y is that this tracks
+ *   sources inherently, at the cost of higher overhead. Things like taur offsets and
+ *   buckling go in here.
  */
-/atom/proc/get_standard_pixel_y_offset()
+/atom/proc/get_managed_pixel_y()
 	return base_pixel_y
 
 /**
- * get the pixel_x needed to adjust ourselves to be centered on our turf. this is used for alignment with buckles and whatnot.
- *
- * e.g. even if we are a 3x3 sprite with -32 x/y offsets, this would be 0
- * if we were, for some reason, a 4x4 with -32 x/y, this would probably be 16/16 x/y.
+ * Gets the pixel offsets needed to adjust ourselves to be centered on our turf.
+ * * This defaults to only checking icon dimension x/y. User overrides can augment
+ *   or entirely replace this behavior.
+ * * It is not safe to assume this works wth all types unless a type specifically has its
+ *   behavior checked; the default center-in-icon behavior is not always what you want.
  */
 /atom/proc/get_centering_pixel_x_offset(dir)
-	return base_pixel_x + (icon_x_dimension - WORLD_ICON_SIZE) / 2
+	return (icon_x_dimension - WORLD_ICON_SIZE) / 2
 
 /**
- * get the pixel_y needed to adjust ourselves to be centered on our turf. this is used for alignment with buckles and whatnot.
- *
- * e.g. even if we are a 3x3 sprite with -32 x/y offsets, this would be 0
- * if we were, for some reason, a 4x4 with -32 x/y, this would probably be 16/16 x/y.
+ * Gets the pixel offsets needed to adjust ourselves to be centered on our turf.
+ * * This defaults to only checking icon dimension x/y. User overrides can augment
+ *   or entirely replace this behavior.
+ * * It is not safe to assume this works wth all types unless a type specifically has its
+ *   behavior checked; the default center-in-icon behavior is not always what you want.
  */
 /atom/proc/get_centering_pixel_y_offset(dir)
-	return base_pixel_y + (icon_y_dimension - WORLD_ICON_SIZE) / 2
+	return (icon_y_dimension - WORLD_ICON_SIZE) / 2
 
-/// Setter for the `base_pixel_x` variable to append behavior related to its changing.
+/**
+ * Sets base_pixel_x/y, an opaque non-ephemeral pixel offset.
+ * * Will update our pixel offsets.
+ * * **Rule of Three**: If this is overridden, all `set_base_pixel_x/y/offsets` must be overridden.
+ */
 /atom/proc/set_base_pixel_x(new_value)
+	SHOULD_NOT_SLEEP(TRUE)
 	if(base_pixel_x == new_value)
 		return
-	. = base_pixel_x
+	var/old = base_pixel_x
 	base_pixel_x = new_value
+	pixel_x = pixel_x + base_pixel_x - old
 
-	pixel_x = pixel_x + base_pixel_x - .
-
-/// Setter for the `base_pixel_y` variable to append behavior related to its changing.
+/**
+ * Sets base_pixel_x/y, an opaque non-ephemeral pixel offset.
+ * * Will update our pixel offsets.
+ * * **Rule of Three**: If this is overridden, all `set_base_pixel_x/y/offsets` must be overridden.
+ */
 /atom/proc/set_base_pixel_y(new_value)
+	SHOULD_NOT_SLEEP(TRUE)
 	if(base_pixel_y == new_value)
 		return
-	. = base_pixel_y
+	var/old = base_pixel_y
 	base_pixel_y = new_value
+	pixel_y = pixel_y + base_pixel_y - old
 
-	pixel_y = pixel_y + base_pixel_y - .
+/**
+ * Sets base_pixel_x/y, an opaque non-ephemeral pixel offset.
+ * * Will update our pixel offsets.
+ * * **Rule of Three**: If this is overridden, all `set_base_pixel_x/y/offsets` must be overridden.
+ */
+/atom/proc/set_base_pixel_offsets(new_x, new_y)
+	if(base_pixel_x == new_x && base_pixel_y == new_y)
+		return
+	var/old_x = base_pixel_x
+	var/old_y = base_pixel_y
+	base_pixel_x = new_x
+	base_pixel_y = new_y
+	pixel_x = pixel_x + base_pixel_x - old_x
+	pixel_y = pixel_y + base_pixel_y - old_y
 
-/// forcefully center us
+/**
+ * Centers us on our `loc`, assuming our `loc` is a tile.
+ * * Assumes that `get_centering_pixel_(x|y)_offset` is properly implemented;
+ *   this will trample base pixel x/y.
+ */
 /atom/proc/auto_pixel_offset_to_center()
 	set_base_pixel_y(get_centering_pixel_y_offset())
 	set_base_pixel_x(get_centering_pixel_x_offset())

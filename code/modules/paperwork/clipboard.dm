@@ -8,6 +8,8 @@
 	throw_speed = 3
 	throw_range = 7
 	slot_flags = SLOT_BELT
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR | SUIT_STORAGE_CLASS_HARDWEAR
+	belt_storage_class = BELT_CLASS_SMALL
 
 	/// The stored pen
 	var/obj/item/pen/pen
@@ -21,10 +23,6 @@
 	 * (As you can't organise contents directly in BYOND)
 	 */
 	var/datum/weakref/toppaper_ref
-
-/obj/item/clipboard/suicide_act(mob/living/carbon/user)
-	user.visible_message(SPAN_SUICIDE("[user] begins putting [user.p_their()] head into the clip of \the [src]! It looks like [user.p_theyre()] trying to commit suicide!"))
-	return BRUTELOSS //The clipboard's clip is very strong. Industrial duty. Can kill a man easily.
 
 /obj/item/clipboard/Initialize(mapload)
 	update_appearance()
@@ -69,7 +67,7 @@
 
 /obj/item/clipboard/AltClick(mob/user)
 	. = ..()
-	if(.)
+	if(. != "keep-going")
 		return
 
 	if(isnull(pen))
@@ -152,7 +150,7 @@
 
 	return data
 
-/obj/item/clipboard/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state)
+/obj/item/clipboard/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	. = ..()
 	if(.)
 		return

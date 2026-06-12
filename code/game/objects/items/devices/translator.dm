@@ -6,6 +6,7 @@
 	icon_state = "translator"
 	w_class = WEIGHT_CLASS_NORMAL
 	origin_tech = list(TECH_DATA = 3, TECH_ENGINEERING = 3)
+	suit_storage_class = SUIT_STORAGE_CLASS_SOFTWEAR | SUIT_STORAGE_CLASS_HARDWEAR
 	/// our translation context; set to path to start as path
 	var/datum/translation_context/context = /datum/translation_context/simple/universal_translator
 
@@ -68,7 +69,7 @@
 		return CLICKCHAIN_DO_NOT_PROPAGATE
 	return ..()
 
-/obj/item/universal_translator/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/universal_translator/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	if(!isrobot(target))
@@ -141,14 +142,16 @@
 	if (visual && L.has_status_effect(/datum/status_effect/sight/blindness))
 		return //Can't see the screen, don't get the message
 
-	if (audio && ((L.sdisabilities & SDISABILITY_DEAF) || L.ear_deaf))
+	var/is_deaf = (L.sdisabilities & SDISABILITY_DEAF) || L.ear_deaf
+
+	if (audio && is_deaf)
 		return //Can't hear the translation, don't get the message
 
 	//Only translate if they can't understand, otherwise pointlessly spammy
 	//I'll just assume they don't look at the screen in that case
 
 	//They don't understand the spoken language we're translating FROM
-	if(!L.say_understands(speaker, language))
+	if(!L.say_understands(speaker, language) || (visual && is_deaf))
 		//They understand the output language
 		if(L.say_understands(null,langset))
 			to_chat(L, "<i><b>[src]</b> translates, </i>\"<span class='[langset.colour]'>[context.attempt_translation(language, speaker, message)]</span>\"")

@@ -2,6 +2,7 @@
 	name = "Anomaly power battery"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "anobattery0"
+	belt_storage_class = BELT_CLASS_SMALL
 	var/datum/artifact_effect/battery_effect
 	var/capacity = 300
 	var/stored_charge = 0
@@ -23,6 +24,7 @@
 	name = "Anomaly power utilizer"
 	icon = 'icons/obj/xenoarchaeology.dmi'
 	icon_state = "anodev"
+	belt_storage_class = BELT_CLASS_SMALL
 	var/activated = 0
 	var/duration = 0
 	var/interval = 0
@@ -85,7 +87,7 @@
 
 	return data
 
-/obj/item/anodevice/ui_act(action, list/params, datum/tgui/ui)
+/obj/item/anodevice/ui_act(action, list/params, datum/tgui/ui, datum/ui_state/state, datum/event_args/actor/actor)
 	if(..())
 		return TRUE
 
@@ -200,7 +202,7 @@
 	STOP_PROCESSING(SSobj, src)
 	return ..()
 
-/obj/item/anodevice/attack_mob(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
+/obj/item/anodevice/legacy_mob_melee_hook(mob/target, mob/user, clickchain_flags, list/params, mult, target_zone, intent)
 	if(user.a_intent == INTENT_HARM)
 		return ..()
 	. = CLICKCHAIN_DO_NOT_PROPAGATE

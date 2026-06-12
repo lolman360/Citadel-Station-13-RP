@@ -236,8 +236,8 @@
 			prob(2);list(
 				/obj/item/melee/baton/cattleprod,
 				/obj/item/melee/baton/cattleprod,
-				/obj/item/cell/high,
-				/obj/item/cell/high,
+				/obj/item/cell/basic/tier_1/medium,
+				/obj/item/cell/basic/tier_1/medium,
 				/obj/structure/closet/crate
 			),
 			prob(2);list(
@@ -280,8 +280,8 @@
 				/obj/item/clothing/head/helmet/space/syndicate/black/red,
 				/obj/item/clothing/suit/space/syndicate/black/red,
 				/obj/item/clothing/head/helmet/space/syndicate/black/red,
-				/obj/item/gun/ballistic/automatic/mini_uzi,
-				/obj/item/gun/ballistic/automatic/mini_uzi,
+				/obj/item/gun/projectile/ballistic/automatic/mini_uzi,
+				/obj/item/gun/projectile/ballistic/automatic/mini_uzi,
 				/obj/item/ammo_magazine/a45/uzi,
 				/obj/item/ammo_magazine/a45/uzi,
 				/obj/item/ammo_magazine/a45/uzi/empty,
@@ -297,8 +297,8 @@
 			prob(2);list(
 				/obj/item/clothing/suit/armor/vest,
 				/obj/item/clothing/suit/armor/vest,
-				/obj/item/gun/ballistic/garand,
-				/obj/item/gun/ballistic/garand,
+				/obj/item/gun/projectile/ballistic/garand,
+				/obj/item/gun/projectile/ballistic/garand,
 				/obj/item/ammo_magazine/a7_62mm/garand,
 				/obj/item/ammo_magazine/a7_62mm/garand,
 				/obj/structure/closet/crate/plastic
@@ -378,15 +378,15 @@
 				/obj/item/clothing/head/bearpelt,
 				/obj/item/clothing/under/soviet,
 				/obj/item/clothing/under/soviet,
-				/obj/item/gun/ballistic/shotgun/pump/rifle/ceremonial,
-				/obj/item/gun/ballistic/shotgun/pump/rifle/ceremonial,
+				/obj/item/gun/projectile/ballistic/shotgun/pump/rifle/ceremonial,
+				/obj/item/gun/projectile/ballistic/shotgun/pump/rifle/ceremonial,
 				/obj/structure/closet/crate
 			),
 			prob(1);list(
-				/obj/item/gun/ballistic/revolver/detective,
-				/obj/item/gun/ballistic/contender,
-				/obj/item/gun/ballistic/p92x,
-				/obj/item/gun/ballistic/derringer,
+				/obj/item/gun/projectile/ballistic/revolver/detective,
+				/obj/item/gun/projectile/ballistic/contender,
+				/obj/item/gun/projectile/ballistic/p92x,
+				/obj/item/gun/projectile/ballistic/derringer,
 				/obj/structure/closet/crate
 			),
 			prob(1);list(
@@ -419,7 +419,7 @@
 				/obj/item/pda/clown,
 				/obj/item/clothing/mask/gas/clown_hat,
 				/obj/item/bikehorn,
-				/obj/item/toy/waterflower,
+				/obj/item/reagent_containers/spray/waterflower,
 				/obj/item/pen/crayon/rainbow,
 				/obj/structure/closet/crate
 			),
@@ -570,7 +570,7 @@
 				/obj/item/module/power_control,
 				/obj/item/stack/cable_coil,
 				/obj/item/frame2/apc,
-				/obj/item/cell/high,
+				/obj/item/cell/basic/tier_1/large,
 				/obj/structure/closet/crate/corporate/focalpoint //FOCAL APC
 			),
 			prob(5);list(
@@ -716,9 +716,9 @@
 				/obj/item/lightreplacer,
 				/obj/item/reagent_containers/spray/cleaner,
 				/obj/item/reagent_containers/glass/rag,
-				/obj/item/grenade/chem_grenade/cleaner,
-				/obj/item/grenade/chem_grenade/cleaner,
-				/obj/item/grenade/chem_grenade/cleaner,
+				/obj/item/grenade/simple/chemical/premade/cleaner,
+				/obj/item/grenade/simple/chemical/premade/cleaner,
+				/obj/item/grenade/simple/chemical/premade/cleaner,
 				/obj/structure/closet/crate/corporate/galaksi //GALAKSI JANITOR SUPPLIES
 			),
 			prob(5);list(
@@ -808,16 +808,16 @@
 			prob(2);list(
 				/obj/random/energy,
 				/obj/random/energy,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
 				/obj/random/energy,
 				/obj/random/energy,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
-				/obj/item/cell/device/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
+				/obj/item/cell/basic/tier_1/weapon,
 				/obj/structure/closet/crate/large/secure/corporate/heph //HEPH ENERGY
 			),
 			prob(2);list(
@@ -986,6 +986,8 @@
 				prob(80);/obj/structure/flora/grass/both,
 				prob(60);/obj/structure/flora/bush,
 				prob(40);/obj/structure/flora/tree/dead,
+				prob(40);/obj/structure/flora/snow_berry,
+				prob(40);/obj/structure/flora/taj_tuber,
 				prob(1);/obj/structure/snowman,
 				prob(1);/obj/structure/snowman/borg,
 				prob(1);/obj/structure/snowman/spider,
